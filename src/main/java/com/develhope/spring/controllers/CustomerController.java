@@ -49,8 +49,8 @@ public class CustomerController {
 
     @PatchMapping("/password/{id}")
     @ResponseBody
-    public ResponseEntity<CustomerDTO> changePassword(@PathVariable Long id, @RequestParam String newPassword) {
-        CustomerDTO updatedCustomer = this.customerService.updatePassword(id, newPassword);
+    public ResponseEntity<CustomerDTO> changePassword(@PathVariable Long id, @RequestBody CustomerDTO customerToUpdate) {
+        CustomerDTO updatedCustomer = this.customerService.updatePassword(id, customerToUpdate);
         return ResponseEntity.ok().body(updatedCustomer);
     }
 

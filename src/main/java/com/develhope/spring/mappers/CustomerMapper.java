@@ -19,6 +19,7 @@ public class CustomerMapper {
         customerEntity.setName(customerDTO.getName());
         customerEntity.setSurname(customerDTO.getSurname());
         customerEntity.setPhoneNumber(customerDTO.getPhoneNumber());
+        customerEntity.setIsDeleted(customerDTO.getIsDeleted());
 
         return customerEntity;
     }
@@ -35,6 +36,7 @@ public class CustomerMapper {
         customerDTO.setName(customerEntity.getName());
         customerDTO.setSurname(customerEntity.getSurname());
         customerDTO.setPhoneNumber(customerEntity.getPhoneNumber());
+        customerDTO.setIsDeleted(customerEntity.getIsDeleted());
 
         return customerDTO;
     }

@@ -70,6 +70,7 @@ public class CustomerService {
             customerToUpdate.get().setName(customerDTO.getName());
             customerToUpdate.get().setSurname(customerDTO.getSurname());
             customerToUpdate.get().setPhoneNumber(customerDTO.getPhoneNumber());
+            customerToUpdate.get().setIsDeleted(customerDTO.getIsDeleted());
             return customerMapper.asDTO(this.customerRepository.saveAndFlush(customerToUpdate.get()));
         }
     }
@@ -77,15 +78,15 @@ public class CustomerService {
     /**
      *
      * @param id customer id
-     * @param newPassword
-     * @return a customer with password updated
+     * @param customerDTO CustomerDTO
+     * @return customer with password updated
      */
-    public CustomerDTO updatePassword(Long id, String newPassword) {
+    public CustomerDTO updatePassword(Long id, CustomerDTO customerDTO) {
         Optional<CustomerEntity> customerToUpdate = this.customerRepository.findById(id);
         if (customerToUpdate.isEmpty()) {
             throw new CustomerNotFoundException();
         } else {
-            customerToUpdate.get().setPassword(newPassword);
+            customerToUpdate.get().setPassword(customerDTO.getPassword());
             return customerMapper.asDTO(this.customerRepository.saveAndFlush(customerToUpdate.get()));
         }
     }
