@@ -3,10 +3,11 @@ package com.develhope.spring.entities;
 import jakarta.persistence.*;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table
+@Table(name = "products")
 public class ProductEntity {
 
     @Id
@@ -20,6 +21,11 @@ public class ProductEntity {
     private BigInteger price;
 
     private String ingredients;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "productType_id"))
+    private List<ProductTypeEntity> productTypes;
 
     public ProductEntity() {
     }

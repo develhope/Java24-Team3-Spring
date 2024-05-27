@@ -2,7 +2,9 @@ package com.develhope.spring.mappers;
 
 import com.develhope.spring.dtos.ProductTypeDTO;
 import com.develhope.spring.entities.ProductTypeEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProductTypeMapper {
 
     public ProductTypeEntity asEntity(ProductTypeDTO productTypeDTO) {
