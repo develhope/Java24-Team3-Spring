@@ -16,6 +16,7 @@ public class ProductMapper {
         productEntity.setName(productDTO.getName());
         productEntity.setPrice(productDTO.getPrice());
         productEntity.setIngredients(productDTO.getIngredients());
+        productEntity.setProductTypes(productDTO.getProductTypes());
 
         return productEntity;
     }
@@ -29,6 +30,7 @@ public class ProductMapper {
         productDTO.setName(productEntity.getName());
         productDTO.setPrice(productEntity.getPrice());
         productDTO.setIngredients(productEntity.getIngredients());
+        productDTO.setProductTypes(productEntity.getProductTypes());
 
         return productDTO;
     }
