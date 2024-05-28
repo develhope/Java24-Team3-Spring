@@ -54,6 +54,7 @@ public class ProductService {
             productToUpdate.get().setName(productDTO.getName());
             productToUpdate.get().setPrice(productDTO.getPrice());
             productToUpdate.get().setIngredients(productDTO.getIngredients());
+            productToUpdate.get().setProductTypes(productDTO.getProductTypes());
             return productMapper.asDto(this.productRepository.saveAndFlush(productToUpdate.get()));
         }
     }
