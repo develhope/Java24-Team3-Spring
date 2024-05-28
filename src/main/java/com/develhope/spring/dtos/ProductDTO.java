@@ -1,6 +1,9 @@
 package com.develhope.spring.dtos;
 
+import com.develhope.spring.entities.ProductTypeEntity;
+
 import java.math.BigInteger;
+import java.util.List;
 
 public class ProductDTO {
 
@@ -10,13 +13,16 @@ public class ProductDTO {
 
     private String ingredients;
 
+    private List<ProductTypeEntity> productTypes;
+
     public ProductDTO() {
     }
 
-    public ProductDTO(String name, BigInteger price, String ingredients) {
+    public ProductDTO(String name, BigInteger price, String ingredients, List<ProductTypeEntity> productTypes) {
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
+        this.productTypes = productTypes;
     }
 
     public String getName() {
@@ -41,5 +47,13 @@ public class ProductDTO {
 
     public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public List<ProductTypeEntity> getProductTypes() {
+        return productTypes;
+    }
+
+    public void setProductTypes(List<ProductTypeEntity> productTypes) {
+        this.productTypes = productTypes;
     }
 }

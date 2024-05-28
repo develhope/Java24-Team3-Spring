@@ -1,23 +1,21 @@
 package com.develhope.spring.dtos;
 
-import java.util.List;
-
 public class ProductTypeDTO {
 
-    private List<String> productType;
+    private String productType;
 
     public ProductTypeDTO() {
     }
 
-    public ProductTypeDTO(List<String> productType) {
+    public ProductTypeDTO(String productType) {
         this.productType = productType;
     }
 
-    public List<String> getProductType() {
+    public String getProductType() {
         return productType;
     }
 
-    public void setProductType(List<String> productType) {
+    public void setProductType(String productType) {
         this.productType = productType;
     }
 
