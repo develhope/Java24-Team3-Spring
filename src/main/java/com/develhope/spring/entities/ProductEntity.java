@@ -22,19 +22,21 @@ public class ProductEntity {
 
     private String ingredients;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "productType_id"))
+    @Column(name = "productTypes")
     private List<ProductTypeEntity> productTypes;
 
     public ProductEntity() {
     }
 
-    public ProductEntity(UUID id, String name, BigInteger price, String ingredients) {
+    public ProductEntity(UUID id, String name, BigInteger price, String ingredients, List<ProductTypeEntity> productTypes) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
+        this.productTypes = productTypes;
     }
 
     public UUID getId() {
@@ -67,5 +69,13 @@ public class ProductEntity {
 
     public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public List<ProductTypeEntity> getProductTypes() {
+        return productTypes;
+    }
+
+    public void setProductTypes(List<ProductTypeEntity> productTypes) {
+        this.productTypes = productTypes;
     }
 }

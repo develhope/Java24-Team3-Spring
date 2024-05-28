@@ -2,7 +2,6 @@ package com.develhope.spring.entities;
 
 import jakarta.persistence.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -13,13 +12,13 @@ public class ProductTypeEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
-    private List<String> productType;
+    @Column(nullable = false, name = "productType")
+    private String productType;
 
     public ProductTypeEntity() {
     }
 
-    public ProductTypeEntity(UUID id, List<String> productType) {
+    public ProductTypeEntity(UUID id, String productType) {
         this.id = id;
         this.productType = productType;
     }
@@ -32,11 +31,11 @@ public class ProductTypeEntity {
         this.id = id;
     }
 
-    public List<String> getProductType() {
+    public String getProductType() {
         return productType;
     }
 
-    public void setProductType(List<String> productType) {
+    public void setProductType(String productType) {
         this.productType = productType;
     }
 }
