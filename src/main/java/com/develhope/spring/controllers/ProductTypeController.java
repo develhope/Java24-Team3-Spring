@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/productTypes/")
+@RequestMapping("api/v1/productTypes")
 public class ProductTypeController {
 
     private final ProductTypeService productTypeService;
