@@ -3,10 +3,11 @@ package com.develhope.spring.controllers;
 import com.develhope.spring.dtos.ProductTypeDTO;
 import com.develhope.spring.entities.ProductTypeEntity;
 import com.develhope.spring.services.ProductTypeService;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ public class ProductTypeController {
 
     private final ProductTypeService productTypeService;
 
+    @Autowired
     public ProductTypeController(ProductTypeService productTypeService) {
         this.productTypeService = productTypeService;
     }
@@ -24,7 +26,7 @@ public class ProductTypeController {
     @ResponseBody
     public ResponseEntity<ProductTypeDTO> createProductType(@RequestBody ProductTypeDTO productTypeDTO) {
         ProductTypeDTO newProductType = this.productTypeService.createProductType(productTypeDTO);
-        return new ResponseEntity<>(newProductType, HttpStatus.CREATED);
+        return ResponseEntity.created(URI.create("api/v1/productTypes")).body(newProductType);
     }
 
     @GetMapping
