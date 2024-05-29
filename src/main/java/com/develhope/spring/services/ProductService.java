@@ -5,6 +5,7 @@ import com.develhope.spring.entities.ProductEntity;
 import com.develhope.spring.exceptions.ProductNotFoundException;
 import com.develhope.spring.mappers.ProductMapper;
 import com.develhope.spring.repositories.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
+    @Autowired
     public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
