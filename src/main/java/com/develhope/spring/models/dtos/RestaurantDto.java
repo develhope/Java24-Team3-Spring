@@ -1,5 +1,7 @@
 package com.develhope.spring.models.dtos;
 
+import com.develhope.spring.models.entities.ProductEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,28 +14,28 @@ public class RestaurantDto {
 
         private String restaurantPhoneNumber;
 
-        private AddressEntity addressEntity;
+        private AddressDto addressDto;
 
         String description;
 
         boolean isDeliveryAvaible;
         boolean isTakeAwayAvaible;
 
-        private List<ItemEntity> items = new ArrayList<>();
+        private List<ProductEntity> productEntities = new ArrayList<>();
 
-        private List<OperationHoursEntity> operatingHours;
+        private List<OperatingHoursDto> operatingHoursDto;
 
-    public RestaurantDto(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressEntity address, String description, boolean isDeliveryAvaible, boolean isTakeAwayAvaible, List<ItemEntity> items, List<OperationHoursEntity> operatingHours) {
+    public RestaurantDto(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressDto address, String description, boolean isDeliveryAvaible, boolean isTakeAwayAvaible, List<ProductEntity> productEntities, List<OperatingHoursDto> operatingHoursDto) {
         this.id_user = id_user;
         this.email = email;
         this.restaurantName = restaurantName;
         this.restaurantPhoneNumber = restaurantPhoneNumber;
-        this.addressEntity = address;
+        this.addressDto = address;
         this.description = description;
         this.isDeliveryAvaible = isDeliveryAvaible;
         this.isTakeAwayAvaible = isTakeAwayAvaible;
-        this.items = items;
-        this.operatingHours = operatingHours;
+        this.productEntities = productEntities;
+        this.operatingHoursDto = operatingHoursDto;
     }
 
     public Long getId_user() {
@@ -68,12 +70,12 @@ public class RestaurantDto {
         this.restaurantPhoneNumber = restaurantPhoneNumber;
     }
 
-    public AddressEntity getAddressEntity() {
-        return addressEntity;
+    public AddressDto getAddressDto() {
+        return addressDto;
     }
 
-    public void setAddressEntity(AddressEntity addressEntity) {
-        this.addressEntity = addressEntity;
+    public void setAddressEntity(AddressDto addressDto) {
+        this.addressDto = addressDto;
     }
 
     public String getDescription() {
@@ -100,19 +102,19 @@ public class RestaurantDto {
         isTakeAwayAvaible = takeAwayAvaible;
     }
 
-    public List<ItemEntity> getItems() {
-        return items;
+    public List<ProductEntity> getProductEntities() {
+        return productEntities;
     }
 
-    public void setItems(List<ItemEntity> items) {
-        this.items = items;
+    public void setProductEntities(List<ProductEntity> productEntities) {
+        this.productEntities = productEntities;
     }
 
-    public List<OperationHoursEntity> getOperatingHours() {
-        return operatingHours;
+    public List<OperatingHoursDto> getOperatingHoursDto() {
+        return operatingHoursDto;
     }
 
-    public void setOperatingHours(List<OperationHoursEntity> operatingHours) {
-        this.operatingHours = operatingHours;
+    public void setOperatingHours(List<OperatingHoursDto> operatingHoursDto) {
+        this.operatingHoursDto = operatingHoursDto;
     }
 }

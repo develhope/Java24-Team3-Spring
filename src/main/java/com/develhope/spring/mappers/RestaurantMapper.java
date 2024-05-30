@@ -6,16 +6,17 @@ import com.develhope.spring.models.entities.RestaurantEntity;
 public class RestaurantMapper {
     public static RestaurantDto toDto(RestaurantEntity restaurantEntity){
         return new RestaurantDto(
-                restaurantEntity.getId_user(),
+                restaurantEntity.getId_restaurant(),
                 restaurantEntity.getEmail(),
                 restaurantEntity.getRestaurantName(),
                 restaurantEntity.getRestaurantPhoneNumber(),
-                restaurantEntity.getAddressEntity(),
+                AddressMapper.toDto( restaurantEntity.getAddressEntity()),
                 restaurantEntity.getDescription(),
                 restaurantEntity.getIsDeliveryAvaible(),
                 restaurantEntity.getIsTakeAwayAvaible(),
-                restaurantEntity.getItems(),
-                restaurantEntity.getOperatingHours());
+                restaurantEntity.getProducts(),
+                OperatingHoursMapper.toDto(restaurantEntity.getOperatingHoursEntity())
+        );
     }
 
     public static RestaurantEntity toEntity(RestaurantDto resDto){
@@ -24,11 +25,12 @@ public class RestaurantMapper {
                 resDto.getEmail(),
                 resDto.getRestaurantName(),
                 resDto.getRestaurantPhoneNumber(),
-                resDto.getAddressEntity(),
+                AddressMapper.toEntity( resDto.getAddressDto()),
                 resDto.getDescription(),
                 resDto.getIsDeliveryAvaible(),
                 resDto.getIsTakeAwayAvaible(),
-                resDto.getItems(),
-                resDto.getOperatingHours());
+                resDto.getProductEntities(),
+                OperatingHoursMapper.toEntity(resDto.getOperatingHoursDto())
+        );
     }
 }

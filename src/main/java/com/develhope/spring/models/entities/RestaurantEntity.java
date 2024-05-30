@@ -1,29 +1,30 @@
 package com.develhope.spring.models.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
 
 @Entity
+@Table(name="restaurant")
 public class RestaurantEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id_user;
+    private Long id_restaurant;
 
-    @Column(nullable = false, unique = true)
+    @Column
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
-    @Column(nullable = false, unique = true)
+    @Column
     private String restaurantName;
 
-    @Column(nullable = true, unique = true)
+    @Column
     private String restaurantPhoneNumber;
 
     @OneToOne
+    @JoinColumn(name = "adress_id")
     private AddressEntity addressEntity;
 
     String description;
@@ -31,35 +32,40 @@ public class RestaurantEntity {
     boolean isDeliveryAvaible;
     boolean isTakeAwayAvaible;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private List<ItemEntity> items = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name = "restaurant_product",
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<ProductEntity> products;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private List<OperationHoursEntity> operatingHours;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name = "restaurant_turn",
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "hour_id"))
+    private List<OperatingHoursEntity> operatingHoursEntity;
 
 
-    public RestaurantEntity(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressEntity addressEntity, String description, boolean isDeliveryAvaible, boolean isTakeAwayAvaible, List<ItemEntity> items, List<OperationHoursEntity> operatingHours) {
-        this.id_user = id_user;
+    public RestaurantEntity(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressEntity addressEntity, String description, boolean isDeliveryAvaible, boolean isTakeAwayAvaible, List<ProductEntity> items, List<OperatingHoursEntity> operatingHours) {
+        this.id_restaurant = id_user;
         this.email = email;
-        this.password = password;
         this.restaurantName = restaurantName;
         this.restaurantPhoneNumber = restaurantPhoneNumber;
         this.addressEntity = addressEntity;
         this.description = description;
         this.isDeliveryAvaible = isDeliveryAvaible;
         this.isTakeAwayAvaible = isTakeAwayAvaible;
-        this.items = items;
-        this.operatingHours = operatingHours;
+        this.products = items;
+        this.operatingHoursEntity = operatingHours;
     }
 
 
 
-    public Long getId_user() {
-        return id_user;
+    public Long getId_restaurant() {
+        return id_restaurant;
     }
 
-    public void setId_user(Long id_user) {
-        this.id_user = id_user;
+    public void setId_restaurant(Long id_restaurant) {
+        this.id_restaurant = id_restaurant;
     }
 
     public String getEmail() {
@@ -110,6 +116,22 @@ public class RestaurantEntity {
         this.description = description;
     }
 
+    public List<ProductEntity> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductEntity> products) {
+        this.products = products;
+    }
+
+    public List<OperatingHoursEntity> getOperatingHoursEntity() {
+        return operatingHoursEntity;
+    }
+
+    public void setOperatingHoursEntity(List<OperatingHoursEntity> operatingHoursEntity) {
+        this.operatingHoursEntity = operatingHoursEntity;
+    }
+
     public boolean getIsDeliveryAvaible() {
         return isDeliveryAvaible;
     }
@@ -126,20 +148,6 @@ public class RestaurantEntity {
         isTakeAwayAvaible = takeAwayAvaible;
     }
 
-    public List<ItemEntity> getItems() {
-        return items;
-    }
 
-    public void setItems(List<ItemEntity> items) {
-        this.items = items;
-    }
-
-    public List<OperationHoursEntity> getOperatingHours() {
-        return operatingHours;
-    }
-
-    public void setOperatingHours(List<OperationHoursEntity> operatingHours) {
-        this.operatingHours = operatingHours;
-    }
 }
 
