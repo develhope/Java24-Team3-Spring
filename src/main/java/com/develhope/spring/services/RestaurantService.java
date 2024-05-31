@@ -1,17 +1,18 @@
 package com.develhope.spring.services;
 
+import com.develhope.spring.dao.AddressDao;
 import com.develhope.spring.dao.RestaurantDao;
-import com.develhope.spring.exeptions.RestaurantNameException;
+import com.develhope.spring.exceptions.RestaurantNameException;
 import com.develhope.spring.mappers.RestaurantMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.RestaurantDto;
+import com.develhope.spring.models.entities.AddressEntity;
 import com.develhope.spring.models.entities.RestaurantEntity;
 import com.develhope.spring.validators.RestaurantValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +22,9 @@ public class RestaurantService {
     private RestaurantDao resDao;
 
     @Autowired
+    private AddressDao addrDao;
+
+    @Autowired
     private RestaurantValidator restaurantValidator;
 
     public ResponseModel createRestaurant(RestaurantDto resDto)  {
@@ -28,9 +32,15 @@ public class RestaurantService {
         try {
             restaurantValidator.validateRestaurantName(resDto.getRestaurantName());
             RestaurantEntity resEntity = RestaurantMapper.toEntity(resDto);
-            RestaurantEntity resEntitySaved = resDao.saveAndFlush(resEntity);
+            AddressEntity addressEntitySaved = addrDao.save(resEntity.getAddressEntity());
+            resEntity.setAddressEntity(addressEntitySaved);
+
+
+            RestaurantEntity resEntitySaved = resDao.save(resEntity);
             RestaurantDto resDtoSaved = RestaurantMapper.toDto(resEntitySaved);
-            return new ResponseModel(ResponseCode.A, null, resDtoSaved);
+            return new ResponseModel(ResponseCode.B, ResponseCode.B.getResponseType().toString() + ": "
+                    + ResponseCode.B.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.B.getResponseCodeMessage(), resDtoSaved);
         } catch (RestaurantNameException e) {
             return new ResponseModel(ResponseCode.A, e.getMessage() );
         }
@@ -42,7 +52,9 @@ public class RestaurantService {
         if(optRes.isPresent()) {
             RestaurantEntity restaurantEntityFound = optRes.get();
             RestaurantDto resDtoFound =  RestaurantMapper.toDto(restaurantEntityFound);
-            return new ResponseModel(ResponseCode.C, null, resDtoFound);
+            return new ResponseModel(ResponseCode.C, ResponseCode.C.getResponseType().toString() + ": Details: "
+                    + ResponseCode.C.getResponseType().getMessage() + " "
+                    + ResponseCode.C.getResponseCodeMessage(), resDtoFound);
         }
         else {
             return new ResponseModel(ResponseCode.C, null, null);

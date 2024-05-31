@@ -14,7 +14,7 @@ public class RestaurantDto {
 
         private String restaurantPhoneNumber;
 
-        private AddressDto addressDto;
+       private AddressDto addressDto ;
 
         String description;
 
@@ -25,12 +25,12 @@ public class RestaurantDto {
 
         private List<OperatingHoursDto> operatingHoursDto;
 
-    public RestaurantDto(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressDto address, String description, boolean isDeliveryAvaible, boolean isTakeAwayAvaible, List<ProductEntity> productEntities, List<OperatingHoursDto> operatingHoursDto) {
+    public RestaurantDto(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressDto addressDto, String description, boolean isDeliveryAvaible, boolean isTakeAwayAvaible, List<ProductEntity> productEntities, List<OperatingHoursDto> operatingHoursDto) {
         this.id_user = id_user;
         this.email = email;
         this.restaurantName = restaurantName;
         this.restaurantPhoneNumber = restaurantPhoneNumber;
-        this.addressDto = address;
+        this.addressDto = addressDto;
         this.description = description;
         this.isDeliveryAvaible = isDeliveryAvaible;
         this.isTakeAwayAvaible = isTakeAwayAvaible;

@@ -22,20 +22,20 @@ public class RestaurantController {
     @PostMapping
     public ResponseEntity<ResponseModel> createRestaurant(@RequestBody RestaurantDto resDto) {
         ResponseModel response  = restaurantService.createRestaurant(resDto);
-        return new ResponseEntity<ResponseModel>(response, HttpStatus.OK);
+        return  ResponseEntity.ok().body(response);
     }
 
     @ResponseBody
     @GetMapping("/{id}")
     public ResponseEntity<ResponseModel> getRestaurant(@PathVariable("id") Long id) {
         ResponseModel response  = restaurantService.getRestaurantById(id);
-        return new ResponseEntity<ResponseModel>(response, HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
 //    @GetMapping
 //    public ResponseEntity<ResponseModel> getRestaurantByDeliveryOrTakeAway(@RequestParam(required = false)  boolean delivery, @RequestParam(required = false)  boolean takeAway) {
 //        ResponseModel response  = restaurantService.getRestaurantByDeliveryOrTakeAway(delivery, takeAway);
-//        return new ResponseEntity<ResponseModel>(response, HttpStatus.OK);
+//        return new ResponseEntity(response, HttpStatus.OK);
 //    }
 
 

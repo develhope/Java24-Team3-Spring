@@ -1,7 +1,7 @@
 package com.develhope.spring.validators;
 
 import com.develhope.spring.dao.RestaurantDao;
-import com.develhope.spring.exeptions.RestaurantNameException;
+import com.develhope.spring.exceptions.RestaurantNameException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,10 +32,7 @@ public class RestaurantValidator {
         }
 
         //Crea una lista di parole o frasi inappropriati o offensivi e verifica se il nome del ristorante contiene tali termini.
-
     }
-
-
 
 
 }

@@ -23,27 +23,30 @@ public class RestaurantEntity {
     @Column
     private String restaurantPhoneNumber;
 
-    @OneToOne
-    @JoinColumn(name = "adress_id")
-    private AddressEntity addressEntity;
+   @OneToOne(fetch=FetchType.LAZY)
+   @JoinColumn(name = "adress_id")
+   private AddressEntity addressEntity;
 
     String description;
 
     boolean isDeliveryAvaible;
     boolean isTakeAwayAvaible;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    // cascade = CascadeType.ALL,
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "restaurant_product",
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<ProductEntity> products;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "restaurant_turn",
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "hour_id"))
     private List<OperatingHoursEntity> operatingHoursEntity;
 
+    public RestaurantEntity() {
+    }
 
     public RestaurantEntity(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressEntity addressEntity, String description, boolean isDeliveryAvaible, boolean isTakeAwayAvaible, List<ProductEntity> items, List<OperatingHoursEntity> operatingHours) {
         this.id_restaurant = id_user;
@@ -63,7 +66,6 @@ public class RestaurantEntity {
     public Long getId_restaurant() {
         return id_restaurant;
     }
-
     public void setId_restaurant(Long id_restaurant) {
         this.id_restaurant = id_restaurant;
     }

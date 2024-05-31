@@ -1,6 +1,4 @@
-package com.develhope.spring.exeptions;
-
-import org.springframework.stereotype.Component;
+package com.develhope.spring.exceptions;
 
 
 public class RestaurantNameException extends Exception {

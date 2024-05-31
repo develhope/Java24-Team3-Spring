@@ -1,22 +1,44 @@
 package com.develhope.spring.models;
 
-import org.springframework.stereotype.Component;
-
 
 public class ResponseModel {
 
-    private ResponseCode Code;
-    private String messageDetails;
+    private ResponseCode code;
+    private String message;
     private Object object;
 
     public ResponseModel(ResponseCode code, String messageDetails, Object object) {
-        Code = code;
-        this.messageDetails = messageDetails;
+        this.code = code;
+        this.message = messageDetails;
         this.object = object;
     }
 
     public ResponseModel(ResponseCode code, String messageDetails) {
-        Code = code;
-        this.messageDetails = messageDetails;
+        this.code = code;
+        this.message = messageDetails;
+    }
+
+    public ResponseCode getCode() {
+        return code;
+    }
+
+    public void setCode(ResponseCode code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Object getObject() {
+        return object;
+    }
+
+    public void setObject(Object object) {
+        this.object = object;
     }
 }

@@ -12,10 +12,10 @@ import java.util.List;
 
 public class AddressMapper {
     public static AddressDto toDto(AddressEntity addressEntity){
-        return new AddressDto();
+        return new AddressDto(addressEntity.getStreet());
     }
 
     public static AddressEntity toEntity(AddressDto addressDto){
-        return new AddressEntity();
+        return new AddressEntity(addressDto.getStreet());
     }
 }
