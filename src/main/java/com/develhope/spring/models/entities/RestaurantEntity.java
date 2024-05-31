@@ -5,7 +5,7 @@ import java.util.List;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="restaurant")
+@Table(name = "restaurant")
 public class RestaurantEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,14 +23,16 @@ public class RestaurantEntity {
     @Column
     private String restaurantPhoneNumber;
 
-   @OneToOne(fetch=FetchType.LAZY)
-   @JoinColumn(name = "adress_id")
-   private AddressEntity addressEntity;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "adress_id")
+    private AddressEntity addressEntity;
 
+    @Column
     String description;
-
-    boolean isDeliveryAvaible;
-    boolean isTakeAwayAvaible;
+    @Column
+    boolean isDeliveryAvailable;
+    @Column
+    boolean isTakeAwayAvailable;
 
     // cascade = CascadeType.ALL,
     @ManyToMany(fetch = FetchType.LAZY)
@@ -55,17 +57,17 @@ public class RestaurantEntity {
         this.restaurantPhoneNumber = restaurantPhoneNumber;
         this.addressEntity = addressEntity;
         this.description = description;
-        this.isDeliveryAvaible = isDeliveryAvaible;
-        this.isTakeAwayAvaible = isTakeAwayAvaible;
+        this.isDeliveryAvailable = isDeliveryAvaible;
+        this.isTakeAwayAvailable = isTakeAwayAvaible;
         this.products = items;
         this.operatingHoursEntity = operatingHours;
     }
 
 
-
     public Long getId_restaurant() {
         return id_restaurant;
     }
+
     public void setId_restaurant(Long id_restaurant) {
         this.id_restaurant = id_restaurant;
     }
@@ -134,20 +136,20 @@ public class RestaurantEntity {
         this.operatingHoursEntity = operatingHoursEntity;
     }
 
-    public boolean getIsDeliveryAvaible() {
-        return isDeliveryAvaible;
+    public boolean getIsDeliveryAvailable() {
+        return isDeliveryAvailable;
     }
 
-    public void setIsDeliveryAvaible(boolean deliveryAvaible) {
-        isDeliveryAvaible = deliveryAvaible;
+    public void setIsDeliveryAvailable(boolean deliveryAvailable) {
+        isDeliveryAvailable = deliveryAvailable;
     }
 
     public boolean getIsTakeAwayAvaible() {
-        return isTakeAwayAvaible;
+        return isTakeAwayAvailable;
     }
 
     public void setIsTakeAwayAvaible(boolean takeAwayAvaible) {
-        isTakeAwayAvaible = takeAwayAvaible;
+        isTakeAwayAvailable = takeAwayAvaible;
     }
 
 

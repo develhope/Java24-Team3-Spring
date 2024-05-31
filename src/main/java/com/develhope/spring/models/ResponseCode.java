@@ -4,10 +4,14 @@ import org.springframework.stereotype.Component;
 
 public enum ResponseCode {
     A(ResponseType.FAIL, "Creazione del record fallita a causa di parametri non validi."),
-    B(ResponseType.SUCCESS,"Creazione del record effettuata con successo."),
-    C(ResponseType.SUCCESS, "Record trovato."),
+    B(ResponseType.SUCCESS,"Creazione del record effettuata."),
+    C(ResponseType.SUCCESS, "Record trovato nel database."),
     D(ResponseType.SUCCESS, "Record non presente nel database."),
-    E(ResponseType.SUCCESS, "Ricerca nel database avvenuta con successo.");
+    E(ResponseType.SUCCESS, "Ricerca nel database avvenuta con successo."),
+    F(ResponseType.FAIL, "Non è possibile scegliere l'id del record."),
+    G(ResponseType.SUCCESS, "Modifica del record effettuata."),
+    H(ResponseType.SUCCESS, "Il reconrd è stato eliminato dal DB.");
+
 
     private ResponseType responseType;
     private String responseCodeMessage;

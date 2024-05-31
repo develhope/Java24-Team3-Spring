@@ -18,22 +18,22 @@ public class RestaurantDto {
 
         String description;
 
-        boolean isDeliveryAvaible;
-        boolean isTakeAwayAvaible;
+        Boolean isDeliveryAvailable;
+        Boolean isTakeAwayAvailable;
 
         private List<ProductEntity> productEntities = new ArrayList<>();
 
         private List<OperatingHoursDto> operatingHoursDto;
 
-    public RestaurantDto(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressDto addressDto, String description, boolean isDeliveryAvaible, boolean isTakeAwayAvaible, List<ProductEntity> productEntities, List<OperatingHoursDto> operatingHoursDto) {
+    public RestaurantDto(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressDto addressDto, String description, Boolean isDeliveryAvaible, Boolean isTakeAwayAvaible, List<ProductEntity> productEntities, List<OperatingHoursDto> operatingHoursDto) {
         this.id_user = id_user;
         this.email = email;
         this.restaurantName = restaurantName;
         this.restaurantPhoneNumber = restaurantPhoneNumber;
         this.addressDto = addressDto;
         this.description = description;
-        this.isDeliveryAvaible = isDeliveryAvaible;
-        this.isTakeAwayAvaible = isTakeAwayAvaible;
+        this.isDeliveryAvailable = isDeliveryAvaible;
+        this.isTakeAwayAvailable = isTakeAwayAvaible;
         this.productEntities = productEntities;
         this.operatingHoursDto = operatingHoursDto;
     }
@@ -86,20 +86,20 @@ public class RestaurantDto {
         this.description = description;
     }
 
-    public boolean getIsDeliveryAvaible() {
-        return isDeliveryAvaible;
+    public Boolean getIsDeliveryAvailable() {
+        return isDeliveryAvailable;
     }
 
-    public void setIsDeliveryAvaible(boolean deliveryAvaible) {
-        isDeliveryAvaible = deliveryAvaible;
+    public void setIsDeliveryAvailable(boolean deliveryAvailable) {
+        isDeliveryAvailable = deliveryAvailable;
     }
 
-    public boolean getIsTakeAwayAvaible() {
-        return isTakeAwayAvaible;
+    public Boolean getIsTakeAwayAvailable() {
+        return isTakeAwayAvailable;
     }
 
-    public void setIsTakeAwayAvaible(boolean takeAwayAvaible) {
-        isTakeAwayAvaible = takeAwayAvaible;
+    public void setIsTakeAwayAvailable(boolean takeAwayAvailable) {
+        isTakeAwayAvailable = takeAwayAvailable;
     }
 
     public List<ProductEntity> getProductEntities() {

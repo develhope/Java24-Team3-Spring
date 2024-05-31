@@ -15,12 +15,15 @@ import java.util.List;
 @RequestMapping("/restaurant")
 public class RestaurantController {
 
+
+
     @Autowired
     private RestaurantService restaurantService;
 
     @ResponseBody
     @PostMapping
     public ResponseEntity<ResponseModel> createRestaurant(@RequestBody RestaurantDto resDto) {
+
         ResponseModel response  = restaurantService.createRestaurant(resDto);
         return  ResponseEntity.ok().body(response);
     }
@@ -29,14 +32,31 @@ public class RestaurantController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseModel> getRestaurant(@PathVariable("id") Long id) {
         ResponseModel response  = restaurantService.getRestaurantById(id);
-        return new ResponseEntity(response, HttpStatus.OK);
+        return  ResponseEntity.ok().body(response);
     }
 
-//    @GetMapping
-//    public ResponseEntity<ResponseModel> getRestaurantByDeliveryOrTakeAway(@RequestParam(required = false)  boolean delivery, @RequestParam(required = false)  boolean takeAway) {
-//        ResponseModel response  = restaurantService.getRestaurantByDeliveryOrTakeAway(delivery, takeAway);
-//        return new ResponseEntity(response, HttpStatus.OK);
-//    }
+    @ResponseBody
+    @PatchMapping("{id}")
+    public ResponseEntity<ResponseModel> updateRestaurant(@PathVariable("id") Long id, @RequestBody RestaurantDto resDto) {
+        ResponseModel response  = restaurantService.updateRestaurant(id, resDto);
+        return  ResponseEntity.ok().body(response);
+    }
+
+    @ResponseBody
+    @GetMapping
+    public ResponseModel getRestaurantByDeliveryOrTakeAway(@RequestParam(required = false)  boolean delivery, @RequestParam(required = false)  boolean takeAway) {
+        ResponseModel response  = restaurantService.getRestaurantByDeliveryOrTakeAway(delivery, takeAway);
+        return response;
+
+        //ResponseEntity.ok().body(response);
+    }
+
+    @ResponseBody
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseModel> deleteRestaurant(@PathVariable("id") Long id) {
+        ResponseModel response  = restaurantService.deleteRestaurantById(id);
+        return ResponseEntity.ok().body(response);
+    }
 
 
 //    @GetMapping
@@ -49,14 +69,6 @@ public class RestaurantController {
 //
 
 
-//     @PatchMapping("{id}")
-//    public ResponseEntity<?> updateRestaurant(@PathVariable("id") Long id, @RequestBody RestaurantDto resDto) {
-//        RestaurantDto restDtoUpdated = restaurantService.updatePatchRestaurant(id, resDto);
-//        if (restDtoUpdated != null) {
-//            return ResponseEntity.ok().body(restDtoUpdated);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
+
 
 }

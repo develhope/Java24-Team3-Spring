@@ -12,7 +12,7 @@ public class RestaurantMapper {
                 restaurantEntity.getRestaurantPhoneNumber(),
                 AddressMapper.toDto( restaurantEntity.getAddressEntity()),
                 restaurantEntity.getDescription(),
-                restaurantEntity.getIsDeliveryAvaible(),
+                restaurantEntity.getIsDeliveryAvailable(),
                 restaurantEntity.getIsTakeAwayAvaible(),
                 restaurantEntity.getProducts(),
                 OperatingHoursMapper.toDto(restaurantEntity.getOperatingHoursEntity())
@@ -27,8 +27,8 @@ public class RestaurantMapper {
                 resDto.getRestaurantPhoneNumber(),
                 AddressMapper.toEntity( resDto.getAddressDto()),
                 resDto.getDescription(),
-                resDto.getIsDeliveryAvaible(),
-                resDto.getIsTakeAwayAvaible(),
+                resDto.getIsDeliveryAvailable(),
+                resDto.getIsTakeAwayAvailable(),
                 resDto.getProductEntities(),
                 OperatingHoursMapper.toEntity(resDto.getOperatingHoursDto())
         );
