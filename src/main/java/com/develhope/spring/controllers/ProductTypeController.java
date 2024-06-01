@@ -1,7 +1,6 @@
 package com.develhope.spring.controllers;
 
-import com.develhope.spring.dtos.ProductTypeDTO;
-import com.develhope.spring.entities.ProductTypeEntity;
+import com.develhope.spring.models.dtos.ProductTypeDto;
 import com.develhope.spring.services.ProductTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/productTypes")
@@ -24,42 +22,42 @@ public class ProductTypeController {
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<ProductTypeDTO> createProductType(@RequestBody ProductTypeDTO productTypeDTO) {
-        ProductTypeDTO newProductType = this.productTypeService.createProductType(productTypeDTO);
+    public ResponseEntity<ProductTypeDto> createProductType(@RequestBody ProductTypeDto productTypeDto) {
+        ProductTypeDto newProductType = this.productTypeService.createProductType(productTypeDto);
         return ResponseEntity.created(URI.create("api/v1/productTypes")).body(newProductType);
     }
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<List<ProductTypeEntity>> getAllProductTypes() {
-        List<ProductTypeEntity> productTypes = this.productTypeService.getAllProductTypes();
+    public ResponseEntity<List<ProductTypeDto>> getAllProductTypes() {
+        List<ProductTypeDto> productTypes = this.productTypeService.getAllProductTypes();
         return ResponseEntity.ok().body(productTypes);
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<ProductTypeEntity> getProductTypeById(@PathVariable UUID id) {
-        ProductTypeEntity productTypeFound = this.productTypeService.getSingleProductType(id);
+    public ResponseEntity<ProductTypeDto> getProductTypeById(@PathVariable String id) {
+        ProductTypeDto productTypeFound = this.productTypeService.getSingleProductType(id);
         return ResponseEntity.ok().body(productTypeFound);
     }
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<ProductTypeDTO> updateProductType(@PathVariable UUID id, @RequestBody ProductTypeDTO productTypeDTO) {
-        ProductTypeDTO updatedProductType = this.productTypeService.updateProductType(id, productTypeDTO);
+    public ResponseEntity<ProductTypeDto> updateProductType(@PathVariable String id, @RequestBody ProductTypeDto productTypeDTO) {
+        ProductTypeDto updatedProductType = this.productTypeService.updateProductType(id, productTypeDTO);
         return ResponseEntity.ok().body(updatedProductType);
     }
 
     @DeleteMapping("/{id}")
     @ResponseBody
-    public ResponseEntity deleteProductType(@PathVariable UUID id) {
+    public ResponseEntity<?> deleteProductType(@PathVariable String id) {
         this.productTypeService.deleteProductType(id);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping
     @ResponseBody
-    public ResponseEntity deleteAllProductTypes() {
+    public ResponseEntity<?> deleteAllProductTypes() {
         this.productTypeService.deleteAllProductTypes();
         return ResponseEntity.noContent().build();
     }

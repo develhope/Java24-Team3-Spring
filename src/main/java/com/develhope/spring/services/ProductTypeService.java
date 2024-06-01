@@ -1,16 +1,16 @@
 package com.develhope.spring.services;
 
-import com.develhope.spring.dtos.ProductTypeDTO;
-import com.develhope.spring.entities.ProductTypeEntity;
+import com.develhope.spring.models.dtos.ProductTypeDto;
+import com.develhope.spring.models.entities.ProductTypeEntity;
 import com.develhope.spring.exceptions.ProductTypeNotFoundException;
 import com.develhope.spring.mappers.ProductTypeMapper;
-import com.develhope.spring.repositories.ProductTypeRepository;
+import com.develhope.spring.daos.ProductTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class ProductTypeService {
@@ -24,31 +24,47 @@ public class ProductTypeService {
         this.productTypeMapper = productTypeMapper;
     }
 
-    public ProductTypeDTO createProductType(ProductTypeDTO productTypeDTO) {
-        ProductTypeEntity newProductType = this.productTypeMapper.asEntity(productTypeDTO);
+    /**
+     * @param productTypeDto
+     * @return new ProductTYpe
+     */
+    public ProductTypeDto createProductType(ProductTypeDto productTypeDto) {
+        ProductTypeEntity newProductType = this.productTypeMapper.asEntity(productTypeDto);
         this.productTypeRepository.saveAndFlush(newProductType);
         return productTypeMapper.asDto(newProductType);
     }
 
-    public List<ProductTypeEntity> getAllProductTypes() {
-        List<ProductTypeEntity> productTypes = this.productTypeRepository.findAll();
+    /**
+     * @return all product types
+     */
+    public List<ProductTypeDto> getAllProductTypes() {
+        List<ProductTypeDto> productTypes = this.productTypeRepository.findAll().stream().map(productTypeMapper::asDto).toList();
         if (productTypes.isEmpty()) {
-            throw new ProductTypeNotFoundException();
+            return new ArrayList<>();
         } else {
             return productTypes;
         }
     }
 
-    public ProductTypeEntity getSingleProductType(UUID id) {
+    /**
+     * @param id
+     * @return a single product type
+     */
+    public ProductTypeDto getSingleProductType(String id) {
         Optional<ProductTypeEntity> productTypeFound = this.productTypeRepository.findById(id);
         if (productTypeFound.isEmpty()) {
             throw new ProductTypeNotFoundException();
         } else {
-            return productTypeFound.get();
+            return productTypeMapper.asDto(productTypeFound.get());
         }
     }
 
-    public ProductTypeDTO updateProductType(UUID id, ProductTypeDTO productTypeDTO) {
+    /**
+     * @param id
+     * @param productTypeDTO
+     * @return a product type updated
+     */
+    public ProductTypeDto updateProductType(String id, ProductTypeDto productTypeDTO) {
         Optional<ProductTypeEntity> productTypeToUpdate = this.productTypeRepository.findById(id);
         if (productTypeToUpdate.isEmpty()) {
             throw new ProductTypeNotFoundException();
@@ -58,7 +74,10 @@ public class ProductTypeService {
         }
     }
 
-    public void deleteProductType(UUID id) {
+    /**
+     * @param id Delete a product type by id
+     */
+    public void deleteProductType(String id) {
         if (!productTypeRepository.existsById(id)) {
             throw new ProductTypeNotFoundException();
         } else {
@@ -66,6 +85,9 @@ public class ProductTypeService {
         }
     }
 
+    /**
+     * Delete all product types
+     */
     public void deleteAllProductTypes() {
         this.productTypeRepository.deleteAll();
     }
