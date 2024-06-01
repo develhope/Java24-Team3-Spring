@@ -24,7 +24,6 @@ public class CustomerController {
     public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customerDto) {
         CustomerDto newCustomer = this.customerService.addCustomer(customerDto);
         return ResponseEntity.created(URI.create("api/v1/customers")).body(newCustomer);
-
     }
 
     @GetMapping()
@@ -37,6 +36,24 @@ public class CustomerController {
     public ResponseEntity<CustomerDto> getCustomer(@PathVariable Long id) {
         CustomerDto customerFound = this.customerService.getCustomer(id);
         return ResponseEntity.ok().body(customerFound);
+    }
+
+    @GetMapping("/emails")
+    public ResponseEntity<CustomerDto> getCustomerByEmail(@RequestParam String email){
+        CustomerDto customerFound = this.customerService.getCustomerByEmail(email);
+        return ResponseEntity.ok().body(customerFound);
+    }
+
+    @GetMapping("/deleted")
+    public ResponseEntity<List<CustomerDto>> getCustomerByDeletedStatus(@RequestParam Boolean isDeleted) {
+        List<CustomerDto> customerList = this.customerService.getCustomerByDeletedStatus(isDeleted);
+        return ResponseEntity.ok().body(customerList);
+    }
+
+    @GetMapping("/verified")
+    public ResponseEntity<List<CustomerDto>> getCustomersByVerifiedStatus(@RequestParam Boolean isVerified) {
+        List<CustomerDto> customerList = this.customerService.getCustomersByVerifiedStatus(isVerified);
+        return ResponseEntity.ok().body(customerList);
     }
 
     @PutMapping("/{id}")

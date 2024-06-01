@@ -49,7 +49,7 @@ public class CustomerService {
     }
 
     /**
-     * @return List of customers
+     * @return List of all customers
      */
     public List<CustomerDto> getAllCustomers() {
         List<CustomerDto> customers = this.customerDao.findAll().stream().map(customerMapper::asDTO).toList();
@@ -59,11 +59,44 @@ public class CustomerService {
         return customers;
     }
 
-    //getCustomerByEmail
+    /**
+     * @param email String
+     * @return a single customer
+     */
+    public CustomerDto getCustomerByEmail(String email) {
+        Optional<CustomerEntity> customerFound = this.customerDao.findCustomerByEmail(email);
+        if(customerFound.isEmpty()) {
+            throw new CustomerNotFoundException();
+        } else {
+            return customerMapper.asDTO(customerFound.get());
+        }
+    }
 
-    //getCustomersByDeleteStatus
+    /**
+     * @param isDeleted Boolean
+     * @return all customers with the selected deleted status
+     */
+    public List<CustomerDto> getCustomerByDeletedStatus(Boolean isDeleted) {
+        List<CustomerDto> customers = this.customerDao.findCustomerByIsDeleted(isDeleted).stream().map(customerMapper::asDTO).toList();
+        if(customers.isEmpty()){
+            return new ArrayList<>();
+        } else {
+            return customers;
+        }
+    }
 
-    //getCustomersByVerifiedStatus
+    /**
+     * @param isVerified Boolean
+     * @return all customers with the selected verified status
+     */
+    public List<CustomerDto> getCustomersByVerifiedStatus(Boolean isVerified) {
+        List<CustomerDto> customers = this.customerDao.findCustomerByIsVerified(isVerified).stream().map(customerMapper::asDTO).toList();
+        if(customers.isEmpty()){
+            return new ArrayList<>();
+        } else {
+            return customers;
+        }
+    }
 
     /**
      * @param id          customer id
