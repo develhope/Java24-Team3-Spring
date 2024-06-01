@@ -1,36 +1,25 @@
-package com.develhope.spring.models.entities;
+package com.develhope.spring.models.dtos;
 
-import jakarta.persistence.*;
+
 
 import java.math.BigInteger;
 import java.util.List;
 
-@Entity
-@Table(name = "product")
-public class ProductEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+public class ProductDto {
     private String id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private BigInteger price;
 
     private String ingredients;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "productType_id"))
-    @Column(name = "productTypes")
-    private List<ProductTypeEntity> productTypes;
+    private List<ProductTypeDto> productTypes;
 
-    public ProductEntity() {
+    public ProductDto() {
     }
 
-    public ProductEntity(String id, String name, BigInteger price, String ingredients, List<ProductTypeEntity> productTypes) {
+    public ProductDto(String id, String name, BigInteger price, String ingredients, List<ProductTypeDto> productTypes) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -70,11 +59,11 @@ public class ProductEntity {
         this.ingredients = ingredients;
     }
 
-    public List<ProductTypeEntity> getProductTypes() {
+    public List<ProductTypeDto> getProductTypes() {
         return productTypes;
     }
 
-    public void setProductTypes(List<ProductTypeEntity> productTypes) {
+    public void setProductTypes(List<ProductTypeDto> productTypes) {
         this.productTypes = productTypes;
     }
 }

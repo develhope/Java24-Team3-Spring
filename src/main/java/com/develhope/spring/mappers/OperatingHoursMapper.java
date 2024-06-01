@@ -2,10 +2,12 @@ package com.develhope.spring.mappers;
 
 import com.develhope.spring.models.dtos.OperatingHoursDto;
 import com.develhope.spring.models.entities.OperatingHoursEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class OperatingHoursMapper {
 
         public static List<OperatingHoursDto> toDto(List<OperatingHoursEntity> operatingHoursEntities){

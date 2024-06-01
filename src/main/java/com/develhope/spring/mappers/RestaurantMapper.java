@@ -2,9 +2,15 @@ package com.develhope.spring.mappers;
 
 import com.develhope.spring.models.dtos.RestaurantDto;
 import com.develhope.spring.models.entities.RestaurantEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RestaurantMapper {
     public static RestaurantDto toDto(RestaurantEntity restaurantEntity){
+        if (restaurantEntity == null) {
+            return null;
+        }
+
         return new RestaurantDto(
                 restaurantEntity.getId_restaurant(),
                 restaurantEntity.getEmail(),
@@ -20,6 +26,10 @@ public class RestaurantMapper {
     }
 
     public static RestaurantEntity toEntity(RestaurantDto resDto){
+        if (resDto == null) {
+            return null;
+        }
+
         return new RestaurantEntity(
                 resDto.getId_user(),
                 resDto.getEmail(),

@@ -9,7 +9,23 @@ public class AddressEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id_address;
 
+    @Column
+    private String city;
+
+    @Column
     private String street;
+
+    @Column
+    private String number;
+
+    @Column
+    private String note;
+
+    @Column
+    private String lat;
+
+    @Column
+    private String lon;
 
 
 
@@ -17,13 +33,30 @@ public class AddressEntity {
     }
 
 
-    public AddressEntity( String street) {
+    public AddressEntity(Long id_address, String city, String street, String number, String note, String lat, String lon) {
+        this.id_address = id_address;
+        this.city = city;
         this.street = street;
+        this.number = number;
+        this.note = note;
+        this.lat = lat;
+        this.lon = lon;
     }
 
-    public AddressEntity(Long id_address, String street) {
+    public Long getId_address() {
+        return id_address;
+    }
+
+    public void setId_address(Long id_address) {
         this.id_address = id_address;
-        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getStreet() {
@@ -34,11 +67,35 @@ public class AddressEntity {
         this.street = street;
     }
 
-    public Long getId_address() {
-        return id_address;
+    public String getNumber() {
+        return number;
     }
 
-    public void setId_address(Long id_address) {
-        this.id_address = id_address;
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
     }
 }

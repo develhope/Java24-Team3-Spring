@@ -6,16 +6,43 @@ import com.develhope.spring.models.dtos.RestaurantDto;
 import com.develhope.spring.models.entities.AddressEntity;
 import com.develhope.spring.models.entities.OperatingHoursEntity;
 import com.develhope.spring.models.entities.RestaurantEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class AddressMapper {
+
     public static AddressDto toDto(AddressEntity addressEntity){
-        return new AddressDto(addressEntity.getStreet());
+        if (addressEntity == null) {
+            return null;
+        }
+
+        return new AddressDto(
+                addressEntity.getId_address(),
+                addressEntity.getCity(),
+                addressEntity.getStreet(),
+                addressEntity.getNumber(),
+                addressEntity.getNote(),
+                addressEntity.getLat(),
+                addressEntity.getLon()
+        );
     }
 
     public static AddressEntity toEntity(AddressDto addressDto){
-        return new AddressEntity(addressDto.getStreet());
+        if (addressDto == null) {
+            return null;
+        }
+
+        return new AddressEntity(
+                addressDto.getId_address(),
+                addressDto.getCity(),
+                addressDto.getStreet(),
+                addressDto.getNumber(),
+                addressDto.getNote(),
+                addressDto.getLat(),
+                addressDto.getLon()
+        );
     }
 }
