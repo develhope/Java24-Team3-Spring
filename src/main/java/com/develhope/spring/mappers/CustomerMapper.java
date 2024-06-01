@@ -1,13 +1,13 @@
 package com.develhope.spring.mappers;
 
-import com.develhope.spring.dtos.CustomerDTO;
-import com.develhope.spring.entities.CustomerEntity;
+import com.develhope.spring.models.dtos.CustomerDto;
+import com.develhope.spring.models.entities.CustomerEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CustomerMapper {
 
-    public CustomerEntity asEntity(CustomerDTO customerDTO) {
+    public CustomerEntity asEntity(CustomerDto customerDTO) {
         if (customerDTO == null) {
             return null;
         }
@@ -24,12 +24,12 @@ public class CustomerMapper {
         return customerEntity;
     }
 
-    public CustomerDTO asDTO(CustomerEntity customerEntity) {
+    public CustomerDto asDTO(CustomerEntity customerEntity) {
         if (customerEntity == null) {
             return null;
         }
 
-        CustomerDTO customerDTO = new CustomerDTO();
+        CustomerDto customerDTO = new CustomerDto();
 
         customerDTO.setEmail(customerEntity.getEmail());
         customerDTO.setPassword(customerEntity.getPassword());

@@ -1,7 +1,8 @@
 package com.develhope.spring.controllers;
 
-import com.develhope.spring.dtos.CustomerDTO;
+import com.develhope.spring.models.dtos.CustomerDto;
 import com.develhope.spring.services.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,43 +15,44 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
+    @Autowired
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
-        CustomerDTO newCustomer = this.customerService.addCustomer(customerDTO);
+    public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customerDto) {
+        CustomerDto newCustomer = this.customerService.addCustomer(customerDto);
         return new ResponseEntity<>(newCustomer, HttpStatus.CREATED);
 
     }
 
     @GetMapping()
     @ResponseBody
-    public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
-        List<CustomerDTO> customerList = this.customerService.getAllCustomers();
+    public ResponseEntity<List<CustomerDto>> getAllCustomers() {
+        List<CustomerDto> customerList = this.customerService.getAllCustomers();
         return ResponseEntity.ok().body(customerList);
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<CustomerDTO> getCustomer(@PathVariable Long id) {
-        CustomerDTO customerFound = this.customerService.getCustomer(id);
+    public ResponseEntity<CustomerDto> getCustomer(@PathVariable Long id) {
+        CustomerDto customerFound = this.customerService.getCustomer(id);
         return ResponseEntity.ok().body(customerFound);
     }
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
-        CustomerDTO updatedCustomer = this.customerService.updateCustomer(id, customerDTO);
+    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable Long id, @RequestBody CustomerDto customerDto) {
+        CustomerDto updatedCustomer = this.customerService.updateCustomer(id, customerDto);
         return ResponseEntity.ok().body(updatedCustomer);
     }
 
     @PatchMapping("/password/{id}")
     @ResponseBody
-    public ResponseEntity<CustomerDTO> changePassword(@PathVariable Long id, @RequestBody CustomerDTO customerToUpdate) {
-        CustomerDTO updatedCustomer = this.customerService.updatePassword(id, customerToUpdate);
+    public ResponseEntity<CustomerDto> changePassword(@PathVariable Long id, @RequestBody CustomerDto customerToUpdate) {
+        CustomerDto updatedCustomer = this.customerService.updatePassword(id, customerToUpdate);
         return ResponseEntity.ok().body(updatedCustomer);
     }
 

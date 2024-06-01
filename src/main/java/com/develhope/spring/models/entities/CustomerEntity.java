@@ -1,4 +1,4 @@
-package com.develhope.spring.entities;
+package com.develhope.spring.models.entities;
 
 import jakarta.persistence.*;
 

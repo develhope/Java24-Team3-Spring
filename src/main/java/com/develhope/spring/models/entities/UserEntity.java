@@ -1,23 +1,40 @@
-package com.develhope.spring.dtos;
+package com.develhope.spring.models.entities;
 
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 
 @MappedSuperclass
-public class UserDTO {
+public class UserEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String surname;
 
+    @Column(nullable = false, unique = true)
     private String phoneNumber;
 
     private Boolean isDeleted;
 
-    public UserDTO() {
+    public UserEntity() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -67,5 +84,4 @@ public class UserDTO {
     public void setIsDeleted(Boolean deleted) {
         isDeleted = deleted;
     }
-
 }
