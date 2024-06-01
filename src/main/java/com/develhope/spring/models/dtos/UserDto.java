@@ -1,35 +1,34 @@
 package com.develhope.spring.models.dtos;
 
-import jakarta.persistence.MappedSuperclass;
-
-@MappedSuperclass
 public class UserDto {
 
-    private String id;
+    private Long id;
 
     private String email;
 
     private String password;
 
-    private String name;
-
-    private String surname;
-
-    private String phoneNumber;
-
     private Boolean isDeleted;
+
+    private Boolean isVerified;
 
     public UserDto() {
     }
 
-    public String getId() {
+    public UserDto(String email, String password, Boolean isDeleted, Boolean isVerified) {
+        this.email = email;
+        this.password = password;
+        this.isDeleted = isDeleted;
+        this.isVerified = isVerified;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
-
 
     public String getEmail() {
         return email;
@@ -47,36 +46,19 @@ public class UserDto {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public Boolean getIsDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(Boolean deleted) {
-        isDeleted = deleted;
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
+    public Boolean getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
+    }
 }

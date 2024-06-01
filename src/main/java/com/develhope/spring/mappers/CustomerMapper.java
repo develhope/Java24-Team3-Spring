@@ -7,19 +7,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomerMapper {
 
-    public CustomerEntity asEntity(CustomerDto customerDTO) {
-        if (customerDTO == null) {
+    public CustomerEntity asEntity(CustomerDto customerDto) {
+        if (customerDto == null) {
             return null;
         }
 
         CustomerEntity customerEntity = new CustomerEntity();
 
-        customerEntity.setEmail(customerDTO.getEmail());
-        customerEntity.setPassword(customerDTO.getPassword());
-        customerEntity.setName(customerDTO.getName());
-        customerEntity.setSurname(customerDTO.getSurname());
-        customerEntity.setPhoneNumber(customerDTO.getPhoneNumber());
-        customerEntity.setIsDeleted(customerDTO.getIsDeleted());
+        customerEntity.setId(customerDto.getId());
+        customerEntity.setEmail(customerDto.getEmail());
+        customerEntity.setPassword(customerDto.getPassword());
+        customerEntity.setName(customerDto.getName());
+        customerEntity.setSurname(customerDto.getSurname());
+        customerEntity.setBirthDate(customerDto.getBirthDate());
+        customerEntity.setPhoneNumber(customerDto.getPhoneNumber());
+        customerEntity.setCreationDate(customerDto.getCreationDate());
+        customerEntity.setUpdateDate(customerDto.getUpdateDate());
+        customerEntity.setIsDeleted(customerDto.getIsDeleted());
+        customerEntity.setIsVerified(customerDto.getIsVerified());
 
         return customerEntity;
     }
@@ -29,16 +34,21 @@ public class CustomerMapper {
             return null;
         }
 
-        CustomerDto customerDTO = new CustomerDto();
+        CustomerDto customerDto = new CustomerDto();
 
-        customerDTO.setEmail(customerEntity.getEmail());
-        customerDTO.setPassword(customerEntity.getPassword());
-        customerDTO.setName(customerEntity.getName());
-        customerDTO.setSurname(customerEntity.getSurname());
-        customerDTO.setPhoneNumber(customerEntity.getPhoneNumber());
-        customerDTO.setIsDeleted(customerEntity.getIsDeleted());
+        customerDto.setId(customerEntity.getId());
+        customerDto.setEmail(customerEntity.getEmail());
+        customerDto.setPassword(customerEntity.getPassword());
+        customerDto.setName(customerEntity.getName());
+        customerDto.setSurname(customerEntity.getSurname());
+        customerDto.setBirthDate(customerEntity.getBirthDate());
+        customerDto.setPhoneNumber(customerEntity.getPhoneNumber());
+        customerDto.setCreationDate(customerEntity.getCreationDate());
+        customerDto.setUpdateDate(customerEntity.getUpdateDate());
+        customerDto.setIsDeleted(customerEntity.getIsDeleted());
+        customerDto.setIsVerified(customerEntity.getIsVerified());
 
-        return customerDTO;
+        return customerDto;
     }
 }
 

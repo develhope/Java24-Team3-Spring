@@ -15,6 +15,7 @@ import java.util.Optional;
 @Service
 public class CustomerService {
 
+
     private final CustomerDao customerDao;
     private final CustomerMapper customerMapper;
 
@@ -30,7 +31,7 @@ public class CustomerService {
      */
     public CustomerDto addCustomer(CustomerDto customerDto) {
         CustomerEntity newCustomer = customerMapper.asEntity(customerDto);
-        this.customerDao.save(newCustomer);
+        this.customerDao.saveAndFlush(newCustomer);
         return customerMapper.asDTO(newCustomer);
     }
 
@@ -58,6 +59,12 @@ public class CustomerService {
         return customers;
     }
 
+    //getCustomerByEmail
+
+    //getCustomersByDeleteStatus
+
+    //getCustomersByVerifiedStatus
+
     /**
      * @param id          customer id
      * @param customerDto CustomerDto
@@ -72,8 +79,12 @@ public class CustomerService {
             customerToUpdate.get().setPassword(customerDto.getPassword());
             customerToUpdate.get().setName(customerDto.getName());
             customerToUpdate.get().setSurname(customerDto.getSurname());
+            customerToUpdate.get().setBirthDate(customerDto.getBirthDate());
             customerToUpdate.get().setPhoneNumber(customerDto.getPhoneNumber());
+            customerToUpdate.get().setCreationDate(customerDto.getCreationDate());
+            customerToUpdate.get().setUpdateDate(customerDto.getUpdateDate());
             customerToUpdate.get().setIsDeleted(customerDto.getIsDeleted());
+            customerToUpdate.get().setIsVerified(customerDto.getIsVerified());
             return customerMapper.asDTO(this.customerDao.saveAndFlush(customerToUpdate.get()));
         }
     }
