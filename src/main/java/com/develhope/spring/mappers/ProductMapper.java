@@ -1,13 +1,13 @@
 package com.develhope.spring.mappers;
 
-import com.develhope.spring.dtos.ProductDTO;
-import com.develhope.spring.entities.ProductEntity;
+import com.develhope.spring.models.dtos.ProductDto;
+import com.develhope.spring.models.entities.ProductEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProductMapper {
 
-    public ProductEntity asEntity(ProductDTO productDTO) {
+    public ProductEntity asEntity(ProductDto productDTO) {
         if (productDTO == null) {
             return null;
         }
@@ -21,12 +21,12 @@ public class ProductMapper {
         return productEntity;
     }
 
-    public ProductDTO asDto(ProductEntity productEntity) {
+    public ProductDto asDto(ProductEntity productEntity) {
         if (productEntity == null) {
             return null;
         }
 
-        ProductDTO productDTO = new ProductDTO();
+        ProductDto productDTO = new ProductDto();
         productDTO.setName(productEntity.getName());
         productDTO.setPrice(productEntity.getPrice());
         productDTO.setIngredients(productEntity.getIngredients());

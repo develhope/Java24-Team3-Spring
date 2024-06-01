@@ -1,13 +1,13 @@
 package com.develhope.spring.mappers;
 
-import com.develhope.spring.dtos.ProductTypeDTO;
-import com.develhope.spring.entities.ProductTypeEntity;
+import com.develhope.spring.models.dtos.ProductTypeDto;
+import com.develhope.spring.models.entities.ProductTypeEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProductTypeMapper {
 
-    public ProductTypeEntity asEntity(ProductTypeDTO productTypeDTO) {
+    public ProductTypeEntity asEntity(ProductTypeDto productTypeDTO) {
         if (productTypeDTO == null) {
             return null;
         }
@@ -18,12 +18,12 @@ public class ProductTypeMapper {
         return productTypeEntity;
     }
 
-    public ProductTypeDTO asDto(ProductTypeEntity productTypeEntity) {
+    public ProductTypeDto asDto(ProductTypeEntity productTypeEntity) {
         if (productTypeEntity == null) {
             return null;
         }
 
-        ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+        ProductTypeDto productTypeDTO = new ProductTypeDto();
         productTypeDTO.setProductType(productTypeEntity.getProductType());
 
         return productTypeDTO;

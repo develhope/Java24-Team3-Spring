@@ -1,37 +1,26 @@
-package com.develhope.spring.entities;
+package com.develhope.spring.models.dtos;
 
-import jakarta.persistence.*;
+import com.develhope.spring.models.entities.ProductTypeEntity;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 
-@Entity
-@Table(name = "products")
-public class ProductEntity {
+public class ProductDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private BigInteger price;
+    private BigDecimal price;
 
     private String ingredients;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "productType_id"))
-    @Column(name = "productTypes")
     private List<ProductTypeEntity> productTypes;
 
-    public ProductEntity() {
+    public ProductDto() {
     }
 
-    public ProductEntity(UUID id, String name, BigInteger price, String ingredients, List<ProductTypeEntity> productTypes) {
+    public ProductDto(String id, String name, BigDecimal price, String ingredients, List<ProductTypeEntity> productTypes) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -39,11 +28,11 @@ public class ProductEntity {
         this.productTypes = productTypes;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -55,11 +44,11 @@ public class ProductEntity {
         this.name = name;
     }
 
-    public BigInteger getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(BigInteger price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

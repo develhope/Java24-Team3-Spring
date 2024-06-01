@@ -1,8 +1,6 @@
-package com.develhope.spring.entities;
+package com.develhope.spring.models.entities;
 
 import jakarta.persistence.*;
-
-import java.util.UUID;
 
 @Entity
 @Table(name = "productTypes")
@@ -10,7 +8,7 @@ public class ProductTypeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     @Column(nullable = false, name = "productType")
     private String productType;
@@ -18,16 +16,16 @@ public class ProductTypeEntity {
     public ProductTypeEntity() {
     }
 
-    public ProductTypeEntity(UUID id, String productType) {
+    public ProductTypeEntity(String id, String productType) {
         this.id = id;
         this.productType = productType;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
