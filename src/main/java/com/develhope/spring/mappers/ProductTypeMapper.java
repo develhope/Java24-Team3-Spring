@@ -23,10 +23,10 @@ public class ProductTypeMapper {
             return null;
         }
 
-        ProductTypeDto productTypeDTO = new ProductTypeDto();
-        productTypeDTO.setProductType(productTypeEntity.getProductType());
+        ProductTypeDto productTypeDto = new ProductTypeDto();
+        productTypeDto.setProductType(productTypeEntity.getProductType());
 
-        return productTypeDTO;
+        return productTypeDto;
     }
 
 }

@@ -26,13 +26,13 @@ public class ProductMapper {
             return null;
         }
 
-        ProductDto productDTO = new ProductDto();
-        productDTO.setName(productEntity.getName());
-        productDTO.setPrice(productEntity.getPrice());
-        productDTO.setIngredients(productEntity.getIngredients());
-        productDTO.setProductTypes(productEntity.getProductTypes());
+        ProductDto productDto = new ProductDto();
+        productDto.setName(productEntity.getName());
+        productDto.setPrice(productEntity.getPrice());
+        productDto.setIngredients(productEntity.getIngredients());
+        productDto.setProductTypes(productEntity.getProductTypes());
 
-        return productDTO;
+        return productDto;
     }
 
 }

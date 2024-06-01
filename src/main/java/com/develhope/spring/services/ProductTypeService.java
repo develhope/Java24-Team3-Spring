@@ -61,15 +61,15 @@ public class ProductTypeService {
 
     /**
      * @param id
-     * @param productTypeDTO
+     * @param productTypeDto
      * @return a product type updated
      */
-    public ProductTypeDto updateProductType(String id, ProductTypeDto productTypeDTO) {
+    public ProductTypeDto updateProductType(String id, ProductTypeDto productTypeDto) {
         Optional<ProductTypeEntity> productTypeToUpdate = this.productTypeRepository.findById(id);
         if (productTypeToUpdate.isEmpty()) {
             throw new ProductTypeNotFoundException();
         } else {
-            productTypeToUpdate.get().setProductType(productTypeDTO.getProductType());
+            productTypeToUpdate.get().setProductType(productTypeDto.getProductType());
             return productTypeMapper.asDto(this.productTypeRepository.saveAndFlush(productTypeToUpdate.get()));
         }
     }

@@ -43,8 +43,8 @@ public class ProductTypeController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<ProductTypeDto> updateProductType(@PathVariable String id, @RequestBody ProductTypeDto productTypeDTO) {
-        ProductTypeDto updatedProductType = this.productTypeService.updateProductType(id, productTypeDTO);
+    public ResponseEntity<ProductTypeDto> updateProductType(@PathVariable String id, @RequestBody ProductTypeDto productTypeDto) {
+        ProductTypeDto updatedProductType = this.productTypeService.updateProductType(id, productTypeDto);
         return ResponseEntity.ok().body(updatedProductType);
     }
 

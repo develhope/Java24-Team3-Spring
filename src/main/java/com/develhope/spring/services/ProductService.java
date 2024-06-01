@@ -26,11 +26,11 @@ public class ProductService {
 //implementare metodi ricerca
     /**
      *
-     * @param productDTO
+     * @param productDto
      * @return a new ProductDto
      */
-    public ProductDto createProduct(ProductDto productDTO) {
-        ProductEntity newProduct = this.productMapper.asEntity(productDTO);
+    public ProductDto createProduct(ProductDto productDto) {
+        ProductEntity newProduct = this.productMapper.asEntity(productDto);
         this.productRepository.saveAndFlush(newProduct);
         return productMapper.asDto(newProduct);
     }
@@ -62,18 +62,18 @@ public class ProductService {
 
     /**
      * @param id
-     * @param productDTO
+     * @param productDto
      * @return a product updated
      */
-    public ProductDto updateProduct(String id, ProductDto productDTO) {
+    public ProductDto updateProduct(String id, ProductDto productDto) {
         Optional<ProductEntity> productToUpdate = this.productRepository.findById(id);
         if (productToUpdate.isEmpty()) {
             throw new ProductNotFoundException();
         } else {
-            productToUpdate.get().setName(productDTO.getName());
-            productToUpdate.get().setPrice(productDTO.getPrice());
-            productToUpdate.get().setIngredients(productDTO.getIngredients());
-            productToUpdate.get().setProductTypes(productDTO.getProductTypes());
+            productToUpdate.get().setName(productDto.getName());
+            productToUpdate.get().setPrice(productDto.getPrice());
+            productToUpdate.get().setIngredients(productDto.getIngredients());
+            productToUpdate.get().setProductTypes(productDto.getProductTypes());
             return productMapper.asDto(this.productRepository.saveAndFlush(productToUpdate.get()));
         }
     }

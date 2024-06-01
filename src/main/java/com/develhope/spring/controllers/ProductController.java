@@ -23,8 +23,8 @@ public class ProductController {
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDTO) {
-        ProductDto newProduct = this.productService.createProduct(productDTO);
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+        ProductDto newProduct = this.productService.createProduct(productDto);
         return ResponseEntity.created(URI.create("api/v1/products")).body(newProduct);
     }
 
@@ -44,8 +44,8 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable String id, @RequestBody ProductDto productDTO) {
-        ProductDto updatedProduct = this.productService.updateProduct(id, productDTO);
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable String id, @RequestBody ProductDto productDto) {
+        ProductDto updatedProduct = this.productService.updateProduct(id, productDto);
         return ResponseEntity.ok().body(updatedProduct);
     }
 
