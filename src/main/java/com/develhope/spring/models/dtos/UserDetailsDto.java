@@ -3,7 +3,9 @@ package com.develhope.spring.models.dtos;
 
 import java.time.LocalDate;
 
-public class UserDetailsDto extends UserDto {
+public class UserDetailsDto {
+
+    private Long id;
 
     private String name;
 
@@ -20,14 +22,21 @@ public class UserDetailsDto extends UserDto {
     public UserDetailsDto() {
     }
 
-    public UserDetailsDto(String email, String password, Boolean isDeleted, Boolean isVerified, String name, String surname, LocalDate birthDate, String phoneNumber, LocalDate creationDate, LocalDate updateDate) {
-        super(email, password, isDeleted, isVerified);
+    public UserDetailsDto(String name, String surname, LocalDate birthDate, String phoneNumber, LocalDate creationDate, LocalDate updateDate) {
         this.name = name;
         this.surname = surname;
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
         this.creationDate = creationDate;
         this.updateDate = updateDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

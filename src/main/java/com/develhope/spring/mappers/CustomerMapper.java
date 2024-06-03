@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomerMapper {
 
-    public CustomerEntity asEntity(CustomerDto customerDto) {
+    public CustomerEntity toEntity(CustomerDto customerDto) {
         if (customerDto == null) {
             return null;
         }
@@ -17,19 +17,14 @@ public class CustomerMapper {
         customerEntity.setId(customerDto.getId());
         customerEntity.setEmail(customerDto.getEmail());
         customerEntity.setPassword(customerDto.getPassword());
-        customerEntity.setName(customerDto.getName());
-        customerEntity.setSurname(customerDto.getSurname());
-        customerEntity.setBirthDate(customerDto.getBirthDate());
-        customerEntity.setPhoneNumber(customerDto.getPhoneNumber());
-        customerEntity.setCreationDate(customerDto.getCreationDate());
-        customerEntity.setUpdateDate(customerDto.getUpdateDate());
         customerEntity.setIsDeleted(customerDto.getIsDeleted());
         customerEntity.setIsVerified(customerDto.getIsVerified());
+        customerEntity.setUserDetailsEntity(customerDto.getUserDetails());
 
         return customerEntity;
     }
 
-    public CustomerDto asDTO(CustomerEntity customerEntity) {
+    public CustomerDto toDTO(CustomerEntity customerEntity) {
         if (customerEntity == null) {
             return null;
         }
@@ -39,14 +34,9 @@ public class CustomerMapper {
         customerDto.setId(customerEntity.getId());
         customerDto.setEmail(customerEntity.getEmail());
         customerDto.setPassword(customerEntity.getPassword());
-        customerDto.setName(customerEntity.getName());
-        customerDto.setSurname(customerEntity.getSurname());
-        customerDto.setBirthDate(customerEntity.getBirthDate());
-        customerDto.setPhoneNumber(customerEntity.getPhoneNumber());
-        customerDto.setCreationDate(customerEntity.getCreationDate());
-        customerDto.setUpdateDate(customerEntity.getUpdateDate());
         customerDto.setIsDeleted(customerEntity.getIsDeleted());
         customerDto.setIsVerified(customerEntity.getIsVerified());
+        customerDto.setUserDetailsEntity(customerEntity.getUserDetails());
 
         return customerDto;
     }

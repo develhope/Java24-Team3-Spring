@@ -4,8 +4,13 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
-@MappedSuperclass
-public class UserDetailsEntity extends UserEntity {
+@Entity
+@Table(name = "user_details")
+public class UserDetailsEntity{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -25,14 +30,21 @@ public class UserDetailsEntity extends UserEntity {
     public UserDetailsEntity() {
     }
 
-    public UserDetailsEntity(String email, String password, Boolean isDeleted, Boolean isVerified, String name, String surname, LocalDate birthDate, String phoneNumber, LocalDate creationDate, LocalDate updateDate) {
-        super(email, password, isDeleted, isVerified);
+    public UserDetailsEntity(String name, String surname, LocalDate birthDate, String phoneNumber, LocalDate creationDate, LocalDate updateDate) {
         this.name = name;
         this.surname = surname;
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
         this.creationDate = creationDate;
         this.updateDate = updateDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

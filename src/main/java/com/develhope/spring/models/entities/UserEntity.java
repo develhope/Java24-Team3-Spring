@@ -19,14 +19,19 @@ public class UserEntity {
 
     private Boolean isVerified;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_details_id")
+    private UserDetailsEntity userDetails;
+
     public UserEntity() {
     }
 
-    public UserEntity(String email, String password, Boolean isDeleted, Boolean isVerified) {
+    public UserEntity(String email, String password, Boolean isDeleted, Boolean isVerified, UserDetailsEntity userDetails) {
         this.email = email;
         this.password = password;
         this.isDeleted = isDeleted;
         this.isVerified = isVerified;
+        this.userDetails = userDetails;
     }
 
     public Long getId() {
@@ -67,5 +72,13 @@ public class UserEntity {
 
     public void setIsVerified(Boolean isVerified) {
         this.isVerified = isVerified;
+    }
+
+    public UserDetailsEntity getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetailsEntity(UserDetailsEntity userDetails) {
+        this.userDetails = userDetails;
     }
 }
