@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface CustomerDao extends JpaRepository<CustomerEntity, Long> {
 
     Optional<CustomerEntity> findCustomerByEmail(String email);
+
     List<CustomerEntity> findCustomerByIsDeleted(Boolean isDeleted);
+
     List<CustomerEntity> findCustomerByIsVerified(Boolean isVerified);
 }

@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "customer")
 public class CustomerEntity extends UserEntity {
 
-//    public CustomerEntity() {
-//    }
+    //AGGIUNGERE RELAZIONE CON ORDER
 
 }

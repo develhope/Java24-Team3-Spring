@@ -1,18 +1,16 @@
 package com.develhope.spring.services;
 
-import com.develhope.spring.exceptions.InvalidPasswordException;
+import com.develhope.spring.exceptions.InvalidCustomerException;
 import com.develhope.spring.mappers.CustomerMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.CustomerDto;
 import com.develhope.spring.models.entities.CustomerEntity;
-import com.develhope.spring.exceptions.CustomerNotFoundException;
 import com.develhope.spring.daos.CustomerDao;
 import com.develhope.spring.validators.CustomerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,27 +29,23 @@ public class CustomerService {
         this.customerValidator = customerValidator;
     }
 
-//    /**
-//     * @param customerDto CustomerDto
-//     * @return new customer
-//     */
-//    public CustomerDto addCustomer(CustomerDto customerDto) {
-//        CustomerEntity newCustomer = this.customerMapper.toEntity(customerDto);
-//        this.customerDao.saveAndFlush(newCustomer);
-//        return this.customerMapper.toDTO(newCustomer);
-//    }
-
-    public ResponseModel addCustomer(CustomerDto customerDto) throws InvalidPasswordException {
+    /**
+     * @param customerDto CustomerDto
+     * @return a new Customer
+     */
+    public ResponseModel addCustomer(CustomerDto customerDto) {
 
         try {
-            customerValidator.validateCustomerPassword(customerDto.getPassword());
+            customerValidator.validateCustomer(customerDto);
             CustomerEntity newCustomer = this.customerMapper.toEntity(customerDto);
             this.customerDao.saveAndFlush(newCustomer);
-           return new ResponseModel(ResponseCode.B, ResponseCode.B.getResponseType().toString() + ": "
-                    + ResponseCode.B.getResponseType().getMessage() + "Details: "
+            return new ResponseModel(ResponseCode.B, ResponseCode.B.getResponseType().toString() + ": "
+                    + ResponseCode.B.getResponseType().getMessage() + " Details: "
                     + ResponseCode.B.getResponseCodeMessage(), this.customerMapper.toDTO(newCustomer));
-        } catch (InvalidPasswordException e) {
-            return new ResponseModel(ResponseCode.A, e.getMessage());
+        } catch (InvalidCustomerException e) {
+            return new ResponseModel(ResponseCode.A, ResponseCode.A.getResponseType().toString() + ": "
+                    + ResponseCode.A.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.A.getResponseCodeMessage(), e.getMessage());
         }
 
     }
@@ -60,24 +54,32 @@ public class CustomerService {
      * @param id customer id
      * @return a single customer
      */
-    public CustomerDto getCustomerById(Long id) {
+    public ResponseModel getCustomerById(Long id) {
         Optional<CustomerEntity> customerFound = this.customerDao.findById(id);
         if (customerFound.isEmpty()) {
-            throw new CustomerNotFoundException();
+            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
+                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.D.getResponseCodeMessage(), "Customer not found with the selected ID");
         } else {
-            return this.customerMapper.toDTO(customerFound.get());
+            return new ResponseModel(ResponseCode.C, ResponseCode.C.getResponseType().toString() + ": "
+                    + ResponseCode.C.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.C.getResponseCodeMessage(), this.customerMapper.toDTO(customerFound.get()));
         }
     }
 
     /**
      * @return List of all customers
      */
-    public List<CustomerDto> getAllCustomers() {
+    public ResponseModel getAllCustomers() {
         List<CustomerDto> customers = this.customerDao.findAll().stream().map(customerMapper::toDTO).toList();
         if (customers.isEmpty()) {
-            return new ArrayList<>();
+            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
+                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.D.getResponseCodeMessage(), "No customers were found, the list may be empty");
         } else {
-            return customers;
+            return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": "
+                    + ResponseCode.E.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.E.getResponseCodeMessage(), customers);
         }
     }
 
@@ -85,12 +87,16 @@ public class CustomerService {
      * @param email String
      * @return a single customer
      */
-    public CustomerDto getCustomerByEmail(String email) {
+    public ResponseModel getCustomerByEmail(String email) {
         Optional<CustomerEntity> customerFound = this.customerDao.findCustomerByEmail(email);
         if (customerFound.isEmpty()) {
-            throw new CustomerNotFoundException();
+            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
+                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.D.getResponseCodeMessage(), "Customer not found with the selected email");
         } else {
-            return this.customerMapper.toDTO(customerFound.get());
+            return new ResponseModel(ResponseCode.C, ResponseCode.C.getResponseType().toString() + ": "
+                    + ResponseCode.C.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.C.getResponseCodeMessage(), this.customerMapper.toDTO(customerFound.get()));
         }
     }
 
@@ -98,12 +104,16 @@ public class CustomerService {
      * @param isDeleted Boolean
      * @return all customers with the selected deleted status
      */
-    public List<CustomerDto> getCustomerByDeletedStatus(Boolean isDeleted) {
+    public ResponseModel getCustomerByDeletedStatus(Boolean isDeleted) {
         List<CustomerDto> customers = this.customerDao.findCustomerByIsDeleted(isDeleted).stream().map(customerMapper::toDTO).toList();
         if (customers.isEmpty()) {
-            return new ArrayList<>();
+            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
+                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.D.getResponseCodeMessage(), "No customers were found with the selected parameter");
         } else {
-            return customers;
+            return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": "
+                    + ResponseCode.E.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.E.getResponseCodeMessage(), customers);
         }
     }
 
@@ -111,33 +121,53 @@ public class CustomerService {
      * @param isVerified Boolean
      * @return all customers with the selected verified status
      */
-    public List<CustomerDto> getCustomersByVerifiedStatus(Boolean isVerified) {
+    public ResponseModel getCustomersByVerifiedStatus(Boolean isVerified) {
         List<CustomerDto> customers = this.customerDao.findCustomerByIsVerified(isVerified).stream().map(customerMapper::toDTO).toList();
         if (customers.isEmpty()) {
-            return new ArrayList<>();
+            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
+                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.D.getResponseCodeMessage(), "No customers were found with the selected parameter");
         } else {
-            return customers;
+            return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": "
+                    + ResponseCode.E.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.E.getResponseCodeMessage(), customers);
         }
     }
 
     /**
-     * @param id          customer id
-     * @param customerDto CustomerDto
+     * @param id              customer id
+     * @param customerUpdates CustomerDto
      * @return a customer updated
      */
-    public CustomerDto updateCustomer(Long id, CustomerDto customerDto) {
+    public ResponseModel updateCustomer(Long id, CustomerDto customerUpdates) {
         Optional<CustomerEntity> customerToUpdate = this.customerDao.findById(id);
         if (customerToUpdate.isEmpty()) {
-            throw new CustomerNotFoundException();
-        } else {
-            customerToUpdate.get().setEmail(customerDto.getEmail());
-            customerToUpdate.get().setPassword(customerDto.getPassword());
-            customerToUpdate.get().setIsDeleted(customerDto.getIsDeleted());
-            customerToUpdate.get().setIsVerified(customerDto.getIsVerified());
-            customerToUpdate.get().setUserDetailsEntity(customerDto.getUserDetails());
-
-            return this.customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get()));
+            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
+                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.D.getResponseCodeMessage(), "Customer not found with the selected ID");
+        } else if (customerUpdates != null) {
+            if (customerUpdates.getEmail() != null) {
+                customerToUpdate.get().setEmail(customerUpdates.getEmail());
+            }
+            if (customerUpdates.getPassword() != null) {
+                customerToUpdate.get().setPassword(customerUpdates.getPassword());
+            }
+            if (customerUpdates.getIsDeleted() != null) {
+                customerToUpdate.get().setIsDeleted(customerUpdates.getIsDeleted());
+            }
+            if (customerUpdates.getIsVerified() != null) {
+                customerToUpdate.get().setIsVerified(customerUpdates.getIsVerified());
+            }
+            if (customerUpdates.getUserDetails() != null) {
+                customerToUpdate.get().setUserDetailsEntity(customerUpdates.getUserDetails());
+            }
+            return new ResponseModel(ResponseCode.G, ResponseCode.G.getResponseType().toString() + ": "
+                    + ResponseCode.G.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.G.getResponseCodeMessage(), this.customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
         }
+        return new ResponseModel(ResponseCode.A, ResponseCode.A.getResponseType().toString() + ": "
+                + ResponseCode.A.getResponseType().getMessage() + " Details: "
+                + ResponseCode.A.getResponseCodeMessage(), "Impossible to update, the body should not be null");
     }
 
     /**
@@ -145,28 +175,44 @@ public class CustomerService {
      * @param customerDto CustomerDto
      * @return customer with password updated
      */
-    public CustomerDto updatePassword(Long id, CustomerDto customerDto) {
+    public ResponseModel updatePassword(Long id, CustomerDto customerDto) {
         Optional<CustomerEntity> customerToUpdate = this.customerDao.findById(id);
         if (customerToUpdate.isEmpty()) {
-            throw new CustomerNotFoundException();
-        } else {
-            customerToUpdate.get().setPassword(customerDto.getPassword());
-            return customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get()));
+            return new ResponseModel(ResponseCode.D, "Customer not found with the selected ID");
+        } else if (customerDto != null) {
+            if (customerDto.getPassword() != null) {
+                customerToUpdate.get().setPassword(customerDto.getPassword());
+                return new ResponseModel(ResponseCode.G, ResponseCode.G.getResponseType().toString() + ": "
+                        + ResponseCode.G.getResponseType().getMessage() + " Details: "
+                        + ResponseCode.G.getResponseCodeMessage(), customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
+            }
         }
+        return new ResponseModel(ResponseCode.A, ResponseCode.A.getResponseType().toString() + ": "
+                + ResponseCode.A.getResponseType().getMessage() + " Details: "
+                + ResponseCode.A.getResponseCodeMessage(), "Impossible to update, the body should not be null");
     }
 
     /**
      * @param id customer id
      */
-    public void deleteCustomer(Long id) {
+    public ResponseModel deleteCustomer(Long id) {
         if (!this.customerDao.existsById(id)) {
-            throw new CustomerNotFoundException();
+            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
+                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.D.getResponseCodeMessage(), "Customer not found with the selected ID");
+        } else {
+            this.customerDao.deleteById(id);
+            return new ResponseModel(ResponseCode.H, ResponseCode.H.getResponseType().toString() + ": "
+                    + ResponseCode.H.getResponseType().getMessage() + " Details: "
+                    + ResponseCode.H.getResponseCodeMessage(), "Customer eliminated");
         }
-        this.customerDao.deleteById(id);
     }
 
-    public void deleteAllCustomers() {
+    public ResponseModel deleteAllCustomers() {
         this.customerDao.deleteAll();
+        return new ResponseModel(ResponseCode.H, ResponseCode.H.getResponseType().toString() + ": "
+                + ResponseCode.H.getResponseType().getMessage() + " Details: "
+                + ResponseCode.H.getResponseCodeMessage(), "All customers eliminated");
     }
 
 }
