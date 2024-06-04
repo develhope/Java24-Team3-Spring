@@ -1,39 +1,39 @@
 package com.develhope.spring.models;
 
-import org.springframework.stereotype.Component;
-
 public enum ResponseCode {
-    A(ResponseType.FAIL, "Creazione del record fallita a causa di parametri non validi."),
-    B(ResponseType.SUCCESS,"Creazione del record effettuata."),
-    C(ResponseType.SUCCESS, "Record trovato nel database."),
-    D(ResponseType.SUCCESS, "Record non presente nel database."),
-    E(ResponseType.SUCCESS, "Ricerca nel database avvenuta con successo."),
-    F(ResponseType.FAIL, "Non è possibile scegliere l'id del record."),
-    G(ResponseType.SUCCESS, "Modifica del record effettuata."),
-    H(ResponseType.SUCCESS, "Il reconrd è stato eliminato dal DB.");
+    A(CodeType.FAIL, "Creazione del record fallita a causa di parametri non validi."),
+    B(CodeType.SUCCESS,"Creazione del record effettuata."),
+    C(CodeType.SUCCESS, "Record trovato nel database."),
+    D(CodeType.SUCCESS, "Record non presente nel database."),
+    E(CodeType.SUCCESS, "Ricerca nel database effettuata."),
+    F(CodeType.FAIL, "Non è possibile inserire l'id del record nel body."),
+    G(CodeType.SUCCESS, "Modifica del record effettuata."),
+    H(CodeType.SUCCESS, "Il reconrd è stato eliminato dal DB."),
+    I(CodeType.SUCCESS, "Seeding completato correttamente."),
+    J(CodeType.SUCCESS, "Il record nel database sono stati eliminati.");
 
 
-    private ResponseType responseType;
-    private String responseCodeMessage;
+    private CodeType codeType;
+    private String codeMessage;
 
-    ResponseCode(ResponseType responseType, String responseCodeMessage) {
-        this.responseType = responseType;
-        this.responseCodeMessage = responseCodeMessage;
+    ResponseCode(CodeType responseType, String responseCodeMessage) {
+        this.codeType = responseType;
+        this.codeMessage = responseCodeMessage;
     }
 
-    public ResponseType getResponseType() {
-        return responseType;
+    public CodeType getCodeType() {
+        return codeType;
     }
 
-    public String getResponseCodeMessage() {
-        return responseCodeMessage;
+    public String getCodeMessage() {
+        return codeMessage;
     }
 
     @Override
     public String toString() {
         return "ResponseCode{" +
-                "responseType=" + responseType +
-                ", responseCodeMessage='" + responseCodeMessage + '\'' +
+                "responseType=" + codeType +
+                ", responseCodeMessage='" + codeMessage + '\'' +
                 '}';
     }
 }

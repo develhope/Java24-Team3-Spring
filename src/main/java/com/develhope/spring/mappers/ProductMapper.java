@@ -1,9 +1,7 @@
 package com.develhope.spring.mappers;
 
-import com.develhope.spring.models.dtos.OperatingHoursDto;
 import com.develhope.spring.models.dtos.ProductDto;
 import com.develhope.spring.models.dtos.ProductTypeDto;
-import com.develhope.spring.models.entities.OperatingHoursEntity;
 import com.develhope.spring.models.entities.ProductEntity;
 import com.develhope.spring.models.entities.ProductTypeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,7 @@ public class ProductMapper {
     @Autowired
     ProductTypeMapper productTypeMapper;
 
-    public ProductEntity asEntity(ProductDto productDto) {
+    public ProductEntity toEntity(ProductDto productDto) {
         if (productDto == null) {
             return null;
         }
@@ -29,7 +27,7 @@ public class ProductMapper {
         } else {
             for (ProductTypeDto productTypeDto : productDto.getProductTypes()) {
                 productTypeEntities.add(
-                        productTypeMapper.asEntity(productTypeDto)
+                        productTypeMapper.toEntity(productTypeDto)
                 );
             }
         }
@@ -45,7 +43,7 @@ public class ProductMapper {
         return productEntity;
     }
 
-    public ProductDto asDto(ProductEntity productEntity) {
+    public ProductDto toDto(ProductEntity productEntity) {
         if (productEntity == null) {
             return null;
         }
@@ -56,7 +54,7 @@ public class ProductMapper {
         } else {
             for (ProductTypeEntity productTypeEntity : productEntity.getProductTypes()) {
                 productTypeDtos.add(
-                        productTypeMapper.asDto(productTypeEntity)
+                        productTypeMapper.toDto(productTypeEntity)
                 );
             }
         }

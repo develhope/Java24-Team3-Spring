@@ -16,16 +16,16 @@ public class AddressEntity {
     private String street;
 
     @Column
-    private String number;
+    private Double number;
 
     @Column
     private String note;
 
     @Column
-    private String lat;
+    private Double lat;
 
     @Column
-    private String lon;
+    private Double lon;
 
 
 
@@ -33,7 +33,7 @@ public class AddressEntity {
     }
 
 
-    public AddressEntity(Long id_address, String city, String street, String number, String note, String lat, String lon) {
+    public AddressEntity(Long id_address, String city, String street, Double number, String note, Double lat, Double lon) {
         this.id_address = id_address;
         this.city = city;
         this.street = street;
@@ -67,11 +67,11 @@ public class AddressEntity {
         this.street = street;
     }
 
-    public String getNumber() {
+    public Double getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(String Double) {
         this.number = number;
     }
 
@@ -83,19 +83,19 @@ public class AddressEntity {
         this.note = note;
     }
 
-    public String getLat() {
+    public Double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
-    public String getLon() {
+    public Double getLon() {
         return lon;
     }
 
-    public void setLon(String lon) {
+    public void setLon(Double lon) {
         this.lon = lon;
     }
 }

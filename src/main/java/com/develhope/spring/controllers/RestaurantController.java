@@ -44,11 +44,9 @@ public class RestaurantController {
 
     @ResponseBody
     @GetMapping
-    public ResponseModel getRestaurantByDeliveryOrTakeAway(@RequestParam(required = false)  boolean delivery, @RequestParam(required = false)  boolean takeAway) {
+    public ResponseEntity<ResponseModel> getRestaurantByDeliveryOrTakeAway(@RequestParam(required = false)  boolean delivery, @RequestParam(required = false)  boolean takeAway) {
         ResponseModel response  = restaurantService.getRestaurantByDeliveryOrTakeAway(delivery, takeAway);
-        return response;
-
-        //ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(response);
     }
 
     @ResponseBody

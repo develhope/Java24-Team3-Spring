@@ -6,15 +6,15 @@ public class AddressDto {
     private Long id_address;
     private String city;
     private String street;
-    private String number;
+    private Double number;
     private String note;
-    private String lat;
-    private String lon;
+    private Double lat;
+    private Double lon;
 
     public AddressDto() {
     }
 
-    public AddressDto(Long id_address, String city, String street, String number, String note, String lat, String lon) {
+    public AddressDto(Long id_address, String city, String street, Double number, String note, Double lat, Double lon) {
         this.id_address = id_address;
         this.city = city;
         this.street = street;
@@ -48,11 +48,11 @@ public class AddressDto {
         this.street = street;
     }
 
-    public String getNumber() {
+    public Double getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(Double number) {
         this.number = number;
     }
 
@@ -64,19 +64,19 @@ public class AddressDto {
         this.note = note;
     }
 
-    public String getLat() {
+    public Double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
-    public String getLon() {
+    public Double getLon() {
         return lon;
     }
 
-    public void setLon(String lon) {
+    public void setLon(Double lon) {
         this.lon = lon;
     }
 }

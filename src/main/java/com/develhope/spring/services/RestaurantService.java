@@ -8,8 +8,10 @@ import com.develhope.spring.mappers.OperatingHoursMapper;
 import com.develhope.spring.mappers.RestaurantMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
+import com.develhope.spring.models.dtos.ProductTypeDto;
 import com.develhope.spring.models.dtos.RestaurantDto;
 import com.develhope.spring.models.entities.AddressEntity;
+import com.develhope.spring.models.entities.ProductTypeEntity;
 import com.develhope.spring.models.entities.RestaurantEntity;
 import com.develhope.spring.validators.RestaurantValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,20 +35,27 @@ public class RestaurantService {
     @Autowired
     private RestaurantValidator restaurantValidator;
 
+    @Autowired
+    private RestaurantMapper restaurantMapper;
+
+    @Autowired
+    private AddressMapper addressMapper;
+
+    @Autowired
+    OperatingHoursMapper operatingHoursMapper;
+
     public ResponseModel createRestaurant(RestaurantDto resDto) {
 
         try {
             restaurantValidator.validateRestaurantName(resDto.getRestaurantName());
-            RestaurantEntity resEntity = RestaurantMapper.toEntity(resDto);
+            RestaurantEntity resEntity = restaurantMapper.toEntity(resDto);
             AddressEntity addressEntitySaved = addrDao.save(resEntity.getAddressEntity());
             resEntity.setAddressEntity(addressEntitySaved);
 
 
             RestaurantEntity resEntitySaved = resDao.save(resEntity);
-            RestaurantDto resDtoSaved = RestaurantMapper.toDto(resEntitySaved);
-            return new ResponseModel(ResponseCode.B, ResponseCode.B.getResponseType().toString() + ": "
-                    + ResponseCode.B.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.B.getResponseCodeMessage(), resDtoSaved);
+            RestaurantDto resDtoSaved = restaurantMapper.toDto(resEntitySaved);
+            return new ResponseModel(ResponseCode.B, resDtoSaved);
         } catch (RestaurantNameException e) {
             return new ResponseModel(ResponseCode.A, e.getMessage());
         }
@@ -57,10 +66,8 @@ public class RestaurantService {
 
         if (optRes.isPresent()) {
             RestaurantEntity restaurantEntityFound = optRes.get();
-            RestaurantDto resDtoFound = RestaurantMapper.toDto(restaurantEntityFound);
-            return new ResponseModel(ResponseCode.C, ResponseCode.C.getResponseType().toString() + ": Details: "
-                    + ResponseCode.C.getResponseType().getMessage() + " "
-                    + ResponseCode.C.getResponseCodeMessage(), resDtoFound);
+            RestaurantDto resDtoFound = restaurantMapper.toDto(restaurantEntityFound);
+            return new ResponseModel(ResponseCode.C, resDtoFound);
         } else {
             return new ResponseModel(ResponseCode.C, null);
         }
@@ -73,9 +80,12 @@ public class RestaurantService {
                         takeAway ? resDao.findByIsTakeAwayAvailableTrue() :
                                 delivery ? resDao.findByIsDeliveryAvailableTrue() : new ArrayList<>();
 
-        return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": Details: "
-                + ResponseCode.E.getResponseType().getMessage() + " "
-                + ResponseCode.E.getResponseCodeMessage(), restaurantEntityList);
+        List<RestaurantDto> restaurantDtoList = new ArrayList<>();
+        for (RestaurantEntity r : restaurantEntityList){
+            restaurantDtoList.add(restaurantMapper.toDto(r));
+        }
+
+        return new ResponseModel(ResponseCode.E, restaurantDtoList);
 
     }
 
@@ -86,46 +96,50 @@ public class RestaurantService {
         if (optRes.isPresent()) {
             RestaurantEntity restaurantEntityInDB = optRes.get();
             if (resDto != null) {
-                if (resDto.getId_user() != null) {
-                    return new ResponseModel(ResponseCode.F, "Non puoi inserire l'id del ristorante del json passato come body della richiesta.");
+                RestaurantEntity resEntity = restaurantMapper.toEntity(resDto);
+                if (resEntity.getId_restaurant() != null) {
+                    return new ResponseModel(ResponseCode.F);
+                } else {
+                    resEntity.setId_restaurant(id);
                 }
-                if (resDto.getEmail() != null) {
-                    restaurantEntityInDB.setEmail(resDto.getEmail());
+                if (resEntity.getEmail() != null) {
+                    restaurantEntityInDB.setEmail(resEntity.getEmail());
                 }
-                if (resDto.getRestaurantName() != null) {
-                    restaurantEntityInDB.setRestaurantName(resDto.getRestaurantName());
+                if (resEntity.getRestaurantName() != null) {
+                    restaurantEntityInDB.setRestaurantName(resEntity.getRestaurantName());
                 }
-                if (resDto.getRestaurantPhoneNumber() != null) {
-                    restaurantEntityInDB.setRestaurantPhoneNumber(resDto.getRestaurantPhoneNumber());
+                if (resEntity.getRestaurantPhoneNumber() != null) {
+                    restaurantEntityInDB.setRestaurantPhoneNumber(resEntity.getRestaurantPhoneNumber());
                 }
-                if (resDto.getAddressDto() != null) {
-                    restaurantEntityInDB.setAddressEntity(AddressMapper.toEntity(resDto.getAddressDto()));
+                if (resEntity.getAddressEntity() != null) {
+                    restaurantEntityInDB.setAddressEntity(resEntity.getAddressEntity());
                 }
-                if (resDto.getDescription() != null) {
-                    restaurantEntityInDB.setDescription(resDto.getDescription());
+                if (resEntity.getDescription() != null) {
+                    restaurantEntityInDB.setDescription(resEntity.getDescription());
                 }
                 if (resDto.getIsDeliveryAvailable() != null) {
+                    // problema dei boolean
                     restaurantEntityInDB.setIsDeliveryAvailable(resDto.getIsDeliveryAvailable());
                 }
                 if (resDto.getIsTakeAwayAvailable() != null) {
-                    restaurantEntityInDB.setIsTakeAwayAvaible(resDto.getIsTakeAwayAvailable());
+                    // problema dei boolean
+                    restaurantEntityInDB.setIsTakeAwayAvaible(resEntity.getIsTakeAwayAvaible());
                 }
-                if (resDto.getProductEntities() != null) {
-                    restaurantEntityInDB.setProducts(resDto.getProductEntities());
+                if (resEntity.getProductEntities() != null) {
+                    restaurantEntityInDB.setProductEntities(resEntity.getProductEntities());
                 }
-                if (resDto.getOperatingHoursDto() != null) {
-                    restaurantEntityInDB.setOperatingHoursEntity(OperatingHoursMapper.toEntity(resDto.getOperatingHoursDto()));
+                if (resEntity.getOperatingHoursEntity() != null) {
+                    restaurantEntityInDB.setOperatingHoursEntity(resEntity.getOperatingHoursEntity());
                 }
 
             }
-            return new ResponseModel(ResponseCode.G, ResponseCode.G.getResponseType().toString() + ": Details: "
-                    + ResponseCode.G.getResponseType().getMessage() + " "
-                    + ResponseCode.G.getResponseCodeMessage(), restaurantEntityInDB);
+            resDao.save(restaurantEntityInDB);
+            RestaurantDto modifiedResDto = restaurantMapper.toDto(restaurantEntityInDB);
+            return new ResponseModel(ResponseCode.G, modifiedResDto);
 
+        } else {
+            return new ResponseModel(ResponseCode.D);
         }
-        return new ResponseModel(ResponseCode.C, ResponseCode.C.getResponseType().toString() + ": Details: "
-                + ResponseCode.C.getResponseType().getMessage() + " "
-                + ResponseCode.C.getResponseCodeMessage());
     }
 
     public ResponseModel deleteRestaurantById(Long id) {
@@ -133,15 +147,11 @@ public class RestaurantService {
 
         if (optRes.isPresent()) {
             RestaurantEntity restaurantEntityFound = optRes.get();
-            RestaurantDto resDtoFound = RestaurantMapper.toDto(restaurantEntityFound);
+            RestaurantDto resDtoFound = restaurantMapper.toDto(restaurantEntityFound);
             resDao.deleteById(id);
-            return new ResponseModel(ResponseCode.H, ResponseCode.H.getResponseType().toString() + ": Details: "
-                    + ResponseCode.H.getResponseType().getMessage() + " "
-                    + ResponseCode.H.getResponseCodeMessage(), resDtoFound);
+            return new ResponseModel(ResponseCode.H, resDtoFound);
         } else {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": Details: "
-                    + ResponseCode.D.getResponseType().getMessage() + " "
-                    + ResponseCode.D.getResponseCodeMessage());
+            return new ResponseModel(ResponseCode.D);
         }
     }
 

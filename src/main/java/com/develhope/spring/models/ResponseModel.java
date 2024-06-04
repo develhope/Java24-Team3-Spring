@@ -7,15 +7,20 @@ public class ResponseModel {
     private String message;
     private Object object;
 
-    public ResponseModel(ResponseCode code, String messageDetails, Object object) {
+    public ResponseModel(ResponseCode code) {
         this.code = code;
-        this.message = messageDetails;
+        this.message = code.getCodeType().toString() + ": " + code.getCodeType().getMessage() + " " + code.getCodeMessage();
+    }
+
+    public ResponseModel(ResponseCode code, Object object) {
+        this.code = code;
+        this.message = code.getCodeType().toString() + ": " + code.getCodeType().getMessage() + " " + code.getCodeMessage();
         this.object = object;
     }
 
-    public ResponseModel(ResponseCode code, String messageDetails) {
+    public ResponseModel(ResponseCode code, String customizedMessage) {
         this.code = code;
-        this.message = messageDetails;
+        this.message = customizedMessage;
     }
 
     public ResponseCode getCode() {

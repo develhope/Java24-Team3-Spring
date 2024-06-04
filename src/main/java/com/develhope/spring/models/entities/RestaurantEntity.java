@@ -39,7 +39,7 @@ public class RestaurantEntity {
     @JoinTable(name = "restaurant_product",
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<ProductEntity> products;
+    private List<ProductEntity> productEntities;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "restaurant_turn",
@@ -59,7 +59,7 @@ public class RestaurantEntity {
         this.description = description;
         this.isDeliveryAvailable = isDeliveryAvaible;
         this.isTakeAwayAvailable = isTakeAwayAvaible;
-        this.products = items;
+        this.productEntities = items;
         this.operatingHoursEntity = operatingHours;
     }
 
@@ -120,12 +120,12 @@ public class RestaurantEntity {
         this.description = description;
     }
 
-    public List<ProductEntity> getProducts() {
-        return products;
+    public List<ProductEntity> getProductEntities() {
+        return productEntities;
     }
 
-    public void setProducts(List<ProductEntity> products) {
-        this.products = products;
+    public void setProductEntities(List<ProductEntity> productEntities) {
+        this.productEntities = productEntities;
     }
 
     public List<OperatingHoursEntity> getOperatingHoursEntity() {

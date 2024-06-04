@@ -10,21 +10,21 @@ import java.util.List;
 @Component
 public class OperatingHoursMapper {
 
-        public static List<OperatingHoursDto> toDto(List<OperatingHoursEntity> operatingHoursEntities){
-            if (operatingHoursEntities==null) return null;
+    public List<OperatingHoursDto> toDto(List<OperatingHoursEntity> operatingHoursEntities) {
+        if (operatingHoursEntities == null) return null;
 
 
-            List<OperatingHoursDto> operatingHoursDtos = new ArrayList<>();
-            for (OperatingHoursEntity o : operatingHoursEntities) {
-                operatingHoursDtos.add(
-                        new OperatingHoursDto()
-                );
-            }
-            return operatingHoursDtos;
+        List<OperatingHoursDto> operatingHoursDtos = new ArrayList<>();
+        for (OperatingHoursEntity o : operatingHoursEntities) {
+            operatingHoursDtos.add(
+                    new OperatingHoursDto()
+            );
         }
+        return operatingHoursDtos;
+    }
 
-    public static List<OperatingHoursEntity> toEntity(List<OperatingHoursDto> operatingHoursDtos){
-        if (operatingHoursDtos==null) return null;
+    public List<OperatingHoursEntity> toEntity(List<OperatingHoursDto> operatingHoursDtos) {
+        if (operatingHoursDtos == null) return null;
 
         List<OperatingHoursEntity> operatingHoursEntities = new ArrayList<>();
         for (OperatingHoursDto o : operatingHoursDtos) {
@@ -34,7 +34,6 @@ public class OperatingHoursMapper {
         }
         return operatingHoursEntities;
     }
-
 
 
 }

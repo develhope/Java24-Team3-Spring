@@ -20,9 +20,9 @@ public class DistanceCalculator {
      * @param el1 Elevation of point 1 (optional, in meters).
      * @param el2 Elevation of point 2 (optional, in meters).
      * @return The distance between the two points (in meters).
+     * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula#:~:text=The%20term%20haversine%20was%20coined,sin2(%CE%B82)">Haversine formula</a>
+     * @see <a href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions">Trigonometric formula</a>
      */
-    // haversine formula: https://en.wikipedia.org/wiki/Haversine_formula#:~:text=The%20term%20haversine%20was%20coined,sin2(%CE%B82).
-    // trigonometc formula: https://en.wikipedia.org/wiki/Inverse_trigonometric_functions
     public static double calculateDistance(double lat1, double lat2, double lon1, double lon2, double el1, double el2) {
         double latDistance = Math.toRadians(lat2 - lat1);
         double lonDistance = Math.toRadians(lon2 - lon1);

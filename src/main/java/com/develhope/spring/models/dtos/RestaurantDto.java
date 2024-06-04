@@ -1,12 +1,10 @@
 package com.develhope.spring.models.dtos;
 
-import com.develhope.spring.models.entities.ProductEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantDto {
-        private Long id_user;
+        private Long id_restaurant;
 
         private String email;
 
@@ -21,12 +19,12 @@ public class RestaurantDto {
         Boolean isDeliveryAvailable;
         Boolean isTakeAwayAvailable;
 
-        private List<ProductEntity> productEntities = new ArrayList<>();
+        private List<ProductDto> productDtos = new ArrayList<>();
 
         private List<OperatingHoursDto> operatingHoursDto;
 
-    public RestaurantDto(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressDto addressDto, String description, Boolean isDeliveryAvaible, Boolean isTakeAwayAvaible, List<ProductEntity> productEntities, List<OperatingHoursDto> operatingHoursDto) {
-        this.id_user = id_user;
+    public RestaurantDto(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressDto addressDto, String description, Boolean isDeliveryAvaible, Boolean isTakeAwayAvaible, List<ProductDto> productDtos, List<OperatingHoursDto> operatingHoursDto) {
+        this.id_restaurant = id_user;
         this.email = email;
         this.restaurantName = restaurantName;
         this.restaurantPhoneNumber = restaurantPhoneNumber;
@@ -34,16 +32,16 @@ public class RestaurantDto {
         this.description = description;
         this.isDeliveryAvailable = isDeliveryAvaible;
         this.isTakeAwayAvailable = isTakeAwayAvaible;
-        this.productEntities = productEntities;
+        this.productDtos = productDtos;
         this.operatingHoursDto = operatingHoursDto;
     }
 
-    public Long getId_user() {
-        return id_user;
+    public Long getId_restaurant() {
+        return id_restaurant;
     }
 
-    public void setId_user(Long id_user) {
-        this.id_user = id_user;
+    public void setId_restaurant(Long id_restaurant) {
+        this.id_restaurant = id_restaurant;
     }
 
     public String getEmail() {
@@ -102,12 +100,12 @@ public class RestaurantDto {
         isTakeAwayAvailable = takeAwayAvailable;
     }
 
-    public List<ProductEntity> getProductEntities() {
-        return productEntities;
+    public List<ProductDto> getProductDtos() {
+        return productDtos;
     }
 
-    public void setProductEntities(List<ProductEntity> productEntities) {
-        this.productEntities = productEntities;
+    public void setProductDtos(List<ProductDto> productDtos) {
+        this.productDtos = productDtos;
     }
 
     public List<OperatingHoursDto> getOperatingHoursDto() {

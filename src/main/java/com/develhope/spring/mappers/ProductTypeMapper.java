@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductTypeMapper {
 
-    public ProductTypeEntity asEntity(ProductTypeDto productTypeDto) {
+    public ProductTypeEntity toEntity(ProductTypeDto productTypeDto) {
         if (productTypeDto == null) {
             return null;
         }
@@ -20,7 +20,7 @@ public class ProductTypeMapper {
         return productTypeEntity;
     }
 
-    public ProductTypeDto asDto(ProductTypeEntity productTypeEntity) {
+    public ProductTypeDto toDto(ProductTypeEntity productTypeEntity) {
         if (productTypeEntity == null) {
             return null;
         }

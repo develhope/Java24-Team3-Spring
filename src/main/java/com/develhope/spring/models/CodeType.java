@@ -1,14 +1,12 @@
 package com.develhope.spring.models;
 
-import org.springframework.stereotype.Component;
-
-public enum ResponseType {
+public enum CodeType {
     SUCCESS("Operazione completata con successo."),
     FAIL("Operazione fallita.");
 
     private String message;
 
-    ResponseType(String message) {
+    CodeType(String message) {
         this.message = message;
     }
 
