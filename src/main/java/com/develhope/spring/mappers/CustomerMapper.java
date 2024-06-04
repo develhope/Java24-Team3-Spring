@@ -1,44 +1,44 @@
 package com.develhope.spring.mappers;
 
-import com.develhope.spring.dtos.CustomerDTO;
-import com.develhope.spring.entities.CustomerEntity;
+import com.develhope.spring.models.dtos.CustomerDto;
+import com.develhope.spring.models.entities.CustomerEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CustomerMapper {
 
-    public CustomerEntity asEntity(CustomerDTO customerDTO) {
-        if (customerDTO == null) {
+    public CustomerEntity toEntity(CustomerDto customerDto) {
+        if (customerDto == null) {
             return null;
         }
 
         CustomerEntity customerEntity = new CustomerEntity();
 
-        customerEntity.setEmail(customerDTO.getEmail());
-        customerEntity.setPassword(customerDTO.getPassword());
-        customerEntity.setName(customerDTO.getName());
-        customerEntity.setSurname(customerDTO.getSurname());
-        customerEntity.setPhoneNumber(customerDTO.getPhoneNumber());
-        customerEntity.setIsDeleted(customerDTO.getIsDeleted());
+        customerEntity.setId(customerDto.getId());
+        customerEntity.setEmail(customerDto.getEmail());
+        customerEntity.setPassword(customerDto.getPassword());
+        customerEntity.setIsDeleted(customerDto.getIsDeleted());
+        customerEntity.setIsVerified(customerDto.getIsVerified());
+        customerEntity.setUserDetailsEntity(customerDto.getUserDetails());
 
         return customerEntity;
     }
 
-    public CustomerDTO asDTO(CustomerEntity customerEntity) {
+    public CustomerDto toDTO(CustomerEntity customerEntity) {
         if (customerEntity == null) {
             return null;
         }
 
-        CustomerDTO customerDTO = new CustomerDTO();
+        CustomerDto customerDto = new CustomerDto();
 
-        customerDTO.setEmail(customerEntity.getEmail());
-        customerDTO.setPassword(customerEntity.getPassword());
-        customerDTO.setName(customerEntity.getName());
-        customerDTO.setSurname(customerEntity.getSurname());
-        customerDTO.setPhoneNumber(customerEntity.getPhoneNumber());
-        customerDTO.setIsDeleted(customerEntity.getIsDeleted());
+        customerDto.setId(customerEntity.getId());
+        customerDto.setEmail(customerEntity.getEmail());
+        customerDto.setPassword(customerEntity.getPassword());
+        customerDto.setIsDeleted(customerEntity.getIsDeleted());
+        customerDto.setIsVerified(customerEntity.getIsVerified());
+        customerDto.setUserDetailsEntity(customerEntity.getUserDetails());
 
-        return customerDTO;
+        return customerDto;
     }
 }
 
