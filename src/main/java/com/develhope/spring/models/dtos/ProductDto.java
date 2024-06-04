@@ -1,37 +1,37 @@
 package com.develhope.spring.models.dtos;
 
+import com.develhope.spring.models.entities.ProductTypeEntity;
 
-
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductDto {
-    private String id;
+
+    private Long id;
 
     private String name;
 
-    private BigInteger price;
+    private BigDecimal price;
 
     private String ingredients;
 
-    private List<ProductTypeDto> productTypes;
+    private List<ProductTypeEntity> productTypes;
 
     public ProductDto() {
     }
 
-    public ProductDto(String id, String name, BigInteger price, String ingredients, List<ProductTypeDto> productTypes) {
-        this.id = id;
+    public ProductDto(String name, BigDecimal price, String ingredients, List<ProductTypeEntity> productTypes) {
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
         this.productTypes = productTypes;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,11 +43,11 @@ public class ProductDto {
         this.name = name;
     }
 
-    public BigInteger getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(BigInteger price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -59,11 +59,11 @@ public class ProductDto {
         this.ingredients = ingredients;
     }
 
-    public List<ProductTypeDto> getProductTypes() {
+    public List<ProductTypeEntity> getProductTypes() {
         return productTypes;
     }
 
-    public void setProductTypes(List<ProductTypeDto> productTypes) {
+    public void setProductTypes(List<ProductTypeEntity> productTypes) {
         this.productTypes = productTypes;
     }
 }

@@ -1,32 +1,25 @@
-package com.develhope.spring.models.entities;
+package com.develhope.spring.models.dtos;
 
-import jakarta.persistence.*;
+import com.develhope.spring.models.entities.UserDetailsEntity;
 
-@MappedSuperclass
-public class UserEntity {
+public class UserDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
     private String password;
 
     private Boolean isDeleted;
 
     private Boolean isVerified;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_details_id")
     private UserDetailsEntity userDetails;
 
-    public UserEntity() {
+    public UserDto() {
     }
 
-    public UserEntity(String email, String password, Boolean isDeleted, Boolean isVerified, UserDetailsEntity userDetails) {
+    public UserDto(String email, String password, Boolean isDeleted, Boolean isVerified, UserDetailsEntity userDetails) {
         this.email = email;
         this.password = password;
         this.isDeleted = isDeleted;

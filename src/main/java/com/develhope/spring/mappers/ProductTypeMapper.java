@@ -7,15 +7,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductTypeMapper {
 
-    public ProductTypeEntity toEntity(ProductTypeDto productTypeDto) {
-        if (productTypeDto == null) {
+    public ProductTypeEntity toEntity(ProductTypeDto productTypeDTO) {
+        if (productTypeDTO == null) {
             return null;
         }
 
-        ProductTypeEntity productTypeEntity = new ProductTypeEntity(
-                productTypeDto.getId(),
-                productTypeDto.getProductType()
-        );
+        ProductTypeEntity productTypeEntity = new ProductTypeEntity();
+        productTypeEntity.setId(productTypeDTO.getId());
+        productTypeEntity.setProductType(productTypeDTO.getProductType());
 
         return productTypeEntity;
     }
@@ -25,10 +24,9 @@ public class ProductTypeMapper {
             return null;
         }
 
-        ProductTypeDto productTypeDto = new ProductTypeDto(
-                productTypeEntity.getId(),
-                productTypeEntity.getProductType()
-        );
+        ProductTypeDto productTypeDto = new ProductTypeDto();
+        productTypeDto.setId(productTypeEntity.getId());
+        productTypeDto.setProductType(productTypeEntity.getProductType());
 
         return productTypeDto;
     }

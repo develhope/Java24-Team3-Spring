@@ -1,36 +1,28 @@
-package com.develhope.spring.models.entities;
+package com.develhope.spring.models.dtos;
 
-import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "user_details")
-public class UserDetailsEntity {
+public class UserDetailsDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String surname;
 
     private LocalDate birthDate;
 
-    @Column(nullable = false, unique = true)
     private String phoneNumber;
 
-    private LocalDate creationDate = LocalDate.now();
+    private LocalDate creationDate;
 
-    private LocalDate updateDate = LocalDate.now();
+    private LocalDate updateDate;
 
-    public UserDetailsEntity() {
+    public UserDetailsDto() {
     }
 
-    public UserDetailsEntity(String name, String surname, LocalDate birthDate, String phoneNumber, LocalDate creationDate, LocalDate updateDate) {
+    public UserDetailsDto(String name, String surname, LocalDate birthDate, String phoneNumber, LocalDate creationDate, LocalDate updateDate) {
         this.name = name;
         this.surname = surname;
         this.birthDate = birthDate;
