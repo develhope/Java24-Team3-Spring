@@ -2,23 +2,22 @@ package com.develhope.spring.models.dtos;
 
 public class ProductTypeDto {
 
-    private String id;
+    private Long id;
 
     private String productType;
 
     public ProductTypeDto() {
     }
 
-    public ProductTypeDto(String id, String productType) {
-        this.id = id;
+    public ProductTypeDto(String productType) {
         this.productType = productType;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

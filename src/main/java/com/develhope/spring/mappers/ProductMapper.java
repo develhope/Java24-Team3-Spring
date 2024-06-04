@@ -7,12 +7,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductMapper {
 
-    public ProductEntity asEntity(ProductDto productDTO) {
+    public ProductEntity toEntity(ProductDto productDTO) {
         if (productDTO == null) {
             return null;
         }
 
         ProductEntity productEntity = new ProductEntity();
+        productEntity.setId(productDTO.getId());
         productEntity.setName(productDTO.getName());
         productEntity.setPrice(productDTO.getPrice());
         productEntity.setIngredients(productDTO.getIngredients());
@@ -21,12 +22,13 @@ public class ProductMapper {
         return productEntity;
     }
 
-    public ProductDto asDto(ProductEntity productEntity) {
+    public ProductDto toDto(ProductEntity productEntity) {
         if (productEntity == null) {
             return null;
         }
 
         ProductDto productDto = new ProductDto();
+        productDto.setId(productEntity.getId());
         productDto.setName(productEntity.getName());
         productDto.setPrice(productEntity.getPrice());
         productDto.setIngredients(productEntity.getIngredients());

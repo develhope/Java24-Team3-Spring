@@ -1,14 +1,14 @@
 package com.develhope.spring.controllers;
 
+import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.ProductDto;
-import com.develhope.spring.models.entities.ProductEntity;
 import com.develhope.spring.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/products")
@@ -22,45 +22,51 @@ public class ProductController {
     }
 
     @PostMapping
-    @ResponseBody
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
-        ProductDto newProduct = this.productService.createProduct(productDto);
+    public ResponseEntity<ResponseModel> createProduct(@RequestBody ProductDto productDto) {
+        ResponseModel newProduct = this.productService.createProduct(productDto);
         return ResponseEntity.created(URI.create("api/v1/products")).body(newProduct);
     }
 
     @GetMapping
-    @ResponseBody
-    public ResponseEntity<List<ProductDto>> getAllProducts() {
-        List<ProductDto> products = this.productService.getAllProducts();
-        return ResponseEntity.ok().body(products);
+    public ResponseEntity<ResponseModel> getAllProducts() {
+        ResponseModel products = this.productService.getAllProducts();
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<ProductDto> getProductById(@PathVariable String id) {
-        ProductDto productFound = this.productService.getSingleProduct(id);
-        return ResponseEntity.ok().body(productFound);
+    public ResponseEntity<ResponseModel> getProductById(@PathVariable Long id) {
+        ResponseModel productFound = this.productService.getSingleProductById(id);
+        return ResponseEntity.ok(productFound);
+    }
+
+    @GetMapping("/name")
+    public ResponseEntity<ResponseModel> getProductsByName(@RequestParam String name) {
+        ResponseModel productsFoundList = this.productService.getProductByName(name);
+        return ResponseEntity.ok(productsFoundList);
+    }
+
+    @GetMapping("/price")
+    public ResponseEntity<ResponseModel> getProductsByPriceRange(@RequestParam BigDecimal upperBoundPrice, @RequestParam BigDecimal lowerBoundPrice) {
+        ResponseModel productsFoundList = this.productService.getProductsByPriceRange(upperBoundPrice, lowerBoundPrice);
+        return ResponseEntity.ok(productsFoundList);
     }
 
     @PutMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable String id, @RequestBody ProductDto productDto) {
-        ProductDto updatedProduct = this.productService.updateProduct(id, productDto);
-        return ResponseEntity.ok().body(updatedProduct);
+    public ResponseEntity<ResponseModel> updateProduct(@PathVariable Long id, @RequestBody ProductDto productDto) {
+        ResponseModel updatedProduct = this.productService.updateProduct(id, productDto);
+        return ResponseEntity.ok(updatedProduct);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<?> deleteProduct(@PathVariable String id) {
-        this.productService.deleteProduct(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ResponseModel> deleteProduct(@PathVariable Long id) {
+        ResponseModel deletedProduct = this.productService.deleteProductById(id);
+        return ResponseEntity.ok(deletedProduct);
     }
 
     @DeleteMapping
-    @ResponseBody
-    public ResponseEntity<?> deleteAllProducts() {
-        this.productService.deleteAllProducts();
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ResponseModel> deleteAllProducts() {
+        ResponseModel deletedProducts = this.productService.deleteAllProducts();
+        return ResponseEntity.ok(deletedProducts);
     }
 
 }

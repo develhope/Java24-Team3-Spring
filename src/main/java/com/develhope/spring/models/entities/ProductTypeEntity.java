@@ -3,29 +3,28 @@ package com.develhope.spring.models.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "productTypes")
+@Table(name = "productType")
 public class ProductTypeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(nullable = false, name = "productType")
+    @Column(nullable = false, name = "productType", unique = true)
     private String productType;
 
     public ProductTypeEntity() {
     }
 
-    public ProductTypeEntity(String id, String productType) {
-        this.id = id;
+    public ProductTypeEntity(String productType) {
         this.productType = productType;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

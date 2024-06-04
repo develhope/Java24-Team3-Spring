@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ProductDto {
 
-    private String id;
+    private Long id;
 
     private String name;
 
@@ -20,19 +20,18 @@ public class ProductDto {
     public ProductDto() {
     }
 
-    public ProductDto(String id, String name, BigDecimal price, String ingredients, List<ProductTypeEntity> productTypes) {
-        this.id = id;
+    public ProductDto(String name, BigDecimal price, String ingredients, List<ProductTypeEntity> productTypes) {
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
         this.productTypes = productTypes;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

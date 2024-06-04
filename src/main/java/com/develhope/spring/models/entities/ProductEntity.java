@@ -6,12 +6,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name = "products")
+@Table(name = "product")
 public class ProductEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -30,19 +30,18 @@ public class ProductEntity {
     public ProductEntity() {
     }
 
-    public ProductEntity(String id, String name, BigDecimal price, String ingredients, List<ProductTypeEntity> productTypes) {
-        this.id = id;
+    public ProductEntity(String name, BigDecimal price, String ingredients, List<ProductTypeEntity> productTypes) {
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
         this.productTypes = productTypes;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

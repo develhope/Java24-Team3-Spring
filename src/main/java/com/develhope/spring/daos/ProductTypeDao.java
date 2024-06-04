@@ -4,9 +4,11 @@ import com.develhope.spring.models.entities.ProductTypeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
+import java.util.List;
 
-//cambia nome
 @Repository
-public interface ProductTypeRepository extends JpaRepository<ProductTypeEntity, String> {
+public interface ProductTypeDao extends JpaRepository<ProductTypeEntity, Long> {
+
+    List<ProductTypeEntity> findByProductType(String productType);
+
 }
