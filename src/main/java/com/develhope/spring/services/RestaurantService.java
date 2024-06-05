@@ -1,17 +1,15 @@
 package com.develhope.spring.services;
 
-import com.develhope.spring.dao.AddressDao;
-import com.develhope.spring.dao.RestaurantDao;
+import com.develhope.spring.daos.AddressDao;
+import com.develhope.spring.daos.RestaurantDao;
 import com.develhope.spring.exceptions.RestaurantNameException;
 import com.develhope.spring.mappers.AddressMapper;
 import com.develhope.spring.mappers.OperatingHoursMapper;
 import com.develhope.spring.mappers.RestaurantMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
-import com.develhope.spring.models.dtos.ProductTypeDto;
 import com.develhope.spring.models.dtos.RestaurantDto;
 import com.develhope.spring.models.entities.AddressEntity;
-import com.develhope.spring.models.entities.ProductTypeEntity;
 import com.develhope.spring.models.entities.RestaurantEntity;
 import com.develhope.spring.validators.RestaurantValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +55,7 @@ public class RestaurantService {
             RestaurantDto resDtoSaved = restaurantMapper.toDto(resEntitySaved);
             return new ResponseModel(ResponseCode.B, resDtoSaved);
         } catch (RestaurantNameException e) {
-            return new ResponseModel(ResponseCode.A, e.getMessage());
+            return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
     }
 
@@ -69,7 +67,7 @@ public class RestaurantService {
             RestaurantDto resDtoFound = restaurantMapper.toDto(restaurantEntityFound);
             return new ResponseModel(ResponseCode.C, resDtoFound);
         } else {
-            return new ResponseModel(ResponseCode.C, null);
+            return new ResponseModel(ResponseCode.D);
         }
     }
 

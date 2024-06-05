@@ -1,4 +1,4 @@
-package com.develhope.spring.dao;
+package com.develhope.spring.daos;
 
 import com.develhope.spring.models.entities.AddressEntity;
 import com.develhope.spring.models.entities.RestaurantEntity;

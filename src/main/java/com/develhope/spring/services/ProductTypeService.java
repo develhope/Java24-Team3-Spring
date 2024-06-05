@@ -37,13 +37,9 @@ public class ProductTypeService {
             productTypeValidator.validateProductType(productTypeDto);
             ProductTypeEntity newProductType = this.productTypeMapper.toEntity(productTypeDto);
             this.productTypeDao.saveAndFlush(newProductType);
-            return new ResponseModel(ResponseCode.B, ResponseCode.B.getResponseType().toString() + ": "
-                    + ResponseCode.B.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.B.getResponseCodeMessage(), this.productTypeMapper.toDto(newProductType));
+            return new ResponseModel(ResponseCode.B, this.productTypeMapper.toDto(newProductType));
         } catch (InvalidProductTypeException e) {
-            return new ResponseModel(ResponseCode.A, ResponseCode.A.getResponseType().toString() + ": "
-                    + ResponseCode.A.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.A.getResponseCodeMessage(), e.getMessage());
+            return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
     }
 
@@ -53,13 +49,9 @@ public class ProductTypeService {
     public ResponseModel getAllProductTypes() {
         List<ProductTypeDto> productTypes = this.productTypeDao.findAll().stream().map(productTypeMapper::toDto).toList();
         if (productTypes.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "No productTypes were found, the list may be empty");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No productTypes were found, the list may be empty");
         } else {
-            return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": "
-                    + ResponseCode.E.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.E.getResponseCodeMessage(), productTypes);
+            return new ResponseModel(ResponseCode.E, productTypes);
         }
     }
 
@@ -70,13 +62,9 @@ public class ProductTypeService {
     public ResponseModel getSingleProductType(Long id) {
         Optional<ProductTypeEntity> productTypeFound = this.productTypeDao.findById(id);
         if (productTypeFound.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "ProductType not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("ProductType not found with the selected ID");
         } else {
-            return new ResponseModel(ResponseCode.C, ResponseCode.C.getResponseType().toString() + ": "
-                    + ResponseCode.C.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.C.getResponseCodeMessage(), productTypeMapper.toDto(productTypeFound.get()));
+            return new ResponseModel(ResponseCode.C, productTypeMapper.toDto(productTypeFound.get()));
         }
     }
 
@@ -87,13 +75,9 @@ public class ProductTypeService {
     public ResponseModel getProductTypeByName(String productType) {
         List<ProductTypeDto> productTypes = this.productTypeDao.findByProductType(productType).stream().map(productTypeMapper::toDto).toList();
         if (productTypes.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "No productTypes were found, the list may be empty");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No productTypes were found, the list may be empty");
         } else {
-            return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": "
-                    + ResponseCode.E.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.E.getResponseCodeMessage(), productTypes);
+            return new ResponseModel(ResponseCode.E, productTypes);
         }
     }
 
@@ -105,20 +89,14 @@ public class ProductTypeService {
     public ResponseModel updateProductType(Long id, ProductTypeDto productTypeUpdates) {
         Optional<ProductTypeEntity> productTypeToUpdate = this.productTypeDao.findById(id);
         if (productTypeToUpdate.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "ProductType not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails( "ProductType not found with the selected ID");
         } else if (productTypeUpdates != null) {
             if (productTypeUpdates.getProductType() != null) {
                 productTypeToUpdate.get().setProductType(productTypeUpdates.getProductType());
             }
-            return new ResponseModel(ResponseCode.G, ResponseCode.G.getResponseType().toString() + ": "
-                    + ResponseCode.G.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.G.getResponseCodeMessage(), productTypeMapper.toDto(this.productTypeDao.saveAndFlush(productTypeToUpdate.get())));
+            return new ResponseModel(ResponseCode.G, productTypeMapper.toDto(this.productTypeDao.saveAndFlush(productTypeToUpdate.get())));
         }
-        return new ResponseModel(ResponseCode.A, ResponseCode.A.getResponseType().toString() + ": "
-                + ResponseCode.A.getResponseType().getMessage() + " Details: "
-                + ResponseCode.A.getResponseCodeMessage(), "Impossible to update, the body should not be null");
+        return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
     }
 
     /**
@@ -126,14 +104,10 @@ public class ProductTypeService {
      */
     public ResponseModel deleteProductType(Long id) {
         if (!this.productTypeDao.existsById(id)) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "ProductType not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("ProductType not found with the selected ID");
         } else {
             productTypeDao.deleteById(id);
-            return new ResponseModel(ResponseCode.H, ResponseCode.H.getResponseType().toString() + ": "
-                    + ResponseCode.H.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.H.getResponseCodeMessage(), "ProductType eliminated");
+            return new ResponseModel(ResponseCode.H).addMessageDetails("ProductType eliminated");
         }
     }
 
@@ -142,9 +116,7 @@ public class ProductTypeService {
      */
     public ResponseModel deleteAllProductTypes() {
         this.productTypeDao.deleteAll();
-        return new ResponseModel(ResponseCode.H, ResponseCode.H.getResponseType().toString() + ": "
-                + ResponseCode.H.getResponseType().getMessage() + " Details: "
-                + ResponseCode.H.getResponseCodeMessage(), "All productTypes eliminated");
+        return new ResponseModel(ResponseCode.H).addMessageDetails("All productTypes eliminated");
     }
 
 }

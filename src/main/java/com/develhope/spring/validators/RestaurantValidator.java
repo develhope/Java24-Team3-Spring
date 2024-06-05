@@ -1,6 +1,6 @@
 package com.develhope.spring.validators;
 
-import com.develhope.spring.dao.RestaurantDao;
+import com.develhope.spring.daos.RestaurantDao;
 import com.develhope.spring.exceptions.RestaurantNameException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

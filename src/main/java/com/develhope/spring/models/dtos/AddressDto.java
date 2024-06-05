@@ -2,20 +2,28 @@ package com.develhope.spring.models.dtos;
 
 import jakarta.persistence.Column;
 
+import java.math.BigDecimal;
+
 public class AddressDto {
     private Long id_address;
+
+    private String country;
+
+    private String postcode;
     private String city;
     private String street;
     private Double number;
     private String note;
-    private Double lat;
-    private Double lon;
+    private BigDecimal lat;
+    private BigDecimal lon;
 
     public AddressDto() {
     }
 
-    public AddressDto(Long id_address, String city, String street, Double number, String note, Double lat, Double lon) {
+    public AddressDto(Long id_address, String country, String postcode, String city, String street, Double number, String note, BigDecimal lat, BigDecimal lon) {
         this.id_address = id_address;
+        this.country = country;
+        this.postcode = postcode;
         this.city = city;
         this.street = street;
         this.number = number;
@@ -30,6 +38,14 @@ public class AddressDto {
 
     public void setId_address(Long id_address) {
         this.id_address = id_address;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getCity() {
@@ -64,19 +80,27 @@ public class AddressDto {
         this.note = note;
     }
 
-    public Double getLat() {
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public BigDecimal getLat() {
         return lat;
     }
 
-    public void setLat(Double lat) {
+    public void setLat(BigDecimal lat) {
         this.lat = lat;
     }
 
-    public Double getLon() {
+    public BigDecimal getLon() {
         return lon;
     }
 
-    public void setLon(Double lon) {
+    public void setLon(BigDecimal lon) {
         this.lon = lon;
     }
 }
