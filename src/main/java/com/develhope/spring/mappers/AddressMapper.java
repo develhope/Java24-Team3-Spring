@@ -1,0 +1,48 @@
+package com.develhope.spring.mappers;
+
+import com.develhope.spring.models.dtos.AddressDto;
+import com.develhope.spring.models.dtos.OperatingHoursDto;
+import com.develhope.spring.models.dtos.RestaurantDto;
+import com.develhope.spring.models.entities.AddressEntity;
+import com.develhope.spring.models.entities.OperatingHoursEntity;
+import com.develhope.spring.models.entities.RestaurantEntity;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
+public class AddressMapper {
+
+    public static AddressDto toDto(AddressEntity addressEntity){
+        if (addressEntity == null) {
+            return null;
+        }
+
+        return new AddressDto(
+                addressEntity.getId_address(),
+                addressEntity.getCity(),
+                addressEntity.getStreet(),
+                addressEntity.getNumber(),
+                addressEntity.getNote(),
+                addressEntity.getLat(),
+                addressEntity.getLon()
+        );
+    }
+
+    public static AddressEntity toEntity(AddressDto addressDto){
+        if (addressDto == null) {
+            return null;
+        }
+
+        return new AddressEntity(
+                addressDto.getId_address(),
+                addressDto.getCity(),
+                addressDto.getStreet(),
+                addressDto.getNumber(),
+                addressDto.getNote(),
+                addressDto.getLat(),
+                addressDto.getLon()
+        );
+    }
+}
