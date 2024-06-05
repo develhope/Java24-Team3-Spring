@@ -2,25 +2,29 @@ package com.develhope.spring.models;
 
 
 public class ResponseModel {
-
     private ResponseCode code;
     private String message;
     private Object object;
 
     public ResponseModel(ResponseCode code) {
         this.code = code;
-        this.message = code.getCodeType().toString() + ": " + code.getCodeType().getMessage() + " " + code.getCodeMessage();
+        setStandardMessage();
     }
 
     public ResponseModel(ResponseCode code, Object object) {
         this.code = code;
-        this.message = code.getCodeType().toString() + ": " + code.getCodeType().getMessage() + " " + code.getCodeMessage();
+        setStandardMessage();
         this.object = object;
     }
 
-    public ResponseModel(ResponseCode code, String customizedMessage) {
-        this.code = code;
-        this.message = customizedMessage;
+    private ResponseModel setStandardMessage(){
+        this.message = "CodeType: " + code.getCodeType().toString() + " - " + code.getCodeType().getMessage() + " CodeMessage: " + code.getCodeMessage();
+        return this;
+    }
+
+    public ResponseModel addMessageDetails(String messageDetails) {
+        this.message += " MessageDetails: " + messageDetails;
+        return this;
     }
 
     public ResponseCode getCode() {

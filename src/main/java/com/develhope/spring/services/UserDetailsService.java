@@ -40,13 +40,9 @@ public class UserDetailsService {
             userDetailsValidator.userDetailsValidator(userDetailsDto);
             UserDetailsEntity newUserDetails = this.userDetailsMapper.toEntity(userDetailsDto);
             this.userDetailsDao.saveAndFlush(newUserDetails);
-            return new ResponseModel(ResponseCode.B, ResponseCode.B.getResponseType().toString() + ": "
-                    + ResponseCode.B.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.B.getResponseCodeMessage(), this.userDetailsMapper.toDTO(newUserDetails));
+            return new ResponseModel(ResponseCode.B, this.userDetailsMapper.toDTO(newUserDetails));
         } catch (InvalidUserDetailsException e) {
-            return new ResponseModel(ResponseCode.A, ResponseCode.A.getResponseType().toString() + ": "
-                    + ResponseCode.A.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.A.getResponseCodeMessage(), e.getMessage());
+            return new ResponseModel(ResponseCode.A).addMessageDetails( e.getMessage());
         }
     }
 
@@ -75,13 +71,9 @@ public class UserDetailsService {
     public ResponseModel getUserDetailsByPhoneNumber(String phoneNumber) {
         Optional<UserDetailsEntity> userDetailsFound = this.userDetailsDao.findUserDetailsByPhoneNumber(phoneNumber);
         if (userDetailsFound.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "No customers were found with the selected parameter");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No customers were found with the selected parameter");
         } else {
-            return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": "
-                    + ResponseCode.E.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.E.getResponseCodeMessage(), userDetailsFound);
+            return new ResponseModel(ResponseCode.E, userDetailsFound);
         }
     }
 
@@ -92,13 +84,9 @@ public class UserDetailsService {
     public ResponseModel getUserDetailsByCreationDate(LocalDate creationDate) {
         List<UserDetailsDto> userDetailsFound = this.userDetailsDao.findUserDetailsByCreationDate(creationDate).stream().map(userDetailsMapper::toDTO).toList();
         if (userDetailsFound.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "No customers were found with the selected parameter");
+            return new ResponseModel(ResponseCode.D).addMessageDetails( "No customers were found with the selected parameter");
         } else {
-            return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": "
-                    + ResponseCode.E.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.E.getResponseCodeMessage(), userDetailsFound);
+            return new ResponseModel(ResponseCode.E, userDetailsFound);
         }
     }
 
@@ -110,9 +98,7 @@ public class UserDetailsService {
     public ResponseModel updateUserDetails(Long id, UserDetailsDto userDetailsUpdates) {
         Optional<UserDetailsEntity> userDetailsToUpdate = this.userDetailsDao.findById(id);
         if (userDetailsToUpdate.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "Customer not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
         } else if (userDetailsUpdates != null) {
             if (userDetailsUpdates.getName() != null) {
                 userDetailsToUpdate.get().setName(userDetailsUpdates.getName());
@@ -132,13 +118,9 @@ public class UserDetailsService {
             if (userDetailsUpdates.getUpdateDate() != null) {
                 userDetailsToUpdate.get().setUpdateDate(userDetailsUpdates.getUpdateDate());
             }
-            return new ResponseModel(ResponseCode.G, ResponseCode.G.getResponseType().toString() + ": "
-                    + ResponseCode.G.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.G.getResponseCodeMessage(), this.userDetailsMapper.toDTO(this.userDetailsDao.saveAndFlush(userDetailsToUpdate.get())));
+            return new ResponseModel(ResponseCode.G, this.userDetailsMapper.toDTO(this.userDetailsDao.saveAndFlush(userDetailsToUpdate.get())));
         }
-        return new ResponseModel(ResponseCode.A, ResponseCode.A.getResponseType().toString() + ": "
-                + ResponseCode.A.getResponseType().getMessage() + " Details: "
-                + ResponseCode.A.getResponseCodeMessage(), "Impossible to update, the body should not be null");
+        return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
     }
 
 //    public void deleteUserDetailsById(Long id) {

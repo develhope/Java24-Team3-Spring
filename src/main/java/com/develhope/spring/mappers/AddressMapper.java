@@ -21,6 +21,8 @@ public class AddressMapper {
 
         return new AddressDto(
                 addressEntity.getId_address(),
+                addressEntity.getCountry(),
+                addressEntity.getPostcode(),
                 addressEntity.getCity(),
                 addressEntity.getStreet(),
                 addressEntity.getNumber(),
@@ -37,6 +39,8 @@ public class AddressMapper {
 
         return new AddressEntity(
                 addressDto.getId_address(),
+                addressDto.getCountry(),
+                addressDto.getPostcode(),
                 addressDto.getCity(),
                 addressDto.getStreet(),
                 addressDto.getNumber(),

@@ -39,13 +39,9 @@ public class CustomerService {
             customerValidator.validateCustomer(customerDto);
             CustomerEntity newCustomer = this.customerMapper.toEntity(customerDto);
             this.customerDao.saveAndFlush(newCustomer);
-            return new ResponseModel(ResponseCode.B, ResponseCode.B.getResponseType().toString() + ": "
-                    + ResponseCode.B.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.B.getResponseCodeMessage(), this.customerMapper.toDTO(newCustomer));
+            return new ResponseModel(ResponseCode.B, this.customerMapper.toDTO(newCustomer));
         } catch (InvalidCustomerException e) {
-            return new ResponseModel(ResponseCode.A, ResponseCode.A.getResponseType().toString() + ": "
-                    + ResponseCode.A.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.A.getResponseCodeMessage(), e.getMessage());
+            return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
 
     }
@@ -57,13 +53,9 @@ public class CustomerService {
     public ResponseModel getCustomerById(Long id) {
         Optional<CustomerEntity> customerFound = this.customerDao.findById(id);
         if (customerFound.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "Customer not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
         } else {
-            return new ResponseModel(ResponseCode.C, ResponseCode.C.getResponseType().toString() + ": "
-                    + ResponseCode.C.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.C.getResponseCodeMessage(), this.customerMapper.toDTO(customerFound.get()));
+            return new ResponseModel(ResponseCode.C, this.customerMapper.toDTO(customerFound.get()));
         }
     }
 
@@ -73,13 +65,9 @@ public class CustomerService {
     public ResponseModel getAllCustomers() {
         List<CustomerDto> customers = this.customerDao.findAll().stream().map(customerMapper::toDTO).toList();
         if (customers.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "No customers were found, the list may be empty");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No customers were found, the list may be empty");
         } else {
-            return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": "
-                    + ResponseCode.E.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.E.getResponseCodeMessage(), customers);
+            return new ResponseModel(ResponseCode.E, customers);
         }
     }
 
@@ -90,13 +78,9 @@ public class CustomerService {
     public ResponseModel getCustomerByEmail(String email) {
         Optional<CustomerEntity> customerFound = this.customerDao.findCustomerByEmail(email);
         if (customerFound.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "Customer not found with the selected email");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected email");
         } else {
-            return new ResponseModel(ResponseCode.C, ResponseCode.C.getResponseType().toString() + ": "
-                    + ResponseCode.C.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.C.getResponseCodeMessage(), this.customerMapper.toDTO(customerFound.get()));
+            return new ResponseModel(ResponseCode.C, this.customerMapper.toDTO(customerFound.get()));
         }
     }
 
@@ -107,13 +91,9 @@ public class CustomerService {
     public ResponseModel getCustomerByDeletedStatus(Boolean isDeleted) {
         List<CustomerDto> customers = this.customerDao.findCustomerByIsDeleted(isDeleted).stream().map(customerMapper::toDTO).toList();
         if (customers.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "No customers were found with the selected parameter");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No customers were found with the selected parameter");
         } else {
-            return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": "
-                    + ResponseCode.E.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.E.getResponseCodeMessage(), customers);
+            return new ResponseModel(ResponseCode.E, customers);
         }
     }
 
@@ -124,13 +104,9 @@ public class CustomerService {
     public ResponseModel getCustomersByVerifiedStatus(Boolean isVerified) {
         List<CustomerDto> customers = this.customerDao.findCustomerByIsVerified(isVerified).stream().map(customerMapper::toDTO).toList();
         if (customers.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "No customers were found with the selected parameter");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No customers were found with the selected parameter");
         } else {
-            return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": "
-                    + ResponseCode.E.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.E.getResponseCodeMessage(), customers);
+            return new ResponseModel(ResponseCode.E, customers);
         }
     }
 
@@ -142,9 +118,7 @@ public class CustomerService {
     public ResponseModel updateCustomer(Long id, CustomerDto customerUpdates) {
         Optional<CustomerEntity> customerToUpdate = this.customerDao.findById(id);
         if (customerToUpdate.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "Customer not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
         } else if (customerUpdates != null) {
             if (customerUpdates.getEmail() != null) {
                 customerToUpdate.get().setEmail(customerUpdates.getEmail());
@@ -161,13 +135,9 @@ public class CustomerService {
             if (customerUpdates.getUserDetails() != null) {
                 customerToUpdate.get().setUserDetailsEntity(customerUpdates.getUserDetails());
             }
-            return new ResponseModel(ResponseCode.G, ResponseCode.G.getResponseType().toString() + ": "
-                    + ResponseCode.G.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.G.getResponseCodeMessage(), this.customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
+            return new ResponseModel(ResponseCode.G, this.customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
         }
-        return new ResponseModel(ResponseCode.A, ResponseCode.A.getResponseType().toString() + ": "
-                + ResponseCode.A.getResponseType().getMessage() + " Details: "
-                + ResponseCode.A.getResponseCodeMessage(), "Impossible to update, the body should not be null");
+        return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
     }
 
     /**
@@ -178,18 +148,14 @@ public class CustomerService {
     public ResponseModel updatePassword(Long id, CustomerDto customerDto) {
         Optional<CustomerEntity> customerToUpdate = this.customerDao.findById(id);
         if (customerToUpdate.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, "Customer not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
         } else if (customerDto != null) {
             if (customerDto.getPassword() != null) {
                 customerToUpdate.get().setPassword(customerDto.getPassword());
-                return new ResponseModel(ResponseCode.G, ResponseCode.G.getResponseType().toString() + ": "
-                        + ResponseCode.G.getResponseType().getMessage() + " Details: "
-                        + ResponseCode.G.getResponseCodeMessage(), customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
+                return new ResponseModel(ResponseCode.G, customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
             }
         }
-        return new ResponseModel(ResponseCode.A, ResponseCode.A.getResponseType().toString() + ": "
-                + ResponseCode.A.getResponseType().getMessage() + " Details: "
-                + ResponseCode.A.getResponseCodeMessage(), "Impossible to update, the body should not be null");
+        return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
     }
 
     /**
@@ -197,22 +163,16 @@ public class CustomerService {
      */
     public ResponseModel deleteCustomer(Long id) {
         if (!this.customerDao.existsById(id)) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "Customer not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
         } else {
             this.customerDao.deleteById(id);
-            return new ResponseModel(ResponseCode.H, ResponseCode.H.getResponseType().toString() + ": "
-                    + ResponseCode.H.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.H.getResponseCodeMessage(), "Customer eliminated");
+            return new ResponseModel(ResponseCode.H).addMessageDetails("Customer eliminated");
         }
     }
 
     public ResponseModel deleteAllCustomers() {
         this.customerDao.deleteAll();
-        return new ResponseModel(ResponseCode.H, ResponseCode.H.getResponseType().toString() + ": "
-                + ResponseCode.H.getResponseType().getMessage() + " Details: "
-                + ResponseCode.H.getResponseCodeMessage(), "All customers eliminated");
+        return new ResponseModel(ResponseCode.H).addMessageDetails("All customers eliminated");
     }
 
 }

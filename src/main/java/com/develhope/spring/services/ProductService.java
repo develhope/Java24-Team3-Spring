@@ -39,13 +39,9 @@ public class ProductService {
             productValidator.validateProduct(productDto);
             ProductEntity newProduct = this.productMapper.toEntity(productDto);
             this.productDao.saveAndFlush(newProduct);
-            return new ResponseModel(ResponseCode.B, ResponseCode.B.getResponseType().toString() + ": "
-                    + ResponseCode.B.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.B.getResponseCodeMessage(), productMapper.toDto(newProduct));
+            return new ResponseModel(ResponseCode.B,  productMapper.toDto(newProduct));
         } catch (InvalidProductException e) {
-            return new ResponseModel(ResponseCode.A, ResponseCode.A.getResponseType().toString() + ": "
-                    + ResponseCode.A.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.A.getResponseCodeMessage(), e.getMessage());
+            return new ResponseModel(ResponseCode.A).addMessageDetails( e.getMessage());
         }
 
     }
@@ -56,13 +52,9 @@ public class ProductService {
     public ResponseModel getAllProducts() {
         List<ProductDto> products = this.productDao.findAll().stream().map(productMapper::toDto).toList();
         if (products.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "No products were found, the list may be empty");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No products were found, the list may be empty");
         } else {
-            return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": "
-                    + ResponseCode.E.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.E.getResponseCodeMessage(), products);
+            return new ResponseModel(ResponseCode.E,  products);
         }
     }
 
@@ -73,13 +65,9 @@ public class ProductService {
     public ResponseModel getSingleProductById(Long id) {
         Optional<ProductEntity> productFound = this.productDao.findById(id);
         if (productFound.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "Product not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails( "Product not found with the selected ID");
         } else {
-            return new ResponseModel(ResponseCode.C, ResponseCode.C.getResponseType().toString() + ": "
-                    + ResponseCode.C.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.C.getResponseCodeMessage(), productMapper.toDto(productFound.get()));
+            return new ResponseModel(ResponseCode.C,  productMapper.toDto(productFound.get()));
         }
     }
 
@@ -90,13 +78,9 @@ public class ProductService {
     public ResponseModel getProductByName(String name) {
         List<ProductDto> productsFound = this.productDao.findProductByName(name).stream().map(productMapper::toDto).toList();
         if (productsFound.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "No products were found with the selected parameter");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No products were found with the selected parameter");
         } else {
-            return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": "
-                    + ResponseCode.E.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.E.getResponseCodeMessage(), productsFound);
+            return new ResponseModel(ResponseCode.E,  productsFound);
         }
     }
 
@@ -109,13 +93,9 @@ public class ProductService {
         List<ProductDto> productsFound = this.productDao.findProductByPriceBetween(upperBoundPrice, lowerBoundPrice)
                 .stream().map(productMapper::toDto).toList();
         if (productsFound.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "No products were found with the selected parameters");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No products were found with the selected parameters");
         } else {
-            return new ResponseModel(ResponseCode.E, ResponseCode.E.getResponseType().toString() + ": "
-                    + ResponseCode.E.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.E.getResponseCodeMessage(), productsFound);
+            return new ResponseModel(ResponseCode.E,  productsFound);
         }
     }
 
@@ -127,9 +107,7 @@ public class ProductService {
     public ResponseModel updateProduct(Long id, ProductDto productUpdates) {
         Optional<ProductEntity> productToUpdate = this.productDao.findById(id);
         if (productToUpdate.isEmpty()) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "Product not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("Product not found with the selected ID");
         } else if (productUpdates != null) {
             if (productUpdates.getName() != null) {
                 productToUpdate.get().setName(productUpdates.getName());
@@ -143,13 +121,9 @@ public class ProductService {
             if (productUpdates.getProductTypes() != null) {
                 productToUpdate.get().setProductTypes(productUpdates.getProductTypes());
             }
-            return new ResponseModel(ResponseCode.G, ResponseCode.G.getResponseType().toString() + ": "
-                    + ResponseCode.G.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.G.getResponseCodeMessage(), this.productMapper.toDto(this.productDao.saveAndFlush(productToUpdate.get())));
+            return new ResponseModel(ResponseCode.G, this.productMapper.toDto(this.productDao.saveAndFlush(productToUpdate.get())));
         }
-        return new ResponseModel(ResponseCode.A, ResponseCode.A.getResponseType().toString() + ": "
-                + ResponseCode.A.getResponseType().getMessage() + " Details: "
-                + ResponseCode.A.getResponseCodeMessage(), "Impossible to update, the body should not be null");
+        return new ResponseModel(ResponseCode.A).addMessageDetails( "Impossible to update, the body should not be null");
     }
 
     /**
@@ -158,14 +132,10 @@ public class ProductService {
      */
     public ResponseModel deleteProductById(Long id) {
         if (!productDao.existsById(id)) {
-            return new ResponseModel(ResponseCode.D, ResponseCode.D.getResponseType().toString() + ": "
-                    + ResponseCode.D.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.D.getResponseCodeMessage(), "Product not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("Product not found with the selected ID");
         } else {
             this.productDao.deleteById(id);
-            return new ResponseModel(ResponseCode.H, ResponseCode.H.getResponseType().toString() + ": "
-                    + ResponseCode.H.getResponseType().getMessage() + " Details: "
-                    + ResponseCode.H.getResponseCodeMessage(), "Product eliminated");
+            return new ResponseModel(ResponseCode.H).addMessageDetails("Product eliminated");
         }
     }
 
@@ -174,9 +144,7 @@ public class ProductService {
      */
     public ResponseModel deleteAllProducts() {
         this.productDao.deleteAll();
-        return new ResponseModel(ResponseCode.H, ResponseCode.H.getResponseType().toString() + ": "
-                + ResponseCode.H.getResponseType().getMessage() + " Details: "
-                + ResponseCode.H.getResponseCodeMessage(), "All products eliminated");
+        return new ResponseModel(ResponseCode.H).addMessageDetails("All products eliminated");
     }
 
 }
