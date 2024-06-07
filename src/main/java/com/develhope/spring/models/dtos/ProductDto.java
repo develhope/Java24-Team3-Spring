@@ -1,13 +1,11 @@
 package com.develhope.spring.models.dtos;
 
-import com.develhope.spring.models.entities.ProductTypeEntity;
-
 import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductDto {
 
-    private Long id;
+    private String id;
 
     private String name;
 
@@ -15,23 +13,23 @@ public class ProductDto {
 
     private String ingredients;
 
-    private List<ProductTypeEntity> productTypes;
+    private List<ProductTypeDto> productTypes;
 
     public ProductDto() {
     }
 
-    public ProductDto(String name, BigDecimal price, String ingredients, List<ProductTypeEntity> productTypes) {
+    public ProductDto(String name, BigDecimal price, String ingredients, List<ProductTypeDto> productTypes) {
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
         this.productTypes = productTypes;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -59,11 +57,11 @@ public class ProductDto {
         this.ingredients = ingredients;
     }
 
-    public List<ProductTypeEntity> getProductTypes() {
+    public List<ProductTypeDto> getProductTypes() {
         return productTypes;
     }
 
-    public void setProductTypes(List<ProductTypeEntity> productTypes) {
+    public void setProductTypes(List<ProductTypeDto> productTypes) {
         this.productTypes = productTypes;
     }
 }
