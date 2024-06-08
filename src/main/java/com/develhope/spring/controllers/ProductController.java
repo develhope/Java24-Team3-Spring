@@ -51,11 +51,11 @@ public class ProductController {
         return ResponseEntity.ok(productsFoundList);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ResponseModel> updateProduct(@PathVariable Long id, @RequestBody ProductDto productDto) {
-        ResponseModel updatedProduct = this.productService.updateProduct(id, productDto);
-        return ResponseEntity.ok(updatedProduct);
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<ResponseModel> updateProduct(@PathVariable Long id, @RequestBody ProductDto productDto) {
+//        ResponseModel updatedProduct = this.productService.updateProduct(id, productDto);
+//        return ResponseEntity.ok(updatedProduct);
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseModel> deleteProduct(@PathVariable Long id) {

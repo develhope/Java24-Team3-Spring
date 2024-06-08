@@ -2,7 +2,7 @@ package com.develhope.spring.models;
 
 public enum ResponseCode {
 
-    A(CodeType.FAIL, "Creation of the record failed due to invalid parameters."),
+    A(CodeType.FAIL, "Creation of the record failed."),
     B(CodeType.SUCCESS, "Record creation successful."),
     C(CodeType.SUCCESS, "Record found in the database."),
     D(CodeType.SUCCESS, "Record not present in the database."),
@@ -11,7 +11,8 @@ public enum ResponseCode {
     G(CodeType.SUCCESS, "Record modification successful."),
     H(CodeType.SUCCESS, "Record has been deleted from the DB."),
     I(CodeType.SUCCESS, "Seeding completed successfully."),
-    J(CodeType.SUCCESS, "Records in the database have been deleted.");
+    J(CodeType.SUCCESS, "Records in the database have been deleted."),
+    K(CodeType.SUCCESS, "Record modification fail.");
 
 
 

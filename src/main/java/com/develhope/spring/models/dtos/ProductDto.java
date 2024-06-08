@@ -15,12 +15,13 @@ public class ProductDto {
 
     private String ingredients;
 
-    private List<ProductTypeEntity> productTypes;
+    private List<ProductTypeDto> productTypes;
 
     public ProductDto() {
     }
 
-    public ProductDto(String name, BigDecimal price, String ingredients, List<ProductTypeEntity> productTypes) {
+    public ProductDto(Long id, String name, BigDecimal price, String ingredients, List<ProductTypeDto> productTypes) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
@@ -59,11 +60,11 @@ public class ProductDto {
         this.ingredients = ingredients;
     }
 
-    public List<ProductTypeEntity> getProductTypes() {
+    public List<ProductTypeDto> getProductTypes() {
         return productTypes;
     }
 
-    public void setProductTypes(List<ProductTypeEntity> productTypes) {
+    public void setProductTypes(List<ProductTypeDto> productTypes) {
         this.productTypes = productTypes;
     }
 }

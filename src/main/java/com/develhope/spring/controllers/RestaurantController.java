@@ -30,14 +30,14 @@ public class RestaurantController {
 
     @ResponseBody
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseModel> getRestaurant(@PathVariable("id") Long id) {
+    public ResponseEntity<ResponseModel> getRestaurant(@PathVariable("id") String id) {
         ResponseModel response  = restaurantService.getRestaurantById(id);
         return  ResponseEntity.ok().body(response);
     }
 
     @ResponseBody
     @PatchMapping("{id}")
-    public ResponseEntity<ResponseModel> updateRestaurant(@PathVariable("id") Long id, @RequestBody RestaurantDto resDto) {
+    public ResponseEntity<ResponseModel> updateRestaurant(@PathVariable("id") String id, @RequestBody RestaurantDto resDto) {
         ResponseModel response  = restaurantService.updateRestaurant(id, resDto);
         return  ResponseEntity.ok().body(response);
     }
@@ -51,7 +51,7 @@ public class RestaurantController {
 
     @ResponseBody
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseModel> deleteRestaurant(@PathVariable("id") Long id) {
+    public ResponseEntity<ResponseModel> deleteRestaurant(@PathVariable("id") String id) {
         ResponseModel response  = restaurantService.deleteRestaurantById(id);
         return ResponseEntity.ok().body(response);
     }

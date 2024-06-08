@@ -22,6 +22,12 @@ public class RestaurantMapper {
     @Autowired
     AddressMapper addressMapper;
 
+    @Autowired
+    RestaurantTypeMapper restaurantTypeMapper;
+
+    @Autowired
+    OwnerMapper ownerMapper;
+
     public RestaurantDto toDto(RestaurantEntity restaurantEntity){
         if (restaurantEntity == null) {
             return null;
@@ -38,17 +44,20 @@ public class RestaurantMapper {
             }
         }
 
+
         return new RestaurantDto(
                 restaurantEntity.getId_restaurant(),
-                restaurantEntity.getEmail(),
+                ownerMapper.toDTO(restaurantEntity.getOwnerEntity()),
                 restaurantEntity.getRestaurantName(),
+                restaurantEntity.getRestaurantEmail(),
                 restaurantEntity.getRestaurantPhoneNumber(),
-                addressMapper.toDto( restaurantEntity.getAddressEntity()),
+                addressMapper.toDto(restaurantEntity.getAddressEntity()),
                 restaurantEntity.getDescription(),
                 restaurantEntity.getIsDeliveryAvailable(),
                 restaurantEntity.getIsTakeAwayAvaible(),
-                productDtos,
-                operatingHoursMapper.toDto(restaurantEntity.getOperatingHoursEntity())
+                operatingHoursMapper.toDto(restaurantEntity.getOperatingHoursEntities()),
+                restaurantTypeMapper.toDto(restaurantEntity.getRestaurantTypeEntities()),
+                productDtos
         );
     }
 
@@ -71,18 +80,21 @@ public class RestaurantMapper {
         boolean delivery =  resDto.getIsDeliveryAvailable() == null ? false: resDto.getIsDeliveryAvailable() ? true : false;
         boolean takeAway =  resDto.getIsTakeAwayAvailable() == null ? false: resDto.getIsTakeAwayAvailable() ? true : false;
 
-
+        new RestaurantEntity();
         return new RestaurantEntity(
                 resDto.getId_restaurant(),
-                resDto.getEmail(),
+                ownerMapper.toEntity(resDto.getOwnerDto()),
                 resDto.getRestaurantName(),
+                resDto.getRestaurantEmail(),
                 resDto.getRestaurantPhoneNumber(),
-                addressMapper.toEntity( resDto.getAddressDto()),
+                addressMapper.toEntity(resDto.getAddressDto()),
                 resDto.getDescription(),
                 delivery,
                 takeAway,
-                productEntities,
-                operatingHoursMapper.toEntity(resDto.getOperatingHoursDto())
+                operatingHoursMapper.toEntity(resDto.getOperatingHoursDtos()),
+                restaurantTypeMapper.toEntity(resDto.getRestaurantTypeDtos()) ,
+                productEntities
+
         );
     }
 }

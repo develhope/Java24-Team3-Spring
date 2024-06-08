@@ -5,22 +5,19 @@ import jakarta.persistence.Column;
 import java.math.BigDecimal;
 
 public class AddressDto {
-    private Long id_address;
-
+    private String id_address;
     private String country;
-
     private String postcode;
     private String city;
     private String street;
-    private Double number;
+    private String number;
     private String note;
-    private BigDecimal lat;
-    private BigDecimal lon;
+    private BigDecimal[] coordinates = new BigDecimal[2];
 
     public AddressDto() {
     }
 
-    public AddressDto(Long id_address, String country, String postcode, String city, String street, Double number, String note, BigDecimal lat, BigDecimal lon) {
+    public AddressDto(String id_address, String country, String postcode, String city, String street, String number, String note, BigDecimal[] coordinates) {
         this.id_address = id_address;
         this.country = country;
         this.postcode = postcode;
@@ -28,15 +25,14 @@ public class AddressDto {
         this.street = street;
         this.number = number;
         this.note = note;
-        this.lat = lat;
-        this.lon = lon;
+        this.coordinates = coordinates;
     }
 
-    public Long getId_address() {
+    public String getId_address() {
         return id_address;
     }
 
-    public void setId_address(Long id_address) {
+    public void setId_address(String id_address) {
         this.id_address = id_address;
     }
 
@@ -46,6 +42,14 @@ public class AddressDto {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
     }
 
     public String getCity() {
@@ -64,11 +68,11 @@ public class AddressDto {
         this.street = street;
     }
 
-    public Double getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Double number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -80,27 +84,11 @@ public class AddressDto {
         this.note = note;
     }
 
-    public String getPostcode() {
-        return postcode;
+    public BigDecimal[] getCoordinates() {
+        return coordinates;
     }
 
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
-
-    public BigDecimal getLat() {
-        return lat;
-    }
-
-    public void setLat(BigDecimal lat) {
-        this.lat = lat;
-    }
-
-    public BigDecimal getLon() {
-        return lon;
-    }
-
-    public void setLon(BigDecimal lon) {
-        this.lon = lon;
+    public void setCoordinates(BigDecimal[] coordinates) {
+        this.coordinates = coordinates;
     }
 }

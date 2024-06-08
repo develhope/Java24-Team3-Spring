@@ -1,17 +1,18 @@
 package com.develhope.spring.services;
 
-import com.develhope.spring.daos.AddressDao;
-import com.develhope.spring.daos.RestaurantDao;
-import com.develhope.spring.exceptions.RestaurantNameException;
+import com.develhope.spring.daos.*;
 import com.develhope.spring.mappers.AddressMapper;
 import com.develhope.spring.mappers.OperatingHoursMapper;
 import com.develhope.spring.mappers.RestaurantMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
+import com.develhope.spring.models.dtos.AddressDto;
 import com.develhope.spring.models.dtos.RestaurantDto;
-import com.develhope.spring.models.entities.AddressEntity;
-import com.develhope.spring.models.entities.RestaurantEntity;
+import com.develhope.spring.models.entities.*;
+import com.develhope.spring.validators.AddressValidator;
+import com.develhope.spring.validators.ContactValidator;
 import com.develhope.spring.validators.RestaurantValidator;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +25,16 @@ public class RestaurantService {
 
     @Autowired
     private RestaurantDao resDao;
-
     @Autowired
     private AddressDao addrDao;
+    @Autowired
+    private OwnerDao ownerDao;
+    @Autowired
+    private RestaurantTypeDao restaurantTypeDao;
+    @Autowired
+    private ProductDao productDao;
+    @Autowired
+    private OperatingHoursDao operatingHoursDao;
 
     double restaurantRadiousKm = 10;
 
@@ -42,24 +50,47 @@ public class RestaurantService {
     @Autowired
     OperatingHoursMapper operatingHoursMapper;
 
+    @Autowired
+    AddressValidator addressValidator;
+
+    @Autowired
+    ContactValidator contactValidator;
+
+
+
     public ResponseModel createRestaurant(RestaurantDto resDto) {
 
         try {
+            //validation
             restaurantValidator.validateRestaurantName(resDto.getRestaurantName());
+            AddressDto validAddressDto = addressValidator.getValidAddress(resDto.getAddressDto());
+            contactValidator.validatePhoneNumber(resDto.getRestaurantPhoneNumber());
+            contactValidator.validateEmail(resDto.getRestaurantEmail());
+
+
+            // convert Dto to Entity and save in DB
             RestaurantEntity resEntity = restaurantMapper.toEntity(resDto);
-            AddressEntity addressEntitySaved = addrDao.save(resEntity.getAddressEntity());
+            OwnerEntity ownerEntitySaved = ownerDao.save(resEntity.getOwnerEntity());
+            AddressEntity addressEntitySaved = addrDao.save(addressMapper.toEntity(validAddressDto));
+            List<OperatingHoursEntity> operatingHoursEntitiesSaved = operatingHoursDao.saveAll(resEntity.getOperatingHoursEntities());
+            List<RestaurantTypeEntity> restaurantTypeEntitiesSaved = restaurantTypeDao.saveAll(resEntity.getRestaurantTypeEntities());
+            List<ProductEntity> productEntitiesSaved = productDao.saveAll(resEntity.getProductEntities());
+
+            // update Dto with ids and retun Dto
+            resEntity.setOwnerEntity(ownerEntitySaved);
             resEntity.setAddressEntity(addressEntitySaved);
-
-
+            resEntity.setOperatingHoursEntities(operatingHoursEntitiesSaved);
+            resEntity.setRestaurantTypeEntities(restaurantTypeEntitiesSaved);
+            resEntity.setProductEntities(productEntitiesSaved);
             RestaurantEntity resEntitySaved = resDao.save(resEntity);
             RestaurantDto resDtoSaved = restaurantMapper.toDto(resEntitySaved);
             return new ResponseModel(ResponseCode.B, resDtoSaved);
-        } catch (RestaurantNameException e) {
+        } catch (Exception e) {
             return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
     }
 
-    public ResponseModel getRestaurantById(Long id) {
+    public ResponseModel getRestaurantById(String id) {
         Optional<RestaurantEntity> optRes = resDao.findById(id);
 
         if (optRes.isPresent()) {
@@ -88,47 +119,61 @@ public class RestaurantService {
     }
 
 
-    public ResponseModel updateRestaurant(long id, RestaurantDto resDto) {
+    public ResponseModel updateRestaurant(String id, RestaurantDto resDtoUpdates) {
         Optional<RestaurantEntity> optRes = resDao.findById(id);
 
         if (optRes.isPresent()) {
             RestaurantEntity restaurantEntityInDB = optRes.get();
-            if (resDto != null) {
-                RestaurantEntity resEntity = restaurantMapper.toEntity(resDto);
-                if (resEntity.getId_restaurant() != null) {
-                    return new ResponseModel(ResponseCode.F);
-                } else {
-                    resEntity.setId_restaurant(id);
-                }
-                if (resEntity.getEmail() != null) {
-                    restaurantEntityInDB.setEmail(resEntity.getEmail());
-                }
-                if (resEntity.getRestaurantName() != null) {
-                    restaurantEntityInDB.setRestaurantName(resEntity.getRestaurantName());
-                }
-                if (resEntity.getRestaurantPhoneNumber() != null) {
-                    restaurantEntityInDB.setRestaurantPhoneNumber(resEntity.getRestaurantPhoneNumber());
-                }
-                if (resEntity.getAddressEntity() != null) {
-                    restaurantEntityInDB.setAddressEntity(resEntity.getAddressEntity());
-                }
-                if (resEntity.getDescription() != null) {
-                    restaurantEntityInDB.setDescription(resEntity.getDescription());
-                }
-                if (resDto.getIsDeliveryAvailable() != null) {
-                    // problema dei boolean
-                    restaurantEntityInDB.setIsDeliveryAvailable(resDto.getIsDeliveryAvailable());
-                }
-                if (resDto.getIsTakeAwayAvailable() != null) {
-                    // problema dei boolean
-                    restaurantEntityInDB.setIsTakeAwayAvaible(resEntity.getIsTakeAwayAvaible());
-                }
-                if (resEntity.getProductEntities() != null) {
-                    restaurantEntityInDB.setProductEntities(resEntity.getProductEntities());
-                }
-                if (resEntity.getOperatingHoursEntity() != null) {
-                    restaurantEntityInDB.setOperatingHoursEntity(resEntity.getOperatingHoursEntity());
-                }
+            if (resDtoUpdates != null) {
+                try{
+                    RestaurantEntity resEntityUpdates = restaurantMapper.toEntity(resDtoUpdates);
+                    if (resEntityUpdates.getId_restaurant() != null) {
+                        return new ResponseModel(ResponseCode.F);
+                    } else {
+                        resEntityUpdates.setId_restaurant(id);
+                    }
+                    if (resEntityUpdates.getOwnerEntity() != null) {
+                        restaurantEntityInDB.setOwnerEntity(ownerDao.save(resEntityUpdates.getOwnerEntity()));
+                    }
+                    if (resEntityUpdates.getRestaurantName() != null) {
+                        restaurantValidator.validateRestaurantName(resEntityUpdates.getRestaurantName());
+                        restaurantEntityInDB.setRestaurantName(resEntityUpdates.getRestaurantName());
+                    }
+                    if (resEntityUpdates.getRestaurantEmail() != null) {
+                        contactValidator.validateEmail(resEntityUpdates.getRestaurantEmail());
+                        restaurantEntityInDB.setRestaurantEmail(resEntityUpdates.getRestaurantEmail());
+                    }
+                    if (resEntityUpdates.getRestaurantPhoneNumber() != null) {
+                        contactValidator.validatePhoneNumber(resEntityUpdates.getRestaurantPhoneNumber());
+                        restaurantEntityInDB.setRestaurantPhoneNumber(resEntityUpdates.getRestaurantPhoneNumber());
+                    }
+                    if (resEntityUpdates.getAddressEntity() != null) {
+                        AddressDto validAddressDto = addressValidator.getValidAddress(resDtoUpdates.getAddressDto());
+                        AddressEntity validAddressEntity = AddressMapper.toEntity(validAddressDto);
+                        restaurantEntityInDB.setAddressEntity(addrDao.save(validAddressEntity));
+                    }
+                    if (resEntityUpdates.getDescription() != null) {
+                        restaurantEntityInDB.setDescription(resEntityUpdates.getDescription());
+                    }
+                    if (resDtoUpdates.getIsDeliveryAvailable() != null) {
+                        restaurantEntityInDB.setIsDeliveryAvailable(resDtoUpdates.getIsDeliveryAvailable());
+                    }
+                    if (resDtoUpdates.getIsTakeAwayAvailable() != null) {
+                        restaurantEntityInDB.setIsTakeAwayAvaible(resEntityUpdates.getIsTakeAwayAvaible());
+                    }
+                    if (resEntityUpdates.getOperatingHoursEntities() != null) {
+                        restaurantEntityInDB.setOperatingHoursEntities(operatingHoursDao.saveAll(resEntityUpdates.getOperatingHoursEntities()));
+                    }
+                    if (resEntityUpdates.getRestaurantTypeEntities() != null) {
+                        restaurantEntityInDB.setRestaurantTypeEntities(restaurantTypeDao.saveAll(resEntityUpdates.getRestaurantTypeEntities()));
+                    }
+                    if (resEntityUpdates.getProductEntities() != null) {
+                        restaurantEntityInDB.setProductEntities(productDao.saveAll(resEntityUpdates.getProductEntities()));
+                    }
+                } catch (Exception e) {
+                return new ResponseModel(ResponseCode.K).addMessageDetails(e.getMessage());
+            }
+
 
             }
             resDao.save(restaurantEntityInDB);
@@ -140,7 +185,8 @@ public class RestaurantService {
         }
     }
 
-    public ResponseModel deleteRestaurantById(Long id) {
+    @Transactional
+    public ResponseModel deleteRestaurantById(String id) {
         Optional<RestaurantEntity> optRes = resDao.findById(id);
 
         if (optRes.isPresent()) {

@@ -2,22 +2,25 @@ package com.develhope.spring.mappers;
 
 import com.develhope.spring.models.dtos.ProductDto;
 import com.develhope.spring.models.entities.ProductEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProductMapper {
 
+    @Autowired
+    ProductTypeMapper productTypeMapper;
+
     public ProductEntity toEntity(ProductDto productDTO) {
         if (productDTO == null) {
             return null;
         }
-
         ProductEntity productEntity = new ProductEntity();
         productEntity.setId(productDTO.getId());
         productEntity.setName(productDTO.getName());
         productEntity.setPrice(productDTO.getPrice());
         productEntity.setIngredients(productDTO.getIngredients());
-        productEntity.setProductTypes(productDTO.getProductTypes());
+        productEntity.setProductTypes(productTypeMapper.toEntity(productDTO.getProductTypes()));
 
         return productEntity;
     }
@@ -32,7 +35,7 @@ public class ProductMapper {
         productDto.setName(productEntity.getName());
         productDto.setPrice(productEntity.getPrice());
         productDto.setIngredients(productEntity.getIngredients());
-        productDto.setProductTypes(productEntity.getProductTypes());
+        productDto.setProductTypes(productTypeMapper.toDto(productEntity.getProductTypes()));
 
         return productDto;
     }

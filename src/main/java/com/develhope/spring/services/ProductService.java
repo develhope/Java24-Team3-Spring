@@ -41,7 +41,7 @@ public class ProductService {
             this.productDao.saveAndFlush(newProduct);
             return new ResponseModel(ResponseCode.B,  productMapper.toDto(newProduct));
         } catch (InvalidProductException e) {
-            return new ResponseModel(ResponseCode.A).addMessageDetails( e.getMessage());
+            return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
 
     }
@@ -104,27 +104,27 @@ public class ProductService {
      * @param productUpdates ProductDto
      * @return a product updated
      */
-    public ResponseModel updateProduct(Long id, ProductDto productUpdates) {
-        Optional<ProductEntity> productToUpdate = this.productDao.findById(id);
-        if (productToUpdate.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("Product not found with the selected ID");
-        } else if (productUpdates != null) {
-            if (productUpdates.getName() != null) {
-                productToUpdate.get().setName(productUpdates.getName());
-            }
-            if (productUpdates.getPrice() != null) {
-                productToUpdate.get().setPrice(productUpdates.getPrice());
-            }
-            if (productUpdates.getIngredients() != null) {
-                productToUpdate.get().setIngredients(productUpdates.getIngredients());
-            }
-            if (productUpdates.getProductTypes() != null) {
-                productToUpdate.get().setProductTypes(productUpdates.getProductTypes());
-            }
-            return new ResponseModel(ResponseCode.G, this.productMapper.toDto(this.productDao.saveAndFlush(productToUpdate.get())));
-        }
-        return new ResponseModel(ResponseCode.A).addMessageDetails( "Impossible to update, the body should not be null");
-    }
+//    public ResponseModel updateProduct(Long id, ProductDto productUpdates) {
+//        Optional<ProductEntity> productToUpdate = this.productDao.findById(id);
+//        if (productToUpdate.isEmpty()) {
+//            return new ResponseModel(ResponseCode.D).addMessageDetails("Product not found with the selected ID");
+//        } else if (productUpdates != null) {
+//            if (productUpdates.getName() != null) {
+//                productToUpdate.get().setName(productUpdates.getName());
+//            }
+//            if (productUpdates.getPrice() != null) {
+//                productToUpdate.get().setPrice(productUpdates.getPrice());
+//            }
+//            if (productUpdates.getIngredients() != null) {
+//                productToUpdate.get().setIngredients(productUpdates.getIngredients());
+//            }
+//            if (productUpdates.getProductTypes() != null) {
+//                productToUpdate.get().setProductTypes(productUpdates.getProductTypes());
+//            }
+//            return new ResponseModel(ResponseCode.G, this.productMapper.toDto(this.productDao.saveAndFlush(productToUpdate.get())));
+//        }
+//        return new ResponseModel(ResponseCode.A).addMessageDetails( "Impossible to update, the body should not be null");
+//    }
 
     /**
      * @param id product id

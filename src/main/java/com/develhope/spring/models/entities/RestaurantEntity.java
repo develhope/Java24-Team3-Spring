@@ -4,26 +4,28 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "restaurant")
 public class RestaurantEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id_restaurant;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id_restaurant;
 
-    @Column
-    private String email;
-
-    @Column
-    private String password;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private OwnerEntity ownerEntity;
 
     @Column
     private String restaurantName;
 
     @Column
+    private String restaurantEmail;
+
+    @Column
     private String restaurantPhoneNumber;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "adress_id")
     private AddressEntity addressEntity;
 
@@ -34,58 +36,76 @@ public class RestaurantEntity {
     @Column
     boolean isTakeAwayAvailable;
 
-    // cascade = CascadeType.ALL,
-    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "restaurant_turn",
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "hour_id"))
+    private List<OperatingHoursEntity> operatingHoursEntities;
+
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "restaurant_restaurantType",
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "restaurantType_id"))
+    private List<RestaurantTypeEntity> restaurantTypeEntities;
+
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "restaurant_product",
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<ProductEntity> productEntities;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "restaurant_turn",
-            joinColumns = @JoinColumn(name = "restaurant_id"),
-            inverseJoinColumns = @JoinColumn(name = "hour_id"))
-    private List<OperatingHoursEntity> operatingHoursEntity;
+
 
     public RestaurantEntity() {
     }
 
-    public RestaurantEntity(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressEntity addressEntity, String description, boolean isDeliveryAvaible, boolean isTakeAwayAvaible, List<ProductEntity> items, List<OperatingHoursEntity> operatingHours) {
-        this.id_restaurant = id_user;
-        this.email = email;
+    public RestaurantEntity(String id_restaurant, OwnerEntity ownerEntity, String restaurantName, String restaurantEmail, String restaurantPhoneNumber, AddressEntity addressEntity, String description, boolean isDeliveryAvailable, boolean isTakeAwayAvailable, List<OperatingHoursEntity> operatingHoursEntity, List<RestaurantTypeEntity> restaurantTypeEntity, List<ProductEntity> productEntities) {
+        this.id_restaurant = id_restaurant;
+        this.ownerEntity = ownerEntity;
         this.restaurantName = restaurantName;
+        this.restaurantEmail = restaurantEmail;
         this.restaurantPhoneNumber = restaurantPhoneNumber;
         this.addressEntity = addressEntity;
         this.description = description;
-        this.isDeliveryAvailable = isDeliveryAvaible;
-        this.isTakeAwayAvailable = isTakeAwayAvaible;
-        this.productEntities = items;
-        this.operatingHoursEntity = operatingHours;
+        this.isDeliveryAvailable = isDeliveryAvailable;
+        this.isTakeAwayAvailable = isTakeAwayAvailable;
+        this.operatingHoursEntities = operatingHoursEntity;
+        this.restaurantTypeEntities = restaurantTypeEntity;
+        this.productEntities = productEntities;
     }
 
+    public OwnerEntity getOwnerEntity() {
+        return ownerEntity;
+    }
 
-    public Long getId_restaurant() {
+    public void setOwnerEntity(OwnerEntity ownerEntity) {
+        this.ownerEntity = ownerEntity;
+    }
+
+    public String getRestaurantEmail() {
+        return restaurantEmail;
+    }
+
+    public void setRestaurantEmail(String restaurantEmail) {
+        this.restaurantEmail = restaurantEmail;
+    }
+
+    public List<RestaurantTypeEntity> getRestaurantTypeEntities() {
+        return restaurantTypeEntities;
+    }
+
+    public void setRestaurantTypeEntities(List<RestaurantTypeEntity> restaurantTypeEntities) {
+        this.restaurantTypeEntities = restaurantTypeEntities;
+    }
+
+    public String getId_restaurant() {
         return id_restaurant;
     }
 
-    public void setId_restaurant(Long id_restaurant) {
+    public void setId_restaurant(String id_restaurant) {
         this.id_restaurant = id_restaurant;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getRestaurantName() {
@@ -128,12 +148,12 @@ public class RestaurantEntity {
         this.productEntities = productEntities;
     }
 
-    public List<OperatingHoursEntity> getOperatingHoursEntity() {
-        return operatingHoursEntity;
+    public List<OperatingHoursEntity> getOperatingHoursEntities() {
+        return operatingHoursEntities;
     }
 
-    public void setOperatingHoursEntity(List<OperatingHoursEntity> operatingHoursEntity) {
-        this.operatingHoursEntity = operatingHoursEntity;
+    public void setOperatingHoursEntities(List<OperatingHoursEntity> operatingHoursEntities) {
+        this.operatingHoursEntities = operatingHoursEntities;
     }
 
     public boolean getIsDeliveryAvailable() {
