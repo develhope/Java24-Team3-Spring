@@ -1,5 +1,6 @@
 package com.develhope.spring.controllers;
-import com.develhope.spring.dto.AdminDTO;
+import com.develhope.spring.models.ResponseModel;
+import com.develhope.spring.models.dtos.AdminDto;
 import com.develhope.spring.exceptions.AdminNotFoundException;
 import com.develhope.spring.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,48 +21,51 @@ public class AdminController {
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<AdminDTO> createAdmin(@RequestBody AdminDTO adminDTO){
-        AdminDTO adminCreated = this.adminService.createAdmin(adminDTO);
-        return ResponseEntity.ok(adminCreated);
+    public ResponseEntity<ResponseModel> createAdmin(@RequestBody AdminDto adminDTO){
+        ResponseModel response = adminService.createAdmin(adminDTO);
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<List<AdminDTO>> getAllAdmins(){
-        List<AdminDTO> adminList = this.adminService.getAllAdmins();
+    public ResponseEntity<ResponseModel> getAllAdmins(){
+        ResponseModel adminList = this.adminService.getAllAdmins();
         return ResponseEntity.ok().body(adminList);
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<AdminDTO> getAdmin(@PathVariable Long id) throws Exception{
-        try {
-            AdminDTO adminFound = this.adminService.getAdmin(id);
-            return ResponseEntity.ok().body(adminFound);
-        } catch(AdminNotFoundException exception){
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ResponseModel> getAdmin(@PathVariable Long id) {
+        ResponseModel response = adminService.getAdmin(id);
+        return ResponseEntity.ok().body(response);
     }
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<AdminDTO> updateAdmin(@PathVariable Long id, @RequestBody AdminDTO adminDTO){
-        AdminDTO updatedAdmin = this.adminService.updateAdmin(id, adminDTO);
+    public ResponseEntity<ResponseModel> updateAdmin(@PathVariable Long id, @RequestBody AdminDto adminDTO){
+        ResponseModel updatedAdmin = this.adminService.updateAdmin(id, adminDTO);
         return ResponseEntity.ok().body(updatedAdmin);
     }
 
     @PatchMapping("/password/{id}")
     @ResponseBody
-    public ResponseEntity<AdminDTO> updatePassword(@PathVariable Long id, @RequestBody AdminDTO adminDTO){
-        AdminDTO updatedAdmin = this.adminService.updatePassword(id, adminDTO);
-        return ResponseEntity.ok().body(updatedAdmin);
+    public ResponseEntity<ResponseModel> updatePassword(@PathVariable Long id, @RequestBody AdminDto adminDTO){
+        ResponseModel updatedAdmin = this.adminService.updatePassword(id, adminDTO);
+        return ResponseEntity.ok(updatedAdmin);
     }
 
     @DeleteMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<String> deleteAdmin(@PathVariable Long id){
-        this.adminService.deleteAdmin(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ResponseModel> deleteAdminById(@PathVariable Long id){
+        ResponseModel deletedAdmin = this.adminService.deleteAdmin(id);
+        return ResponseEntity.ok(deletedAdmin);
+    }
+
+    @DeleteMapping
+    @ResponseBody
+    public ResponseEntity<ResponseModel> deleteAllAdmins(){
+        ResponseModel adminsDeleted = this.adminService.deleteAllAdmins();
+        return ResponseEntity.ok(adminsDeleted);
     }
 
 

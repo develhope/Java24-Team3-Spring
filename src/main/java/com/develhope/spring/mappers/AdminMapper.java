@@ -1,20 +1,21 @@
 package com.develhope.spring.mappers;
 
-import com.develhope.spring.dto.AdminDTO;
-import com.develhope.spring.entities.AdminEntity;
+import com.develhope.spring.models.dtos.AdminDto;
+import com.develhope.spring.models.entities.AdminEntity;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class AdminMapper {
 
-    public AdminEntity toEntity(AdminDTO adminDTO) {
+    public AdminEntity toEntity(AdminDto adminDTO) {
         if (adminDTO == null) {
             return null;
         }
 
         AdminEntity adminEntity = new AdminEntity();
 
+        adminEntity.setId(adminDTO.getId());
         adminEntity.setEmail(adminDTO.getEmail());
         adminEntity.setPassword(adminDTO.getPassword());
         adminEntity.setName(adminDTO.getName());
@@ -26,21 +27,22 @@ public class AdminMapper {
         return adminEntity;
     }
 
-    public AdminDTO toDTO(AdminEntity adminEntity) {
+    public AdminDto toDto(AdminEntity adminEntity) {
         if (adminEntity == null) {
             return null;
         }
 
-        AdminDTO adminDTO = new AdminDTO();
+        AdminDto adminDto = new AdminDto();
 
-        adminDTO.setEmail(adminEntity.getEmail());
-        adminDTO.setPassword(adminEntity.getPassword());
-        adminDTO.setName(adminEntity.getName());
-        adminDTO.setSurname(adminEntity.getSurname());
-        adminDTO.setPhoneNumber(adminEntity.getPhoneNumber());
-        adminDTO.setIsDeleted(adminEntity.getIsDeleted());
-        adminDTO.setIsVerified(adminEntity.getIsVerified());
+        adminDto.setId(adminEntity.getId());
+        adminDto.setEmail(adminEntity.getEmail());
+        adminDto.setPassword(adminEntity.getPassword());
+        adminDto.setsetName(adminEntity.getName());
+        adminDto.setSurname(adminEntity.getSurname());
+        adminDto.setPhoneNumber(adminEntity.getPhoneNumber());
+        adminDto.setIsDeleted(adminEntity.getIsDeleted());
+        adminDto.setIsVerified(adminEntity.getIsVerified());
 
-        return adminDTO;
+        return adminDto;
     }
 }
