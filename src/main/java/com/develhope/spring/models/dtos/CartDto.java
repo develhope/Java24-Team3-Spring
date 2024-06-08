@@ -1,11 +1,14 @@
 package com.develhope.spring.models.dtos;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.List;
 
 public class CartDto {
 
     private String id;
 
+    @JsonManagedReference(value = "b")
     private List<CartProductDto> cartProducts;
 
     public CartDto() {

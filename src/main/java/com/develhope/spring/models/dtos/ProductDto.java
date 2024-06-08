@@ -1,5 +1,7 @@
 package com.develhope.spring.models.dtos;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -14,6 +16,9 @@ public class ProductDto {
     private String ingredients;
 
     private List<ProductTypeDto> productTypes;
+
+    @JsonManagedReference(value = "a")
+    private List<CartProductDto> cartProducts;
 
     public ProductDto() {
     }

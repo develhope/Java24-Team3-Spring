@@ -66,7 +66,7 @@ public class CartService {
     }
 
     /**
-     * @param id cart id
+     * @param id          cart id
      * @param cartUpdates updates for cart
      * @return an updated cart
      */
@@ -77,7 +77,7 @@ public class CartService {
         } else if (cartUpdates != null) {
             CartEntity cartEntityUpdates = this.cartMapper.toEntity(cartUpdates);
             if (cartUpdates.getCartProducts() != null) {
-                cartToUpdate.get().setCartProducts(cartEntityUpdates.getCartProducts());
+//                cartToUpdate.get().setCartProducts(cartEntityUpdates.getCartProducts());
                 return new ResponseModel(ResponseCode.G, this.cartMapper.toDTO(this.cartDao.saveAndFlush(cartToUpdate.get())));
             }
         }
@@ -89,7 +89,7 @@ public class CartService {
      * @Effect: delete a cart by ID
      */
     public ResponseModel deleteCart(String id) {
-        if(!this.cartDao.existsById(id)) {
+        if (!this.cartDao.existsById(id)) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Cart not found with the selected ID");
         } else {
             this.cartDao.deleteById(id);

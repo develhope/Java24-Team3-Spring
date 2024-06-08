@@ -1,5 +1,6 @@
 package com.develhope.spring.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,12 +13,14 @@ public class CartProductEntity {
 
     private int quantity;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id")
+    @JsonBackReference(value = "a")
     private ProductEntity product;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "cart_id")
+    @JsonBackReference(value = "b")
     private CartEntity cart;
 
     public CartProductEntity() {

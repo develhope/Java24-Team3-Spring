@@ -1,5 +1,6 @@
 package com.develhope.spring.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -27,7 +28,8 @@ public class ProductEntity {
     @Column(name = "productTypes")
     private List<ProductTypeEntity> productTypes;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JsonManagedReference(value = "a")
     private List<CartProductEntity> cartProducts;
 
     public ProductEntity() {

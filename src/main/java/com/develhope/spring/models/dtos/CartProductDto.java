@@ -1,13 +1,17 @@
 package com.develhope.spring.models.dtos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 public class CartProductDto {
 
     private String id;
 
     private int quantity;
 
+    @JsonBackReference(value = "a")
     private ProductDto product;
 
+    @JsonBackReference(value = "b")
     private CartDto cart;
 
     public CartProductDto() {

@@ -29,7 +29,7 @@ public class ProductMapper {
         productEntity.setName(productDTO.getName());
         productEntity.setPrice(productDTO.getPrice());
         productEntity.setIngredients(productDTO.getIngredients());
-        productEntity.setProductTypes(ToEntityList(productDTO.getProductTypes()));
+        productEntity.setProductTypes(productTypeDtoToEntity(productDTO.getProductTypes()));
 
         return productEntity;
     }
@@ -45,12 +45,12 @@ public class ProductMapper {
         productDto.setName(productEntity.getName());
         productDto.setPrice(productEntity.getPrice());
         productDto.setIngredients(productEntity.getIngredients());
-        productDto.setProductTypes(ToDtoList(productEntity.getProductTypes()));
+        productDto.setProductTypes(productTypeEntityToDto(productEntity.getProductTypes()));
 
         return productDto;
     }
 
-    private List<ProductTypeEntity> ToEntityList(List<ProductTypeDto> listDto) {
+    private List<ProductTypeEntity> productTypeDtoToEntity(List<ProductTypeDto> listDto) {
         if (listDto == null) {
             return null;
         }
@@ -63,7 +63,7 @@ public class ProductMapper {
         return listEntity;
     }
 
-    private List<ProductTypeDto> ToDtoList(List<ProductTypeEntity> listEntity) {
+    private List<ProductTypeDto> productTypeEntityToDto(List<ProductTypeEntity> listEntity) {
         if (listEntity == null) {
             return null;
         }
