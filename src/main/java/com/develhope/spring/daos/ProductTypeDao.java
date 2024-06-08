@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProductTypeDao extends JpaRepository<ProductTypeEntity, Long> {
+public interface ProductTypeDao extends JpaRepository<ProductTypeEntity, String> {
 
     List<ProductTypeEntity> findByProductType(String productType);
 

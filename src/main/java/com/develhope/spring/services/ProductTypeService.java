@@ -59,7 +59,7 @@ public class ProductTypeService {
      * @param id productType id
      * @return a single product type
      */
-    public ResponseModel getSingleProductType(Long id) {
+    public ResponseModel getSingleProductType(String id) {
         Optional<ProductTypeEntity> productTypeFound = this.productTypeDao.findById(id);
         if (productTypeFound.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("ProductType not found with the selected ID");
@@ -86,10 +86,10 @@ public class ProductTypeService {
      * @param productTypeUpdates updates for a productType
      * @return a product type updated
      */
-    public ResponseModel updateProductType(Long id, ProductTypeDto productTypeUpdates) {
+    public ResponseModel updateProductType(String id, ProductTypeDto productTypeUpdates) {
         Optional<ProductTypeEntity> productTypeToUpdate = this.productTypeDao.findById(id);
         if (productTypeToUpdate.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails( "ProductType not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("ProductType not found with the selected ID");
         } else if (productTypeUpdates != null) {
             if (productTypeUpdates.getProductType() != null) {
                 productTypeToUpdate.get().setProductType(productTypeUpdates.getProductType());
@@ -102,12 +102,12 @@ public class ProductTypeService {
     /**
      * @param id Delete a product type by id
      */
-    public ResponseModel deleteProductType(Long id) {
+    public ResponseModel deleteProductType(String id) {
         if (!this.productTypeDao.existsById(id)) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("ProductType not found with the selected ID");
         } else {
             productTypeDao.deleteById(id);
-            return new ResponseModel(ResponseCode.H).addMessageDetails("ProductType eliminated");
+            return new ResponseModel(ResponseCode.H).addMessageDetails("ProductType successfully deleted");
         }
     }
 
@@ -116,7 +116,7 @@ public class ProductTypeService {
      */
     public ResponseModel deleteAllProductTypes() {
         this.productTypeDao.deleteAll();
-        return new ResponseModel(ResponseCode.H).addMessageDetails("All productTypes eliminated");
+        return new ResponseModel(ResponseCode.H).addMessageDetails("All productTypes have been deleted");
     }
 
 }
