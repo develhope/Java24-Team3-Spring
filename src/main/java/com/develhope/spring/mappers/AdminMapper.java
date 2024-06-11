@@ -2,11 +2,15 @@ package com.develhope.spring.mappers;
 
 import com.develhope.spring.models.dtos.AdminDto;
 import com.develhope.spring.models.entities.AdminEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class AdminMapper {
+
+    @Autowired
+    private UserDetailsMapper userDetailsMapper;
 
     public AdminEntity toEntity(AdminDto adminDTO) {
         if (adminDTO == null) {
@@ -18,9 +22,7 @@ public class AdminMapper {
         adminEntity.setId(adminDTO.getId());
         adminEntity.setEmail(adminDTO.getEmail());
         adminEntity.setPassword(adminDTO.getPassword());
-        adminEntity.setName(adminDTO.getName());
-        adminEntity.setSurname(adminDTO.getSurname());
-        adminEntity.setPhoneNumber(adminDTO.getPhoneNumber());
+        adminEntity.setUserDetailsEntity(userDetailsMapper.toEntity(adminDTO.getUserDetails()));
         adminEntity.setIsDeleted(adminDTO.getIsDeleted());
         adminEntity.setIsVerified(adminDTO.getIsVerified());
 
@@ -37,9 +39,7 @@ public class AdminMapper {
         adminDto.setId(adminEntity.getId());
         adminDto.setEmail(adminEntity.getEmail());
         adminDto.setPassword(adminEntity.getPassword());
-        adminDto.setsetName(adminEntity.getName());
-        adminDto.setSurname(adminEntity.getSurname());
-        adminDto.setPhoneNumber(adminEntity.getPhoneNumber());
+        adminDto.setUserDetails(userDetailsMapper.toDTO(adminEntity.getUserDetails()));
         adminDto.setIsDeleted(adminEntity.getIsDeleted());
         adminDto.setIsVerified(adminEntity.getIsVerified());
 

@@ -35,28 +35,28 @@ public class AdminController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<ResponseModel> getAdmin(@PathVariable Long id) {
+    public ResponseEntity<ResponseModel> getAdmin(@PathVariable String id) {
         ResponseModel response = adminService.getAdmin(id);
         return ResponseEntity.ok().body(response);
     }
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<ResponseModel> updateAdmin(@PathVariable Long id, @RequestBody AdminDto adminDTO){
+    public ResponseEntity<ResponseModel> updateAdmin(@PathVariable String id, @RequestBody AdminDto adminDTO){
         ResponseModel updatedAdmin = this.adminService.updateAdmin(id, adminDTO);
         return ResponseEntity.ok().body(updatedAdmin);
     }
 
     @PatchMapping("/password/{id}")
     @ResponseBody
-    public ResponseEntity<ResponseModel> updatePassword(@PathVariable Long id, @RequestBody AdminDto adminDTO){
+    public ResponseEntity<ResponseModel> updatePassword(@PathVariable String id, @RequestBody AdminDto adminDTO){
         ResponseModel updatedAdmin = this.adminService.updatePassword(id, adminDTO);
         return ResponseEntity.ok(updatedAdmin);
     }
 
     @DeleteMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<ResponseModel> deleteAdminById(@PathVariable Long id){
+    public ResponseEntity<ResponseModel> deleteAdminById(@PathVariable String id){
         ResponseModel deletedAdmin = this.adminService.deleteAdmin(id);
         return ResponseEntity.ok(deletedAdmin);
     }

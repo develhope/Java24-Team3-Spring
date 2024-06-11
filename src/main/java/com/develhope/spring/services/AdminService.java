@@ -2,13 +2,14 @@ package com.develhope.spring.services;
 
 
 
+import com.develhope.spring.mappers.UserDetailsMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.AdminDto;
 import com.develhope.spring.models.entities.AdminEntity;
 import com.develhope.spring.exceptions.AdminNotFoundException;
 import com.develhope.spring.mappers.AdminMapper;
-import com.develhope.spring.dao.AdminDao;
+import com.develhope.spring.daos.AdminDao;
 import com.develhope.spring.validators.AdminValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,11 +28,15 @@ public class AdminService {
     @Autowired
     private final AdminValidator adminValidator;
 
+    @Autowired
+    private UserDetailsMapper userDetailsMapper;
 
-    public AdminService(AdminDao adminDao, AdminMapper adminMapper, AdminValidator adminValidator) {
+
+    public AdminService(AdminDao adminDao, AdminMapper adminMapper, AdminValidator adminValidator, UserDetailsMapper userDetailsMapper) {
         this.adminDao = adminDao;
         this.adminMapper = adminMapper;
         this.adminValidator = adminValidator;
+        this.userDetailsMapper = userDetailsMapper;
     }
 
     public ResponseModel createAdmin (AdminDto adminDTO) {
@@ -45,7 +50,7 @@ public class AdminService {
         }
     }
 
-    public ResponseModel getAdmin (Long id) {
+    public ResponseModel getAdmin (String id) {
         Optional<AdminEntity> adminGetted = adminDao.findById(id);
         if (adminGetted.isPresent()) {
             AdminEntity adminEntityFound = adminGetted.get();
@@ -65,7 +70,7 @@ public class AdminService {
         }
     }
 
-    public ResponseModel updateAdmin(Long id, AdminDto adminDTO) {
+    public ResponseModel updateAdmin(String id, AdminDto adminDTO) {
         Optional<AdminEntity> adminUpdated = this.adminDao.findById(id);
         if (adminUpdated.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Admin with specified id not found");
@@ -82,21 +87,16 @@ public class AdminService {
             if (adminDTO.getIsVerified() != null) {
                 adminUpdated.get().setIsVerified(adminDTO.getIsVerified());
             }
-            if (adminDTO.getName() != null) {
-                adminUpdated.get().setName(adminDTO.getName());
+            if (adminDTO.getUserDetails() != null) {
+                adminUpdated.get().setUserDetailsEntity(userDetailsMapper.toEntity(adminDTO.getUserDetails()));
             }
-            if (adminDTO.getSurname() != null) {
-                adminUpdated.get().setSurname(adminDTO.getSurname());
-            }
-            if (adminDTO.getPhoneNumber() != null) {
-                adminUpdated.get().setPhoneNumber(adminDTO.getPhoneNumber());
-            }
+
             return new ResponseModel(ResponseCode.G, this.adminMapper.toDto(this.adminDao.saveAndFlush(adminUpdated.get())));
         }
         return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, body should not be null");
     }
 
-    public ResponseModel updatePassword(Long id, AdminDto adminDTO) {
+    public ResponseModel updatePassword(String id, AdminDto adminDTO) {
         Optional<AdminEntity> passwordUpdated = this.adminDao.findById(id);
         if (passwordUpdated.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Admin with the specified ID not found");
@@ -109,7 +109,7 @@ public class AdminService {
         return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
     }
 
-    public ResponseModel deleteAdmin(Long id) {
+    public ResponseModel deleteAdmin(String id) {
         if (!adminDao.existsById(id)) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Admin with specified id not found");
         } else {
