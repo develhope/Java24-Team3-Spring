@@ -1,7 +1,6 @@
 package com.develhope.spring.mappers;
 
 import com.develhope.spring.daos.CartDao;
-import com.develhope.spring.daos.CartProductDao;
 import com.develhope.spring.daos.CustomerDao;
 import com.develhope.spring.daos.ProductDao;
 import com.develhope.spring.models.dtos.CartDto;
@@ -42,7 +41,7 @@ public class CartMapper {
 
         cartEntity.setId(cartDto.getId());
         cartEntity.setCartProducts(cartProductDtoListToEntity(cartDto.getCartProducts()));
-        cartEntity.setCustomerEntity(customerDao.findById(cartDto.getCustomerId()).get());
+        cartEntity.setCustomer(customerDao.findById(cartDto.getCustomerId()).get());
 
 
         return cartEntity;
@@ -57,7 +56,7 @@ public class CartMapper {
 
         cartDto.setId(cartEntity.getId());
         cartDto.setCartProducts(cartProductEntityListToDto(cartEntity.getCartProducts()));
-        cartDto.setCustomerId(cartEntity.getCustomerEntity().getId());
+        cartDto.setCustomerId(cartEntity.getCustomer().getId());
 
         return cartDto;
     }
