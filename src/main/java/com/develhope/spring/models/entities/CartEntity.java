@@ -3,7 +3,6 @@ package com.develhope.spring.models.entities;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,14 +14,19 @@ public class CartEntity {
     private String id;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JsonManagedReference(value = "b")
-    private List<CartProductEntity> cartProducts = new ArrayList<>();
+    @JsonManagedReference(value = "a")
+    private List<CartProductEntity> cartProducts;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
 
     public CartEntity() {
     }
 
-    public CartEntity(List<CartProductEntity> cartProducts) {
+    public CartEntity(List<CartProductEntity> cartProducts, CustomerEntity customerEntity) {
         this.cartProducts = cartProducts;
+        this.customer = customerEntity;
     }
 
     public String getId() {
@@ -39,5 +43,13 @@ public class CartEntity {
 
     public void setCartProducts(List<CartProductEntity> cartProducts) {
         this.cartProducts = cartProducts;
+    }
+
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
     }
 }

@@ -1,26 +1,22 @@
 package com.develhope.spring.models.dtos;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 public class CartProductDto {
 
     private String id;
 
     private int quantity;
 
-    @JsonBackReference(value = "a")
-    private ProductDto product;
+    private String productId;
 
-    @JsonBackReference(value = "b")
-    private CartDto cart;
+    private String cartId;
 
     public CartProductDto() {
     }
 
-    public CartProductDto(int quantity, ProductDto product, CartDto cart) {
+    public CartProductDto(int quantity, String productId, String cartId) {
         this.quantity = quantity;
-        this.product = product;
-        this.cart = cart;
+        this.productId = productId;
+        this.cartId = cartId;
     }
 
     public String getId() {
@@ -39,19 +35,19 @@ public class CartProductDto {
         this.quantity = quantity;
     }
 
-    public ProductDto getProduct() {
-        return product;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProduct(ProductDto product) {
-        this.product = product;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
-    public CartDto getCart() {
-        return cart;
+    public String getCartId() {
+        return cartId;
     }
 
-    public void setCart(CartDto cart) {
-        this.cart = cart;
+    public void setCartId(String cartId) {
+        this.cartId = cartId;
     }
 }
