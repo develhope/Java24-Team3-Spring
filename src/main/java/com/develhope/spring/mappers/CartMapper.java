@@ -16,8 +16,6 @@ import java.util.List;
 @Component
 public class CartMapper {
 
-    private final ProductMapper productMapper;
-
     private final CustomerDao customerDao;
 
     private final CartDao cartDao;
@@ -25,8 +23,7 @@ public class CartMapper {
     private final ProductDao productDao;
 
     @Autowired
-    public CartMapper(ProductMapper productMapper, CustomerDao customerDao, CartDao cartDao, ProductDao productDao) {
-        this.productMapper = productMapper;
+    public CartMapper(CustomerDao customerDao, CartDao cartDao, ProductDao productDao) {
         this.customerDao = customerDao;
         this.cartDao = cartDao;
         this.productDao = productDao;
