@@ -39,9 +39,9 @@ public class ProductService {
             productValidator.validateProduct(productDto);
             ProductEntity newProduct = this.productMapper.toEntity(productDto);
             this.productDao.saveAndFlush(newProduct);
-            return new ResponseModel(ResponseCode.B,  productMapper.toDto(newProduct));
+            return new ResponseModel(ResponseCode.B, productMapper.toDto(newProduct));
         } catch (InvalidProductException e) {
-            return new ResponseModel(ResponseCode.A).addMessageDetails( e.getMessage());
+            return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
 
     }
@@ -54,7 +54,7 @@ public class ProductService {
         if (products.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No products were found, the list may be empty");
         } else {
-            return new ResponseModel(ResponseCode.E,  products);
+            return new ResponseModel(ResponseCode.E, products);
         }
     }
 
@@ -65,9 +65,9 @@ public class ProductService {
     public ResponseModel getSingleProductById(String id) {
         Optional<ProductEntity> productFound = this.productDao.findById(id);
         if (productFound.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails( "Product not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("Product not found with the selected ID");
         } else {
-            return new ResponseModel(ResponseCode.C,  productMapper.toDto(productFound.get()));
+            return new ResponseModel(ResponseCode.C, productMapper.toDto(productFound.get()));
         }
     }
 
@@ -80,7 +80,7 @@ public class ProductService {
         if (productsFound.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No products were found with the selected parameter");
         } else {
-            return new ResponseModel(ResponseCode.E,  productsFound);
+            return new ResponseModel(ResponseCode.E, productsFound);
         }
     }
 
@@ -95,7 +95,7 @@ public class ProductService {
         if (productsFound.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No products were found with the selected parameters");
         } else {
-            return new ResponseModel(ResponseCode.E,  productsFound);
+            return new ResponseModel(ResponseCode.E, productsFound);
         }
     }
 
@@ -124,7 +124,7 @@ public class ProductService {
             }
             return new ResponseModel(ResponseCode.G, this.productMapper.toDto(this.productDao.saveAndFlush(productToUpdate.get())));
         }
-        return new ResponseModel(ResponseCode.A).addMessageDetails( "Impossible to update, the body should not be null");
+        return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
     }
 
     /**

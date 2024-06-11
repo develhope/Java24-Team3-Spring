@@ -133,11 +133,11 @@ public class UserDetailsService {
      * @param id userDetails id
      */
     public ResponseModel deleteUserDetailsById(String id) {
-       if(!this.userDetailsDao.existsById(id)) {
+        if (!this.userDetailsDao.existsById(id)) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("UserDetails not found with the selected ID");
         }
         this.userDetailsDao.deleteById(id);
-       return new ResponseModel(ResponseCode.H).addMessageDetails("UserDetails successfully deleted");
+        return new ResponseModel(ResponseCode.H).addMessageDetails("UserDetails successfully deleted");
     }
 
     /**

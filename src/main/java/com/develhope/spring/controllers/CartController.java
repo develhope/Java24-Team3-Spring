@@ -38,11 +38,11 @@ public class CartController {
         return ResponseEntity.ok(cartsList);
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<ResponseModel> updateCartProducts(@PathVariable String id, @RequestBody CartDto cartDto) {
-//        ResponseModel updatedCart = this.cartService.updateCartsCartProducts(id, cartDto);
-//        return ResponseEntity.ok(updatedCart);
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseModel> updateCartProducts(@PathVariable String id, @RequestBody CartDto cartDto) {
+        ResponseModel updatedCart = this.cartService.updateCartsCartProducts(id, cartDto);
+        return ResponseEntity.ok(updatedCart);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseModel> deleteCartById(@PathVariable String id) {
