@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserDetailsDao extends JpaRepository<UserDetailsEntity, Long> {
+public interface UserDetailsDao extends JpaRepository<UserDetailsEntity, String> {
 
     Optional<UserDetailsEntity> findUserDetailsByPhoneNumber(String phoneNumber);
 

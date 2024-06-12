@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
-public interface ProductDao extends JpaRepository<ProductEntity, Long> {
+public interface ProductDao extends JpaRepository<ProductEntity, String> {
 
     List<ProductEntity> findProductByName(String name);
 

@@ -26,47 +26,47 @@ public class UserDetailsController {
         ResponseModel newUserDetails = this.userDetailsService.addUserDetails(userDetailsDto);
         return ResponseEntity.created(URI.create("api/v1/userDetails")).body(newUserDetails);
     }
-//
-//    @GetMapping()
-//    public ResponseEntity<List<UserDetailsDto>> getAllUserDetails() {
-//        List<UserDetailsDto> userDetailsList = this.userDetailsService.getAllUsersUserDetails();
-//        return ResponseEntity.ok().body(userDetailsList);
-//    }
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity<UserDetailsDto> getUserDetailsById(@PathVariable Long id) {
-//        UserDetailsDto userDetailsFound = this.userDetailsService.getUserDetailsById(id);
-//        return ResponseEntity.ok().body(userDetailsFound);
-//    }
+
+    @GetMapping()
+    public ResponseEntity<ResponseModel> getAllUserDetails() {
+        ResponseModel userDetailsList = this.userDetailsService.getAllUsersUserDetails();
+        return ResponseEntity.ok(userDetailsList);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseModel> getUserDetailsById(@PathVariable String id) {
+        ResponseModel userDetailsFound = this.userDetailsService.getUserDetailsById(id);
+        return ResponseEntity.ok(userDetailsFound);
+    }
 
     @GetMapping("/creationDate")
     public ResponseEntity<ResponseModel> getUserDetailsByCreationDate(@RequestParam LocalDate creationDate) {
         ResponseModel userDetailsFound = this.userDetailsService.getUserDetailsByCreationDate(creationDate);
-        return ResponseEntity.ok().body(userDetailsFound);
+        return ResponseEntity.ok(userDetailsFound);
     }
 
     @GetMapping("/phoneNumber")
     public ResponseEntity<ResponseModel> getUserDetailsByPhoneNumber(@RequestParam String phoneNumber) {
         ResponseModel userDetailsFound = this.userDetailsService.getUserDetailsByPhoneNumber(phoneNumber);
-        return ResponseEntity.ok().body(userDetailsFound);
+        return ResponseEntity.ok(userDetailsFound);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseModel> updateUserDetails(@PathVariable Long id, @RequestBody UserDetailsDto userDetailsUpdates) {
+    public ResponseEntity<ResponseModel> updateUserDetails(@PathVariable String id, @RequestBody UserDetailsDto userDetailsUpdates) {
         ResponseModel userDetailsToUpdate = this.userDetailsService.updateUserDetails(id, userDetailsUpdates);
-        return ResponseEntity.ok().body(userDetailsToUpdate);
+        return ResponseEntity.ok(userDetailsToUpdate);
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> deleteUserDetailsById(@PathVariable Long id) {
-//        this.userDetailsService.deleteUserDetailsById(id);
-//        return ResponseEntity.noContent().build();
-//    }
-//
-//    @DeleteMapping
-//    public ResponseEntity<?> deleteAllUserDetails() {
-//        this.userDetailsService.deleteAllUserDetails();
-//        return ResponseEntity.noContent().build();
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseModel> deleteUserDetailsById(@PathVariable String id) {
+        ResponseModel deletedUserDetails = this.userDetailsService.deleteUserDetailsById(id);
+        return ResponseEntity.ok(deletedUserDetails);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ResponseModel> deleteAllUserDetails() {
+        ResponseModel deletedUsersDetails = this.userDetailsService.deleteAllUserDetails();
+        return ResponseEntity.ok(deletedUsersDetails);
+    }
 
 }
