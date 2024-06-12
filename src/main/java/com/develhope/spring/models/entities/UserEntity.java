@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -15,9 +15,9 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
-    private Boolean isVerified;
+    private Boolean isVerified = false;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_details_id")
@@ -34,11 +34,11 @@ public class UserEntity {
         this.userDetails = userDetails;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

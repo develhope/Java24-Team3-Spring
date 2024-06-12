@@ -43,9 +43,9 @@ public class CustomerService {
 
         try {
             customerValidator.validateCustomer(customerDto);
-            CustomerEntity newCustomer = customerMapper.toEntity(customerDto);
-            CustomerEntity newCustomerEntity = customerDao.saveAndFlush(newCustomer);
-            return new ResponseModel(ResponseCode.B, customerMapper.toDTO(newCustomerEntity));
+            CustomerEntity newCustomer = this.customerMapper.toEntity(customerDto);
+            this.customerDao.saveAndFlush(newCustomer);
+            return new ResponseModel(ResponseCode.B, this.customerMapper.toDTO(newCustomer));
         } catch (InvalidCustomerException e) {
             return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
@@ -56,7 +56,7 @@ public class CustomerService {
      * @param id customer id
      * @return a single customer
      */
-    public ResponseModel getCustomerById(Long id) {
+    public ResponseModel getCustomerById(String id) {
         Optional<CustomerEntity> customerFound = this.customerDao.findById(id);
         if (customerFound.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
@@ -69,7 +69,7 @@ public class CustomerService {
      * @return List of all customers
      */
     public ResponseModel getAllCustomers() {
-        List<CustomerDto> customers = this.customerDao.findAll().stream().map(customerMapper::toDTO).toList();
+        List<CustomerDto> customers = this.customerDao.findAll().stream().map(this.customerMapper::toDTO).toList();
         if (customers.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No customers were found, the list may be empty");
         } else {
@@ -95,7 +95,7 @@ public class CustomerService {
      * @return all customers with the selected deleted status
      */
     public ResponseModel getCustomerByDeletedStatus(Boolean isDeleted) {
-        List<CustomerDto> customers = this.customerDao.findCustomerByIsDeleted(isDeleted).stream().map(customerMapper::toDTO).toList();
+        List<CustomerDto> customers = this.customerDao.findCustomerByIsDeleted(isDeleted).stream().map(this.customerMapper::toDTO).toList();
         if (customers.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No customers were found with the selected parameter");
         } else {
@@ -108,7 +108,7 @@ public class CustomerService {
      * @return all customers with the selected verified status
      */
     public ResponseModel getCustomersByVerifiedStatus(Boolean isVerified) {
-        List<CustomerDto> customers = this.customerDao.findCustomerByIsVerified(isVerified).stream().map(customerMapper::toDTO).toList();
+        List<CustomerDto> customers = this.customerDao.findCustomerByIsVerified(isVerified).stream().map(this.customerMapper::toDTO).toList();
         if (customers.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No customers were found with the selected parameter");
         } else {
@@ -121,24 +121,26 @@ public class CustomerService {
      * @param customerUpdates CustomerDto
      * @return a customer updated
      */
-    public ResponseModel updateCustomer(Long id, CustomerDto customerUpdates) {
+    public ResponseModel updateCustomer(String id, CustomerDto customerUpdates) {
         Optional<CustomerEntity> customerToUpdate = this.customerDao.findById(id);
         if (customerToUpdate.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
         } else if (customerUpdates != null) {
+            CustomerEntity customerEntityUpdates = this.customerMapper.toEntity(customerUpdates);
             if (customerUpdates.getEmail() != null) {
-                customerToUpdate.get().setEmail(customerUpdates.getEmail());
+                customerToUpdate.get().setEmail(customerEntityUpdates.getEmail());
             }
             if (customerUpdates.getPassword() != null) {
-                customerToUpdate.get().setPassword(customerUpdates.getPassword());
+                customerToUpdate.get().setPassword(customerEntityUpdates.getPassword());
             }
             if (customerUpdates.getIsDeleted() != null) {
-                customerToUpdate.get().setIsDeleted(customerUpdates.getIsDeleted());
+                customerToUpdate.get().setIsDeleted(customerEntityUpdates.getIsDeleted());
             }
             if (customerUpdates.getIsVerified() != null) {
-                customerToUpdate.get().setIsVerified(customerUpdates.getIsVerified());
+                customerToUpdate.get().setIsVerified(customerEntityUpdates.getIsVerified());
             }
             if (customerUpdates.getUserDetails() != null) {
+                controlla se adress record è da salvare prima
                 UserDetailsEntity updatedUserDetails = userDetailsDao.save(customerUpdates.getUserDetails());
                 customerToUpdate.get().setUserDetailsEntity(updatedUserDetails);
             }
@@ -152,14 +154,14 @@ public class CustomerService {
      * @param customerDto CustomerDto
      * @return customer with password updated
      */
-    public ResponseModel updatePassword(Long id, CustomerDto customerDto) {
+    public ResponseModel updatePassword(String id, CustomerDto customerDto) {
         Optional<CustomerEntity> customerToUpdate = this.customerDao.findById(id);
         if (customerToUpdate.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
         } else if (customerDto != null) {
             if (customerDto.getPassword() != null) {
                 customerToUpdate.get().setPassword(customerDto.getPassword());
-                return new ResponseModel(ResponseCode.G, customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
+                return new ResponseModel(ResponseCode.G, this.customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
             }
         }
         return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
@@ -168,18 +170,18 @@ public class CustomerService {
     /**
      * @param id customer id
      */
-    public ResponseModel deleteCustomer(Long id) {
+    public ResponseModel deleteCustomer(String id) {
         if (!this.customerDao.existsById(id)) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
         } else {
             this.customerDao.deleteById(id);
-            return new ResponseModel(ResponseCode.H).addMessageDetails("Customer eliminated");
+            return new ResponseModel(ResponseCode.H).addMessageDetails("Customer successfully deleted");
         }
     }
 
     public ResponseModel deleteAllCustomers() {
         this.customerDao.deleteAll();
-        return new ResponseModel(ResponseCode.H).addMessageDetails("All customers eliminated");
+        return new ResponseModel(ResponseCode.H).addMessageDetails("All customers have been deleted");
     }
 
 }

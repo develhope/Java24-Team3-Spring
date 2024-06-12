@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CustomerDao extends JpaRepository<CustomerEntity, Long> {
+public interface CustomerDao extends JpaRepository<CustomerEntity, String> {
 
     Optional<CustomerEntity> findCustomerByEmail(String email);
 

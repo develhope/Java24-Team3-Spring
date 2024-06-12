@@ -1,13 +1,13 @@
 package com.develhope.spring.models.dtos;
 
-import com.develhope.spring.models.entities.ProductTypeEntity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductDto {
 
-    private Long id;
+    private String id;
 
     private String name;
 
@@ -16,6 +16,9 @@ public class ProductDto {
     private String ingredients;
 
     private List<ProductTypeDto> productTypes;
+
+    @JsonManagedReference(value = "a")
+    private List<CartProductDto> cartProducts;
 
     public ProductDto() {
     }
@@ -28,11 +31,11 @@ public class ProductDto {
         this.productTypes = productTypes;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
