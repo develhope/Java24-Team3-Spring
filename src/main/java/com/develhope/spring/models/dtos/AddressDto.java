@@ -1,14 +1,10 @@
 package com.develhope.spring.models.dtos;
 
-import jakarta.persistence.Column;
-
 import java.math.BigDecimal;
 
 public class AddressDto {
     private Long id_address;
-
     private String country;
-
     private String postcode;
     private String city;
     private String street;

@@ -5,15 +5,10 @@ import com.develhope.spring.models.entities.UserDetailsEntity;
 public class UserDto {
 
     private Long id;
-
     private String email;
-
     private String password;
-
     private Boolean isDeleted;
-
     private Boolean isVerified;
-
     private UserDetailsEntity userDetails;
 
     public UserDto() {

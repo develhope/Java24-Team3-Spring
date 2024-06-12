@@ -3,7 +3,6 @@ package com.develhope.spring.models.dtos;
 public class ProductTypeDto {
 
     private Long id;
-
     private String productType;
 
     public ProductTypeDto() {

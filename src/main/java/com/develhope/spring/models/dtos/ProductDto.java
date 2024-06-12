@@ -1,20 +1,15 @@
 package com.develhope.spring.models.dtos;
 
 import com.develhope.spring.models.entities.ProductTypeEntity;
-
 import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductDto {
 
     private Long id;
-
     private String name;
-
     private BigDecimal price;
-
     private String ingredients;
-
     private List<ProductTypeEntity> productTypes;
 
     public ProductDto() {
