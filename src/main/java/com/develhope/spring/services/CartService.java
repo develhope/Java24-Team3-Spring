@@ -77,7 +77,7 @@ public class CartService {
         } else if (cartUpdates != null) {
             CartEntity cartEntityUpdates = this.cartMapper.toEntity(cartUpdates);
             if (cartUpdates.getCartProducts() != null) {
-//                cartToUpdate.get().setCartProducts(cartEntityUpdates.getCartProducts());
+                cartToUpdate.get().setCartProducts(cartEntityUpdates.getCartProducts());
                 return new ResponseModel(ResponseCode.G, this.cartMapper.toDTO(this.cartDao.saveAndFlush(cartToUpdate.get())));
             }
         }

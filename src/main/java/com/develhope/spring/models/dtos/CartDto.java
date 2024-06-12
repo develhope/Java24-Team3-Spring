@@ -1,21 +1,21 @@
 package com.develhope.spring.models.dtos;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import java.util.List;
 
 public class CartDto {
 
     private String id;
 
-    @JsonManagedReference(value = "b")
     private List<CartProductDto> cartProducts;
+
+    private String customerId;
 
     public CartDto() {
     }
 
-    public CartDto(List<CartProductDto> cartProducts) {
+    public CartDto(List<CartProductDto> cartProducts, String customerId) {
         this.cartProducts = cartProducts;
+        this.customerId = customerId;
     }
 
     public String getId() {
@@ -32,5 +32,13 @@ public class CartDto {
 
     public void setCartProducts(List<CartProductDto> cartProducts) {
         this.cartProducts = cartProducts;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 }

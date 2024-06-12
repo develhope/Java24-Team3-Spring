@@ -4,6 +4,7 @@ import com.develhope.spring.models.dtos.ProductDto;
 import com.develhope.spring.models.dtos.ProductTypeDto;
 import com.develhope.spring.models.entities.ProductEntity;
 import com.develhope.spring.models.entities.ProductTypeEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class ProductMapper {
 
     private final ProductTypeMapper productTypeMapper;
 
+    @Autowired
     public ProductMapper(ProductTypeMapper productTypeMapper) {
         this.productTypeMapper = productTypeMapper;
     }

@@ -52,7 +52,7 @@ public class CartProductController {
 
     @DeleteMapping
     public ResponseEntity<ResponseModel> deleteAllCartProducts() {
-        ResponseModel deletedAllCartProducts = this.cartProductService.getAllCartProducts();
+        ResponseModel deletedAllCartProducts = this.cartProductService.deleteAllCartProducts();
         return ResponseEntity.ok(deletedAllCartProducts);
     }
 

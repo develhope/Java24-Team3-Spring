@@ -83,10 +83,10 @@ public class CartProductService {
             if (cartProductUpdates.getQuantity() > 0) {
                 cartProductToUpdate.get().setQuantity(cartProductEntityUpdates.getQuantity());
             }
-            if (cartProductUpdates.getProduct() != null) {
+            if (cartProductUpdates.getProductId() != null) {
                 cartProductToUpdate.get().setProduct(cartProductEntityUpdates.getProduct());
             }
-            if (cartProductUpdates.getCart() != null) {
+            if (cartProductUpdates.getCartId() != null) {
                 cartProductToUpdate.get().setCart(cartProductEntityUpdates.getCart());
             }
             return new ResponseModel(ResponseCode.G, this.cartProductMapper.toDTO(this.cartProductDao.saveAndFlush(cartProductToUpdate.get())));

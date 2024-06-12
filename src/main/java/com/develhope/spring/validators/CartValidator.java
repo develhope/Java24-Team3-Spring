@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 public class CartValidator {
 
     public void validateCart(CartDto cartDto) throws InvalidCartException {
-        if(cartDto.getCartProducts() == null && cartDto.getCartProducts().isEmpty()) {
-            throw new InvalidCartException("The list can't be null or empty");
+        if (cartDto == null) {
+            throw new InvalidCartException("The cart can't be null");
         }
     }
 }

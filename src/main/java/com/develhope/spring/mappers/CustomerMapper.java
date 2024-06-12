@@ -2,6 +2,7 @@ package com.develhope.spring.mappers;
 
 import com.develhope.spring.models.dtos.CustomerDto;
 import com.develhope.spring.models.entities.CustomerEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,10 +10,10 @@ public class CustomerMapper {
 
     private final UserDetailsMapper userDetailsMapper;
 
+    @Autowired
     public CustomerMapper(UserDetailsMapper userDetailsMapper) {
         this.userDetailsMapper = userDetailsMapper;
     }
-
 
     public CustomerEntity toEntity(CustomerDto customerDto) {
         if (customerDto == null) {
@@ -27,6 +28,7 @@ public class CustomerMapper {
         customerEntity.setIsDeleted(customerDto.getIsDeleted());
         customerEntity.setIsVerified(customerDto.getIsVerified());
         customerEntity.setUserDetailsEntity(userDetailsMapper.toEntity(customerDto.getUserDetails()));
+
 
         return customerEntity;
     }
