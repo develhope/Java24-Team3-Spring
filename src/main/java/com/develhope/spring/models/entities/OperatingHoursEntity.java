@@ -1,6 +1,5 @@
 package com.develhope.spring.models.entities;
 
-import com.develhope.spring.models.costants.*;
 
 import jakarta.persistence.*;
 

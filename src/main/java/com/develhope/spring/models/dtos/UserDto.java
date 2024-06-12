@@ -12,7 +12,7 @@ public class UserDto {
 
     private Boolean isVerified = false;
 
-    private UserDetailsDto userDetails;
+    private UserDetailsDto userDetailsDto;
 
     public UserDto() {
     }
@@ -22,7 +22,7 @@ public class UserDto {
         this.password = password;
         this.isDeleted = isVerified;
         this.isVerified = isDeleted;
-        this.userDetails = userDetails;
+        this.userDetailsDto = userDetails;
     }
 
     public String getId() {
@@ -65,11 +65,11 @@ public class UserDto {
         this.isVerified = isVerified;
     }
 
-    public UserDetailsDto getUserDetails() {
-        return userDetails;
+    public UserDetailsDto getUserDetailsDto() {
+        return userDetailsDto;
     }
 
-    public void setUserDetails(UserDetailsDto userDetails) {
-        this.userDetails = userDetails;
+    public void setUserDetailsDto(UserDetailsDto userDetailsDto) {
+        this.userDetailsDto = userDetailsDto;
     }
 }

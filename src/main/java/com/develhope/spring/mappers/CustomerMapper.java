@@ -26,7 +26,7 @@ public class CustomerMapper {
         customerEntity.setPassword(customerDto.getPassword());
         customerEntity.setIsDeleted(customerDto.getIsDeleted());
         customerEntity.setIsVerified(customerDto.getIsVerified());
-        customerEntity.setUserDetailsEntity(userDetailsMapper.toEntity(customerDto.getUserDetails()));
+        customerEntity.setUserDetailsEntity(userDetailsMapper.toEntity(customerDto.getUserDetailsDto()));
 
         return customerEntity;
     }
@@ -43,7 +43,7 @@ public class CustomerMapper {
         customerDto.setPassword(customerEntity.getPassword());
         customerDto.setIsDeleted(customerEntity.getIsDeleted());
         customerDto.setIsVerified(customerEntity.getIsVerified());
-        customerDto.setUserDetails(userDetailsMapper.toDTO(customerEntity.getUserDetails()));
+        customerDto.setUserDetailsDto(userDetailsMapper.toDTO(customerEntity.getUserDetails()));
 
         return customerDto;
     }

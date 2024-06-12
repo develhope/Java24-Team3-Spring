@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import com.develhope.spring.models.costants.*;
 
 public class OperatingHoursDto {
 

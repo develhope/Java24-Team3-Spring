@@ -23,7 +23,7 @@ public class ProductDto {
     public ProductDto() {
     }
 
-    public ProductDto(Long id, String name, BigDecimal price, String ingredients, List<ProductTypeDto> productTypes) {
+    public ProductDto(String id, String name, BigDecimal price, String ingredients, List<ProductTypeDto> productTypes) {
         this.id = id;
         this.name = name;
         this.price = price;
