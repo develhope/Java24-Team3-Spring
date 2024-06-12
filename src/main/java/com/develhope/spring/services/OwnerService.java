@@ -1,7 +1,7 @@
 package com.develhope.spring.services;
 
 import com.develhope.spring.daos.OwnerDao;
-import com.develhope.spring.exceptions.InvalidOwnerException;
+import com.develhope.spring.daos.UserDetailsDao;
 import com.develhope.spring.mappers.OwnerMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
@@ -22,12 +22,15 @@ public class OwnerService {
     private final OwnerMapper ownerMapper;
     private final ContactValidator contactValidator;
     private final IdValidator idValidator;
+    private final UserDetailsDao userDetailsDao;
+    
 
-    public OwnerService(OwnerDao ownerDao, OwnerMapper ownerMapper, ContactValidator contactValidator, IdValidator idValidator) {
+    public OwnerService(OwnerDao ownerDao, OwnerMapper ownerMapper, ContactValidator contactValidator, IdValidator idValidator, UserDetailsDao userDetailsDao) {
         this.ownerDao = ownerDao;
         this.ownerMapper = ownerMapper;
         this.contactValidator = contactValidator;
         this.idValidator = idValidator;
+        this.userDetailsDao = userDetailsDao;
     }
 
     @Autowired
@@ -41,10 +44,10 @@ public class OwnerService {
         try {
             // validate
             idValidator.noId(ownerDto.getId());
-            idValidator.noId(ownerDto.getUserDetails().getId());
+            idValidator.noId(ownerDto.getUserDetailsDto().getId());
             contactValidator.validateEmail(ownerDto.getEmail());
             contactValidator.validatePassword(ownerDto.getPassword());
-            contactValidator.validatePhoneNumber(ownerDto.getUserDetails().getPhoneNumber());
+            contactValidator.validatePhoneNumber(ownerDto.getUserDetailsDto().getPhoneNumber());
 
 
             OwnerEntity newOwner = ownerMapper.toEntity(ownerDto);
@@ -130,8 +133,8 @@ public class OwnerService {
         if (ownerToUpdate.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Owner not found with the selected Id.");
         } else if (ownerUpdates != null) {
+            OwnerEntity ownerEntityUpdates = this.ownerMapper.toEntity(ownerUpdates);
             if (ownerUpdates.getEmail() != null) {
-
                 ownerToUpdate.get().setEmail(ownerUpdates.getEmail());
             }
             if (ownerUpdates.getPassword() != null) {
@@ -143,10 +146,11 @@ public class OwnerService {
             if (ownerUpdates.getIsVerified() != null) {
                 ownerToUpdate.get().setIsVerified(ownerUpdates.getIsVerified());
             }
-            if (ownerUpdates.getUserDetails() != null) {
-                ownerToUpdate.get().setUserDetailsEntity(ownerUpdates.getUserDetails());
+            if (ownerUpdates.getUserDetailsDto() != null) {
+                //UserDetailsEntity updatedUserDetails = userDetailsDao.save(ownerEntityUpdates.getUserDetails());
+                ownerToUpdate.get().setUserDetailsEntity(ownerEntityUpdates.getUserDetails());
             }
-            return new ResponseModel(ResponseCode.G, this.ownerMapper.toDto(this.ownerDao.saveAndFlush(ownerToUpdate.get())));
+            return new ResponseModel(ResponseCode.G, ownerMapper.toDto(ownerDao.saveAndFlush(ownerToUpdate.get())));
         }
         return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
     }
@@ -156,7 +160,7 @@ public class OwnerService {
      * @param ownerDto OwnerDto
      * @return owner with password updated
      */
-    public ResponseModel updatePassword(Long id, OwnerDto ownerDto) {
+    public ResponseModel updatePassword(String id, OwnerDto ownerDto) {
         Optional<OwnerEntity> ownerToUpdate = this.ownerDao.findById(id);
         if (ownerToUpdate.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Owner not found with the selected ID");
@@ -172,7 +176,7 @@ public class OwnerService {
     /**
      * @param id owner id
      */
-    public ResponseModel deleteOwner(Long id) {
+    public ResponseModel deleteOwner(String id) {
         if (!this.ownerDao.existsById(id)) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Owner not found with the selected ID");
         } else {

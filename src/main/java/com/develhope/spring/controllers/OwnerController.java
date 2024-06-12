@@ -14,8 +14,11 @@ import java.net.URI;
 @RequestMapping("/owner")
 public class OwnerController {
 
-    @Autowired
     private final OwnerService ownerService;
+
+    public OwnerController(OwnerService ownerService) {
+        this.ownerService = ownerService;
+    }
 
     @PostMapping
     public ResponseEntity<ResponseModel> createOwner(@RequestBody OwnerDto ownerDto) {
@@ -54,19 +57,19 @@ public class OwnerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseModel> updateOwner(@PathVariable Long id, @RequestBody OwnerDto ownerDto) {
+    public ResponseEntity<ResponseModel> updateOwner(@PathVariable String id, @RequestBody OwnerDto ownerDto) {
         ResponseModel updatedOwner = this.ownerService.updateOwner(id, ownerDto);
         return ResponseEntity.ok(updatedOwner);
     }
 
     @PatchMapping("/password/{id}")
-    public ResponseEntity<ResponseModel> changePassword(@PathVariable Long id, @RequestBody OwnerDto ownerToUpdate) {
+    public ResponseEntity<ResponseModel> changePassword(@PathVariable String id, @RequestBody OwnerDto ownerToUpdate) {
         ResponseModel response = this.ownerService.updatePassword(id, ownerToUpdate);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseModel> deleteOwnerById(@PathVariable Long id) {
+    public ResponseEntity<ResponseModel> deleteOwnerById(@PathVariable String id) {
         ResponseModel response = this.ownerService.deleteOwner(id);
         return ResponseEntity.ok(response);
     }

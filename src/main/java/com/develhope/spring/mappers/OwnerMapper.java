@@ -2,10 +2,16 @@ package com.develhope.spring.mappers;
 
 import com.develhope.spring.models.dtos.OwnerDto;
 import com.develhope.spring.models.entities.OwnerEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OwnerMapper {
+
+    @Autowired
+    private UserDetailsMapper userDetailsMapper;
+
+
     public OwnerEntity toEntity(OwnerDto ownerDto) {
         if (ownerDto == null) {
             return null;
@@ -18,7 +24,7 @@ public class OwnerMapper {
         ownerEntity.setPassword(ownerDto.getPassword());
         ownerEntity.setIsDeleted(ownerDto.getIsDeleted());
         ownerEntity.setIsVerified(ownerDto.getIsVerified());
-        ownerEntity.setUserDetailsEntity(ownerDto.getUserDetails());
+        ownerEntity.setUserDetailsEntity(userDetailsMapper.toEntity(ownerDto.getUserDetailsDto()));
 
         return ownerEntity;
     }
@@ -35,7 +41,7 @@ public class OwnerMapper {
         ownerDto.setPassword(ownerEntity.getPassword());
         ownerDto.setIsDeleted(ownerEntity.getIsDeleted());
         ownerDto.setIsVerified(ownerEntity.getIsVerified());
-        ownerDto.setUserDetailsEntity(ownerEntity.getUserDetails());
+        ownerDto.setUserDetailsDto(userDetailsMapper.toDTO(ownerEntity.getUserDetails()));
 
         return ownerDto;
     }

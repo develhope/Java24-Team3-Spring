@@ -32,8 +32,6 @@ public class CustomerService {
         this.userDetailsDao = userDetailsDao;
     }
 
-    @Autowired
-
 
     /**
      * @param customerDto CustomerDto
@@ -139,11 +137,11 @@ public class CustomerService {
             if (customerUpdates.getIsVerified() != null) {
                 customerToUpdate.get().setIsVerified(customerEntityUpdates.getIsVerified());
             }
-            if (customerUpdates.getUserDetails() != null) {
-                controlla se adress record è da salvare prima
-                UserDetailsEntity updatedUserDetails = userDetailsDao.save(customerUpdates.getUserDetails());
-                customerToUpdate.get().setUserDetailsEntity(updatedUserDetails);
-            }
+//            if (customerUpdates.getUserDetails() != null) {
+//                controlla se adress record è da salvare prima
+//                UserDetailsEntity updatedUserDetails = userDetailsDao.save(customerUpdates.getUserDetails());
+//                customerToUpdate.get().setUserDetailsEntity(updatedUserDetails);
+//            }
             return new ResponseModel(ResponseCode.G, customerMapper.toDTO(customerDao.saveAndFlush(customerToUpdate.get())));
         }
         return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
