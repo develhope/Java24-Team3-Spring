@@ -47,7 +47,7 @@ public class RestaurantMapper {
 
         return new RestaurantDto(
                 restaurantEntity.getId_restaurant(),
-                ownerMapper.toDTO(restaurantEntity.getOwnerEntity()),
+                ownerMapper.toDto(restaurantEntity.getOwnerEntity()),
                 restaurantEntity.getRestaurantName(),
                 restaurantEntity.getRestaurantEmail(),
                 restaurantEntity.getRestaurantPhoneNumber(),

@@ -13,6 +13,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+/**
+ * Service class that interacts with the GeoApify API to obtain geocoding information.
+ * This class provides a method to enrich an AddressDto object with geocoordinates
+ * and standardized address information.
+ *
+ * @Service
+ * @see <a href="https://www.geoapify.com/geocoding-api?gad_source=1&gclid=CjwKCAjw9IayBhBJEiwAVuc3fguNCm6wsJkEj22aOsvPPBoCRMaxdkS1Ha7ND7xdtkF4uHduR8rVzhoCsRwQAvD_BwE">GeoApify Geocoding API</a>
+ * @api_key Associated with the Gmail account of Chiara de Guglielmo (profilo superfalso)
+ */
 @Service
 public class OkHttpClientService {
 

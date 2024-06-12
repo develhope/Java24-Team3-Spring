@@ -23,7 +23,7 @@ public class OwnerMapper {
         return ownerEntity;
     }
 
-    public OwnerDto toDTO(OwnerEntity ownerEntity) {
+    public OwnerDto toDto(OwnerEntity ownerEntity) {
         if (ownerEntity == null) {
             return null;
         }

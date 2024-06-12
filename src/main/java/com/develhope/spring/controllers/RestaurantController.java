@@ -23,7 +23,6 @@ public class RestaurantController {
     @ResponseBody
     @PostMapping
     public ResponseEntity<ResponseModel> createRestaurant(@RequestBody RestaurantDto resDto) {
-
         ResponseModel response  = restaurantService.createRestaurant(resDto);
         return  ResponseEntity.ok().body(response);
     }
@@ -34,6 +33,13 @@ public class RestaurantController {
         ResponseModel response  = restaurantService.getRestaurantById(id);
         return  ResponseEntity.ok().body(response);
     }
+
+//    @ResponseBody
+//    @GetMapping
+//    public ResponseEntity<ResponseModel> getAllRestaurants() {
+//        ResponseModel response  = restaurantService.getAllRestaurants);
+//        return  ResponseEntity.ok().body(response);
+//    }
 
     @ResponseBody
     @PatchMapping("{id}")

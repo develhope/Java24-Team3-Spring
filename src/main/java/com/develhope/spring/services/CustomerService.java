@@ -1,5 +1,6 @@
 package com.develhope.spring.services;
 
+import com.develhope.spring.daos.UserDetailsDao;
 import com.develhope.spring.exceptions.InvalidCustomerException;
 import com.develhope.spring.mappers.CustomerMapper;
 import com.develhope.spring.models.ResponseCode;
@@ -7,6 +8,7 @@ import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.CustomerDto;
 import com.develhope.spring.models.entities.CustomerEntity;
 import com.develhope.spring.daos.CustomerDao;
+import com.develhope.spring.models.entities.UserDetailsEntity;
 import com.develhope.spring.validators.CustomerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +23,17 @@ public class CustomerService {
     private final CustomerDao customerDao;
     private final CustomerMapper customerMapper;
     private final CustomerValidator customerValidator;
+    private final UserDetailsDao userDetailsDao;
 
-    @Autowired
-    public CustomerService(CustomerDao customerDao, CustomerMapper customerMapper, CustomerValidator customerValidator) {
+    public CustomerService(CustomerDao customerDao, CustomerMapper customerMapper, CustomerValidator customerValidator, UserDetailsDao userDetailsDao) {
         this.customerDao = customerDao;
         this.customerMapper = customerMapper;
         this.customerValidator = customerValidator;
+        this.userDetailsDao = userDetailsDao;
     }
+
+    @Autowired
+
 
     /**
      * @param customerDto CustomerDto
@@ -37,9 +43,9 @@ public class CustomerService {
 
         try {
             customerValidator.validateCustomer(customerDto);
-            CustomerEntity newCustomer = this.customerMapper.toEntity(customerDto);
-            this.customerDao.saveAndFlush(newCustomer);
-            return new ResponseModel(ResponseCode.B, this.customerMapper.toDTO(newCustomer));
+            CustomerEntity newCustomer = customerMapper.toEntity(customerDto);
+            CustomerEntity newCustomerEntity = customerDao.saveAndFlush(newCustomer);
+            return new ResponseModel(ResponseCode.B, customerMapper.toDTO(newCustomerEntity));
         } catch (InvalidCustomerException e) {
             return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
@@ -133,9 +139,10 @@ public class CustomerService {
                 customerToUpdate.get().setIsVerified(customerUpdates.getIsVerified());
             }
             if (customerUpdates.getUserDetails() != null) {
-                customerToUpdate.get().setUserDetailsEntity(customerUpdates.getUserDetails());
+                UserDetailsEntity updatedUserDetails = userDetailsDao.save(customerUpdates.getUserDetails());
+                customerToUpdate.get().setUserDetailsEntity(updatedUserDetails);
             }
-            return new ResponseModel(ResponseCode.G, this.customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
+            return new ResponseModel(ResponseCode.G, customerMapper.toDTO(customerDao.saveAndFlush(customerToUpdate.get())));
         }
         return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
     }
