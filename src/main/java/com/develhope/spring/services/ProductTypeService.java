@@ -8,6 +8,7 @@ import com.develhope.spring.models.entities.ProductTypeEntity;
 import com.develhope.spring.mappers.ProductTypeMapper;
 import com.develhope.spring.daos.ProductTypeDao;
 import com.develhope.spring.validators.ProductTypeValidator;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,57 +57,44 @@ public class ProductTypeService {
     }
 
     /**
-     * @param id productType id
-     * @return a single product type
-     */
-    public ResponseModel getSingleProductType(String id) {
-        Optional<ProductTypeEntity> productTypeFound = this.productTypeDao.findById(id);
-        if (productTypeFound.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("ProductType not found with the selected ID");
-        } else {
-            return new ResponseModel(ResponseCode.C, productTypeMapper.toDto(productTypeFound.get()));
-        }
-    }
-
-    /**
      * @param productType productType name
      * @return a list of productType found with selected parameter
      */
     public ResponseModel getProductTypeByName(String productType) {
-        List<ProductTypeDto> productTypes = this.productTypeDao.findByProductType(productType).stream().map(productTypeMapper::toDto).toList();
-        if (productTypes.isEmpty()) {
+        ProductTypeDto productTypes = this.productTypeMapper.toDto(this.productTypeDao.findByProductType(productType));
+        if (productTypes == null) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No productTypes were found, the list may be empty");
         } else {
             return new ResponseModel(ResponseCode.E, productTypes);
         }
     }
 
-    /**
-     * @param id                 productType id
-     * @param productTypeUpdates updates for a productType
-     * @return a product type updated
-     */
-    public ResponseModel updateProductType(String id, ProductTypeDto productTypeUpdates) {
-        Optional<ProductTypeEntity> productTypeToUpdate = this.productTypeDao.findById(id);
-        if (productTypeToUpdate.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("ProductType not found with the selected ID");
-        } else if (productTypeUpdates != null) {
-            if (productTypeUpdates.getProductType() != null) {
-                productTypeToUpdate.get().setProductType(productTypeUpdates.getProductType());
-            }
-            return new ResponseModel(ResponseCode.G, productTypeMapper.toDto(this.productTypeDao.saveAndFlush(productTypeToUpdate.get())));
-        }
-        return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
-    }
+//    /**
+//     * @param productType        productType name
+//     * @param productTypeUpdates update for a productType
+//     * @return a productType updated
+//     */
+//    public ResponseModel updateProductType(String productType, String productTypeUpdates) {
+//        ProductTypeEntity productTypeToUpdate = this.productTypeDao.findByProductType(productType);
+//        if (productTypeToUpdate == null) {
+//            return new ResponseModel(ResponseCode.D).addMessageDetails("ProductType not found");
+//        } else if (productTypeUpdates != null) {
+//            productTypeToUpdate.setProductType(productTypeUpdates);
+//            return new ResponseModel(ResponseCode.G, productTypeMapper.toDto(this.productTypeDao.saveAndFlush(productTypeToUpdate)));
+//        }
+//        return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
+//    }
 
     /**
-     * @param id Delete a product type by id
+     * @param productTypeName the productType name
+     * @return delete a productType
      */
-    public ResponseModel deleteProductType(String id) {
-        if (!this.productTypeDao.existsById(id)) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("ProductType not found with the selected ID");
+    @Transactional
+    public ResponseModel deleteProductType(String productTypeName) {
+        if (this.productTypeDao.findByProductType(productTypeName) == null) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("ProductType not found");
         } else {
-            productTypeDao.deleteById(id);
+            productTypeDao.deleteByProductType(productTypeName);
             return new ResponseModel(ResponseCode.H).addMessageDetails("ProductType successfully deleted");
         }
     }
