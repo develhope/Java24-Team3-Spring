@@ -1,5 +1,6 @@
 package com.develhope.spring.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -13,12 +14,13 @@ public class CartEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
-    @JsonManagedReference(value = "a")
+    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "cart_cartProducts")
     private List<CartProductEntity> cartProducts;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "customer_id")
+    @JsonManagedReference(value = "cart_customer")
     private CustomerEntity customer;
 
     public CartEntity() {

@@ -13,13 +13,13 @@ public class CartProductEntity {
 
     private int quantity;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "cart_id")
-    @JsonBackReference(value = "a")
+    @JsonBackReference(value = "cart_cartProducts")
     private CartEntity cart;
 
     public CartProductEntity() {
