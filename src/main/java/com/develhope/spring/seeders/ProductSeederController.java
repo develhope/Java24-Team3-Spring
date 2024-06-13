@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductSeederController {
 
     @Autowired
-
     private ProductSeederService productSeederService;
 
     @PostMapping
