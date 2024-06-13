@@ -7,9 +7,6 @@ import jakarta.persistence.*;
 public class ProductTypeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
     @Column(nullable = false, name = "productType", unique = true)
     private String productType;
 
@@ -18,14 +15,6 @@ public class ProductTypeEntity {
 
     public ProductTypeEntity(String productType) {
         this.productType = productType;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getProductType() {
