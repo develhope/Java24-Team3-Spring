@@ -17,8 +17,6 @@ public class ProductDto {
 
     private List<ProductTypeDto> productTypes;
 
-    @JsonManagedReference(value = "a")
-    private List<CartProductDto> cartProducts;
 
     public ProductDto() {
     }

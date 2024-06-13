@@ -11,6 +11,7 @@ import com.develhope.spring.models.dtos.RestaurantDto;
 import com.develhope.spring.models.entities.*;
 import com.develhope.spring.validators.AddressValidator;
 import com.develhope.spring.validators.ContactValidator;
+import com.develhope.spring.validators.IdValidator;
 import com.develhope.spring.validators.RestaurantValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,12 +57,16 @@ public class RestaurantService {
     @Autowired
     ContactValidator contactValidator;
 
+    @Autowired
+    IdValidator idValidator;
+
 
 
     public ResponseModel createRestaurant(RestaurantDto resDto) {
 
         try {
             //validation
+            idValidator.noId(resDto.getId_restaurant());
             restaurantValidator.validateRestaurantName(resDto.getRestaurantName());
             AddressDto validAddressDto = addressValidator.getValidAddress(resDto.getAddressDto());
             contactValidator.validatePhoneNumber(resDto.getRestaurantPhoneNumber());
@@ -126,6 +131,8 @@ public class RestaurantService {
             RestaurantEntity restaurantEntityInDB = optRes.get();
             if (resDtoUpdates != null) {
                 try{
+                    idValidator.noId(resDtoUpdates.getId_restaurant());
+
                     RestaurantEntity resEntityUpdates = restaurantMapper.toEntity(resDtoUpdates);
                     if (resEntityUpdates.getId_restaurant() != null) {
                         return new ResponseModel(ResponseCode.F);

@@ -33,8 +33,6 @@ public class OwnerService {
         this.userDetailsDao = userDetailsDao;
     }
 
-    @Autowired
-
 
     /**
      * @param ownerDto OwnerDto
