@@ -28,6 +28,8 @@ public class ProductEntity {
     @Column(name = "productTypes")
     private List<ProductTypeEntity> productTypes;
 
+    //aggiungere oneToMany
+
     public ProductEntity() {
     }
 

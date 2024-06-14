@@ -1,10 +1,12 @@
 package com.develhope.spring.services;
 
+import com.develhope.spring.daos.CartDao;
 import com.develhope.spring.exceptions.InvalidCustomerException;
 import com.develhope.spring.mappers.CustomerMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.CustomerDto;
+import com.develhope.spring.models.entities.CartEntity;
 import com.develhope.spring.models.entities.CustomerEntity;
 import com.develhope.spring.daos.CustomerDao;
 import com.develhope.spring.validators.CustomerValidator;
@@ -21,12 +23,14 @@ public class CustomerService {
     private final CustomerDao customerDao;
     private final CustomerMapper customerMapper;
     private final CustomerValidator customerValidator;
+    private final CartDao cartDao;
 
     @Autowired
-    public CustomerService(CustomerDao customerDao, CustomerMapper customerMapper, CustomerValidator customerValidator) {
+    public CustomerService(CustomerDao customerDao, CustomerMapper customerMapper, CustomerValidator customerValidator, CartDao cartDao) {
         this.customerDao = customerDao;
         this.customerMapper = customerMapper;
         this.customerValidator = customerValidator;
+        this.cartDao = cartDao;
     }
 
     /**
@@ -166,6 +170,11 @@ public class CustomerService {
         if (!this.customerDao.existsById(id)) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
         } else {
+            Optional<CustomerEntity> customerEntity = customerDao.findById(id);
+            CartEntity cart = customerEntity.get().getCart();
+            if (cart != null) {
+                this.cartDao.delete(cart);
+            }
             this.customerDao.deleteById(id);
             return new ResponseModel(ResponseCode.H).addMessageDetails("Customer successfully deleted");
         }
