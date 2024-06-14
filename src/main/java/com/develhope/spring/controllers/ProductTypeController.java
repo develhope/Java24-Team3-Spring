@@ -39,11 +39,11 @@ public class ProductTypeController {
     }
 
 
-//    @PutMapping("/productType")
-//    public ResponseEntity<ResponseModel> updateProductType(@RequestParam String productTypeName, @RequestBody String productTypeUpdates) {
-//        ResponseModel updatedProductType = this.productTypeService.updateProductType(productTypeName, productTypeUpdates);
-//        return ResponseEntity.ok(updatedProductType);
-//    }
+    @PutMapping("/productType")
+    public ResponseEntity<ResponseModel> updateProductType(@RequestParam String productTypeName, @RequestBody String productTypeUpdates) {
+        ResponseModel updatedProductType = this.productTypeService.updateProductType(productTypeName, productTypeUpdates);
+        return ResponseEntity.ok(updatedProductType);
+    }
 
     @DeleteMapping("/{productTypeName}")
     public ResponseEntity<ResponseModel> deleteProductType(@PathVariable String productTypeName) {

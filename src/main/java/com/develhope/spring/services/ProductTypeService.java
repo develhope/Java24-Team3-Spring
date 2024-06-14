@@ -69,21 +69,25 @@ public class ProductTypeService {
         }
     }
 
-//    /**
-//     * @param productType        productType name
-//     * @param productTypeUpdates update for a productType
-//     * @return a productType updated
-//     */
-//    public ResponseModel updateProductType(String productType, String productTypeUpdates) {
-//        ProductTypeEntity productTypeToUpdate = this.productTypeDao.findByProductType(productType);
-//        if (productTypeToUpdate == null) {
-//            return new ResponseModel(ResponseCode.D).addMessageDetails("ProductType not found");
-//        } else if (productTypeUpdates != null) {
-//            productTypeToUpdate.setProductType(productTypeUpdates);
-//            return new ResponseModel(ResponseCode.G, productTypeMapper.toDto(this.productTypeDao.saveAndFlush(productTypeToUpdate)));
-//        }
-//        return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
-//    }
+    /**
+     * @effect productType is an identifier, can't be updated.
+     * This method replaces the productType to be upgraded with a new one
+     * @param productType        productType name
+     * @param productTypeUpdates the new productType that replace the old one
+     * @return a productType updated
+     */
+    public ResponseModel updateProductType(String productType, String productTypeUpdates) {
+        ProductTypeEntity productTypeToUpdate = this.productTypeDao.findByProductType(productType);
+        if (productTypeToUpdate == null) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("ProductType not found");
+        } else if (productTypeUpdates != null) {
+            this.productTypeDao.delete(productTypeToUpdate);
+            ProductTypeEntity newProductType = new ProductTypeEntity();
+            newProductType.setProductType(productTypeUpdates);
+            return new ResponseModel(ResponseCode.G, productTypeMapper.toDto(this.productTypeDao.saveAndFlush(newProductType)));
+        }
+        return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
+    }
 
     /**
      * @param productTypeName the productType name
