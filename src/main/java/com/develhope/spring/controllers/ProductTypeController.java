@@ -32,12 +32,6 @@ public class ProductTypeController {
         return ResponseEntity.ok(productTypes);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseModel> getProductTypeById(@PathVariable String id) {
-        ResponseModel productTypeFound = this.productTypeService.getSingleProductType(id);
-        return ResponseEntity.ok(productTypeFound);
-    }
-
     @GetMapping("/productType")
     public ResponseEntity<ResponseModel> getProductTypeByName(@RequestParam String productType) {
         ResponseModel productTypes = this.productTypeService.getProductTypeByName(productType);
@@ -45,15 +39,15 @@ public class ProductTypeController {
     }
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ResponseModel> updateProductType(@PathVariable String id, @RequestBody ProductTypeDto productTypeUpdates) {
-        ResponseModel updatedProductType = this.productTypeService.updateProductType(id, productTypeUpdates);
+    @PutMapping("/productType")
+    public ResponseEntity<ResponseModel> updateProductType(@RequestParam String productTypeName, @RequestBody String productTypeUpdates) {
+        ResponseModel updatedProductType = this.productTypeService.updateProductType(productTypeName, productTypeUpdates);
         return ResponseEntity.ok(updatedProductType);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseModel> deleteProductType(@PathVariable String id) {
-        ResponseModel deletedProductType = this.productTypeService.deleteProductType(id);
+    @DeleteMapping("/{productTypeName}")
+    public ResponseEntity<ResponseModel> deleteProductType(@PathVariable String productTypeName) {
+        ResponseModel deletedProductType = this.productTypeService.deleteProductType(productTypeName);
         return ResponseEntity.ok(deletedProductType);
     }
 
