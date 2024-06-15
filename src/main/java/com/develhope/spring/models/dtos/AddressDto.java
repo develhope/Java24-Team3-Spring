@@ -12,7 +12,7 @@ public class AddressDto {
     private String street;
     private String number;
     private String note;
-    private BigDecimal[] coordinates = new BigDecimal[2];
+    private BigDecimal[] coordinates = new BigDecimal[2]; // [lat, lon]
 
     public AddressDto() {
     }

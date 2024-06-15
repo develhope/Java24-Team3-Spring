@@ -10,7 +10,8 @@ import java.math.RoundingMode;
 public class DistanceCalculator {
 
     // Earth radius in kilometers
-    private static final BigDecimal EARTH_RADIUS = new BigDecimal("6371.0"); // Earth radius in kilometers
+    private static final BigDecimal EARTH_RADIUS = new BigDecimal("6360.0"); // Earth radius in kilometers
+    // more precision radious by latitude: https://rechneronline.de/earth-radius/
 
     /**
      * @effect Calculate distance between two points in latitude and longitude taking

@@ -1,7 +1,10 @@
 package com.develhope.spring.controllers;
 
+import com.develhope.spring.exceptions.ExceptionWithResponseCode;
+import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
-import com.develhope.spring.models.dtos.RestaurantDto;
+import com.develhope.spring.models.dtos.*;
+import com.develhope.spring.models.entities.*;
 import com.develhope.spring.services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -20,9 +24,24 @@ public class RestaurantController {
     @Autowired
     private RestaurantService restaurantService;
 
-    @ResponseBody
+//    @ResponseBody
+//    @PostMapping
+//    public ResponseEntity<ResponseModel> createRestaurant(@RequestBody RestaurantDto resDto) {
+//        ResponseModel responseModel = new ResponseModel();
+//        try{
+//            RestaurantDto restaurantDto  = restaurantService.createRestaurant(resDto);
+//            responseModel.setCodeAndStdMessage(ResponseCode.B)
+//                    .setObject(restaurantDto);
+//            return ResponseEntity.ok().body(responseModel);
+//        } catch (Exception e){
+//            responseModel.setCodeAndStdMessage(ResponseCode.A)
+//                    .addMessageDetails(e.getMessage());
+//            return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+//        }
+//    }
+
     @PostMapping
-    public ResponseEntity<ResponseModel> createRestaurant(@RequestBody RestaurantDto resDto) {
+    public ResponseEntity<ResponseModel> createRestaurant(@RequestBody RestaurantDtoCreate resDto) {
         ResponseModel response  = restaurantService.createRestaurant(resDto);
         return  ResponseEntity.ok().body(response);
     }
@@ -34,10 +53,16 @@ public class RestaurantController {
         return  ResponseEntity.ok().body(response);
     }
 
+    @GetMapping("nearAddress")
+    public ResponseEntity<ResponseModel> getRestaurantNearAddress(@RequestBody AddressDto addressDto, @RequestParam BigDecimal radious){
+        ResponseModel response  = restaurantService.getRestaurantWithinRadious(addressDto, radious);;
+        return  ResponseEntity.ok().body(response);
+    }
+
 //    @ResponseBody
-//    @GetMapping
-//    public ResponseEntity<ResponseModel> getAllRestaurants() {
-//        ResponseModel response  = restaurantService.getAllRestaurants);
+//    @GetMapping("/byType")
+//    public ResponseEntity<ResponseModel> getRestaurantByType(@RequestParam(value="restaurantType") List<RestaurantTypeDto> restaurantTypeDtos) {
+//        ResponseModel response  = restaurantService.getRestaurantByType(restaurantTypeDtos);
 //        return  ResponseEntity.ok().body(response);
 //    }
 
@@ -63,14 +88,8 @@ public class RestaurantController {
     }
 
 
-//    @GetMapping
-//    public ResponseEntity<List<RestaurantDto>> getRestaurantNearAddress(@RequestBody AddressDto addressDto){
-//
-//        List<RestaurantEntity>  rest = restaurantService.viewNearByRestaurant(address);
-//
-//        return new ResponseEntity<>(rest,HttpStatus.OK);
-//    }
-//
+
+
 
 
 

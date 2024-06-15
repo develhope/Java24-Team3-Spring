@@ -9,9 +9,6 @@ public class OperatingHoursDto {
 
     private String id_oparatingHours;
 
-//    @Enumerated(EnumType.STRING)
-//    private DayOfTheWeek dayOfTheWeek;
-
     private DayOfWeek dayOfWeek;
 
     private LocalTime openingHour;

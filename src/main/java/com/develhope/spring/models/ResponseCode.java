@@ -12,9 +12,8 @@ public enum ResponseCode {
     H(CodeType.SUCCESS, "Record has been deleted from the DB."),
     I(CodeType.SUCCESS, "Seeding completed successfully."),
     J(CodeType.SUCCESS, "Records in the database have been deleted."),
-    K(CodeType.SUCCESS, "Record modification fail.");
-
-
+    K(CodeType.SUCCESS, "Record modification fail."),
+    L(CodeType.SUCCESS, "Database search fail.");
 
     private CodeType codeType;
     private String codeMessage;
@@ -32,11 +31,16 @@ public enum ResponseCode {
         return codeMessage;
     }
 
+//    @Override
+//    public String toString() {
+//        return "ResponseCode{" +
+//                "responseType=" + codeType +
+//                ", responseCodeMessage='" + codeMessage + '\'' +
+//                '}';
+//    }
+
     @Override
     public String toString() {
-        return "ResponseCode{" +
-                "responseType=" + codeType +
-                ", responseCodeMessage='" + codeMessage + '\'' +
-                '}';
+        return "responseCodeMessage= " + codeMessage ;
     }
 }

@@ -17,4 +17,9 @@ public class RestaurantTypeDto {
     public void setRestaurantType(String restaurantType) {
         this.restaurantType = restaurantType;
     }
+
+    @Override
+    public String toString() {
+        return restaurantType ;
+    }
 }

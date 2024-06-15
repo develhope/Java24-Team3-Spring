@@ -12,7 +12,7 @@ public class RestaurantEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id_restaurant;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private OwnerEntity ownerEntity;
 
@@ -43,10 +43,11 @@ public class RestaurantEntity {
     private List<OperatingHoursEntity> operatingHoursEntities;
 
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "restaurant_restaurantType",
             joinColumns = @JoinColumn(name = "restaurant_id"),
-            inverseJoinColumns = @JoinColumn(name = "restaurantType_id"))
+            inverseJoinColumns = @JoinColumn(name = "restaurantType"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"restaurant_id", "restaurantType"}))
     private List<RestaurantTypeEntity> restaurantTypeEntities;
 
 

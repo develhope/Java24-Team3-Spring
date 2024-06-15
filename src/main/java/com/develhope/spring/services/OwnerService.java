@@ -2,6 +2,7 @@ package com.develhope.spring.services;
 
 import com.develhope.spring.daos.OwnerDao;
 import com.develhope.spring.daos.UserDetailsDao;
+import com.develhope.spring.exceptions.IdException;
 import com.develhope.spring.mappers.OwnerMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
@@ -56,6 +57,20 @@ public class OwnerService {
         }
 
     }
+
+//    public OwnerDto createOwner(OwnerDto ownerDto) throws Exception {
+//        // validate
+//        idValidator.noId(ownerDto.getId());
+//        idValidator.noId(ownerDto.getUserDetailsDto().getId());
+//        contactValidator.validateEmail(ownerDto.getEmail());
+//        contactValidator.validatePassword(ownerDto.getPassword());
+//        contactValidator.validatePhoneNumber(ownerDto.getUserDetailsDto().getPhoneNumber());
+//
+//
+//        OwnerEntity o = ownerMapper.toEntity(ownerDto);
+//        OwnerEntity newOwnerEntity = ownerDao.saveAndFlush(o);
+//        return ownerMapper.toDto(newOwnerEntity);
+//    }
 
     /**
      * @param id owner id
