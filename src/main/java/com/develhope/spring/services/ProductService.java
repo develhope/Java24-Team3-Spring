@@ -1,5 +1,6 @@
 package com.develhope.spring.services;
 
+import com.develhope.spring.daos.ProductTypeDao;
 import com.develhope.spring.exceptions.InvalidProductException;
 import com.develhope.spring.mappers.ProductTypeMapper;
 import com.develhope.spring.models.ResponseCode;
@@ -25,13 +26,15 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final ProductValidator productValidator;
     private final ProductTypeMapper productTypeMapper;
+    private final ProductTypeDao productTypeDao;
 
     @Autowired
-    public ProductService(ProductDao productDao, ProductMapper productMapper, ProductValidator productValidator, ProductTypeMapper productTypeMapper) {
+    public ProductService(ProductDao productDao, ProductMapper productMapper, ProductValidator productValidator, ProductTypeMapper productTypeMapper, ProductTypeDao productTypeDao) {
         this.productDao = productDao;
         this.productMapper = productMapper;
         this.productValidator = productValidator;
         this.productTypeMapper = productTypeMapper;
+        this.productTypeDao = productTypeDao;
     }
 
     /**
@@ -43,7 +46,9 @@ public class ProductService {
         try {
             productValidator.validateProduct(productDto);
             ProductEntity newProduct = this.productMapper.toEntity(productDto);
-            this.productDao.saveAndFlush(newProduct);
+            List<ProductTypeEntity> productTypeEntities = productTypeDao.saveAll(productTypeMapper.toEntityList(productDto.getProductTypes()));
+            newProduct.setProductTypes(productTypeEntities);
+            this.productDao.save(newProduct);
             return new ResponseModel(ResponseCode.B, productMapper.toDto(newProduct));
         } catch (InvalidProductException e) {
             return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
@@ -125,7 +130,8 @@ public class ProductService {
                 productToUpdate.get().setIngredients(productEntityUpdates.getIngredients());
             }
             if (productUpdates.getProductTypes() != null) {
-                productToUpdate.get().setProductTypes(productEntityUpdates.getProductTypes());
+                List<ProductTypeEntity> productTypeEntities = productTypeDao.saveAll(productTypeMapper.toEntityList(productUpdates.getProductTypes()));
+                productToUpdate.get().setProductTypes(productTypeEntities);
             }
             return new ResponseModel(ResponseCode.G, this.productMapper.toDto(this.productDao.saveAndFlush(productToUpdate.get())));
         }

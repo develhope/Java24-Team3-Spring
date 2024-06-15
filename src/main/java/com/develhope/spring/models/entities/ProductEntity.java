@@ -22,7 +22,7 @@ public class ProductEntity {
 
     private String ingredients;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "product_productType", joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "productType_id"))
     @Column(name = "productTypes")
