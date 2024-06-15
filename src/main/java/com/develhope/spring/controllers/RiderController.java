@@ -3,6 +3,7 @@ package com.develhope.spring.controllers;
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.RiderDto;
 import com.develhope.spring.services.RiderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ public class RiderController {
 
     private final RiderService riderService;
 
+    @Autowired
     public RiderController(RiderService riderService) {
         this.riderService = riderService;
     }
@@ -21,21 +23,21 @@ public class RiderController {
     @PostMapping
     public ResponseEntity<ResponseModel> createRider(@RequestBody RiderDto riderDto) {
         ResponseModel newRider = this.riderService.addRider(riderDto);
-        return ResponseEntity.created(URI.create("api/v1/customers")).body(newRider);
+        return ResponseEntity.created(URI.create("api/v1/riders")).body(newRider);
     }
 
     // GET
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseModel> getRiderById(@PathVariable String id) {
-        ResponseModel rider = this.riderService.getById(id);
-        return ResponseEntity.ok(rider);
-    }
 
     @GetMapping()
     public ResponseEntity<ResponseModel> getAll() {
         ResponseModel riders = this.riderService.getAll();
         return ResponseEntity.ok(riders);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseModel> getRiderById(@PathVariable String id) {
+        ResponseModel rider = this.riderService.getById(id);
+        return ResponseEntity.ok(rider);
     }
 
     @GetMapping("/emails")
@@ -53,6 +55,12 @@ public class RiderController {
     @GetMapping("/verified")
     public ResponseEntity<ResponseModel> getByVerifiedStatus(@RequestParam Boolean isVerified) {
         ResponseModel riders = this.riderService.getByVerifiedStatus(isVerified);
+        return ResponseEntity.ok(riders);
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity<ResponseModel> getByAvailableStatus(@RequestParam Boolean isAvailable) {
+        ResponseModel riders = this.riderService.getByVerifiedStatus(isAvailable);
         return ResponseEntity.ok(riders);
     }
 

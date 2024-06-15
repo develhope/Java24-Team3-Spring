@@ -13,6 +13,9 @@ public class RiderEntity extends UserEntity {
     @Column(name = "current_position")
     private BigDecimal[] currentPosition;
 
+    @Column(name = "available", nullable = false)
+    private Boolean isAvailable;
+
     // CONSTRUCTORS
 
     public RiderEntity() {
@@ -20,6 +23,9 @@ public class RiderEntity extends UserEntity {
 
     public RiderEntity(String email, String password, Boolean isDeleted, Boolean isVerified, UserDetailsEntity userDetails) {
         super(email, password, isDeleted, isVerified, userDetails);
+        this.startingPosition = new BigDecimal[2];
+        this.currentPosition = new BigDecimal[2];
+        this.isAvailable = false;
     }
 
     // GETTERS AND SETTERS
@@ -40,4 +46,11 @@ public class RiderEntity extends UserEntity {
         this.currentPosition = currentPosition;
     }
 
+    public Boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(Boolean isAvailable) {
+        this.isAvailable = isAvailable;
+    }
 }
