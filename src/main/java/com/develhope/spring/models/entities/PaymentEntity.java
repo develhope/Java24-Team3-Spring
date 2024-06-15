@@ -2,6 +2,8 @@ package com.develhope.spring.models.entities;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "payment")
 public class PaymentEntity {
@@ -16,12 +18,15 @@ public class PaymentEntity {
     @Column(nullable = false)
     private PaymentStatus paymentStatus = PaymentStatus.PENDING;
 
+    private BigDecimal totalPrice;
+
     public PaymentEntity() {
     }
 
-    public PaymentEntity(PaymentMethod paymentMethod, PaymentStatus paymentStatus) {
+    public PaymentEntity(PaymentMethod paymentMethod, PaymentStatus paymentStatus, BigDecimal totalPrice) {
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
+        this.totalPrice = totalPrice;
     }
 
     public String getId() {
@@ -46,5 +51,13 @@ public class PaymentEntity {
 
     public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

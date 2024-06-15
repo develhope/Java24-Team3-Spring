@@ -3,6 +3,8 @@ package com.develhope.spring.models.dtos;
 import com.develhope.spring.models.entities.PaymentMethod;
 import com.develhope.spring.models.entities.PaymentStatus;
 
+import java.math.BigDecimal;
+
 public class PaymentDto {
 
     private String id;
@@ -10,6 +12,8 @@ public class PaymentDto {
     private PaymentMethod paymentMethod;
 
     private PaymentStatus paymentStatus;
+
+    private BigDecimal totalPrice;
 
     public String getId() {
         return id;
@@ -33,5 +37,13 @@ public class PaymentDto {
 
     public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }
