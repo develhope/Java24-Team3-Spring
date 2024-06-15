@@ -1,5 +1,6 @@
 package com.develhope.spring.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -10,8 +11,8 @@ import java.util.List;
 public class ProductEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false)
     private String name;
@@ -27,6 +28,8 @@ public class ProductEntity {
     @Column(name = "productTypes")
     private List<ProductTypeEntity> productTypes;
 
+    //aggiungere oneToMany
+
     public ProductEntity() {
     }
 
@@ -37,11 +40,11 @@ public class ProductEntity {
         this.productTypes = productTypes;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -1,32 +1,30 @@
 package com.develhope.spring.models.dtos;
 
-import com.develhope.spring.models.entities.UserDetailsEntity;
-
 public class UserDto {
 
-    private Long id;
+    private String id;
     private String email;
     private String password;
-    private Boolean isDeleted;
-    private Boolean isVerified;
-    private UserDetailsEntity userDetails;
+    private Boolean isDeleted = false;
+    private Boolean isVerified = false;
+    private UserDetailsDto userDetails;
 
     public UserDto() {
     }
 
-    public UserDto(String email, String password, Boolean isDeleted, Boolean isVerified, UserDetailsEntity userDetails) {
+    public UserDto(String email, String password, Boolean isDeleted, Boolean isVerified, UserDetailsDto userDetails) {
         this.email = email;
         this.password = password;
-        this.isDeleted = isDeleted;
-        this.isVerified = isVerified;
+        this.isDeleted = isVerified;
+        this.isVerified = isDeleted;
         this.userDetails = userDetails;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -62,11 +60,11 @@ public class UserDto {
         this.isVerified = isVerified;
     }
 
-    public UserDetailsEntity getUserDetails() {
+    public UserDetailsDto getUserDetails() {
         return userDetails;
     }
 
-    public void setUserDetailsEntity(UserDetailsEntity userDetails) {
+    public void setUserDetails(UserDetailsDto userDetails) {
         this.userDetails = userDetails;
     }
 }

@@ -33,7 +33,7 @@ public class ProductTypeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseModel> getProductTypeById(@PathVariable Long id) {
+    public ResponseEntity<ResponseModel> getProductTypeById(@PathVariable String id) {
         ResponseModel productTypeFound = this.productTypeService.getSingleProductType(id);
         return ResponseEntity.ok(productTypeFound);
     }
@@ -46,13 +46,13 @@ public class ProductTypeController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseModel> updateProductType(@PathVariable Long id, @RequestBody ProductTypeDto productTypeUpdates) {
+    public ResponseEntity<ResponseModel> updateProductType(@PathVariable String id, @RequestBody ProductTypeDto productTypeUpdates) {
         ResponseModel updatedProductType = this.productTypeService.updateProductType(id, productTypeUpdates);
         return ResponseEntity.ok(updatedProductType);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseModel> deleteProductType(@PathVariable Long id) {
+    public ResponseEntity<ResponseModel> deleteProductType(@PathVariable String id) {
         ResponseModel deletedProductType = this.productTypeService.deleteProductType(id);
         return ResponseEntity.ok(deletedProductType);
     }
