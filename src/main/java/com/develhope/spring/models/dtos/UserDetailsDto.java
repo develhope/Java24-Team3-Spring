@@ -5,17 +5,11 @@ import java.time.LocalDate;
 public class UserDetailsDto {
 
     private String id;
-
     private String name;
-
     private String surname;
-
     private LocalDate birthDate;
-
     private String phoneNumber;
-
     private LocalDate creationDate = LocalDate.now();
-
     private LocalDate updateDate = LocalDate.now();
 
     public UserDetailsDto() {

@@ -2,6 +2,7 @@ package com.develhope.spring.models.dtos;
 
 public class ProductTypeDto {
 
+    private String id;
     private String productType;
 
     public ProductTypeDto() {

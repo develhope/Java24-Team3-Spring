@@ -8,13 +8,9 @@ import java.util.List;
 public class ProductDto {
 
     private String id;
-
     private String name;
-
     private BigDecimal price;
-
     private String ingredients;
-
     private List<ProductTypeDto> productTypes;
 
 
