@@ -3,6 +3,7 @@ package com.develhope.spring.services;
 import com.develhope.spring.daos.RiderDao;
 import com.develhope.spring.exceptions.InvalidRiderException;
 import com.develhope.spring.mappers.RiderMapper;
+import com.develhope.spring.mappers.UserDetailsMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.RiderDto;
@@ -23,6 +24,9 @@ public class RiderService {
     private final RiderDao riderDao;
     private final RiderMapper riderMapper;
     private final RiderValidator riderValidator;
+
+    @Autowired
+    UserDetailsMapper userDetailsMapper;
 
     @Autowired
     public RiderService(RiderDao riderDao, RiderMapper riderMapper, RiderValidator riderValidator) {
@@ -127,12 +131,12 @@ public class RiderService {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No riders found.");
         } else {
 
-            int distance;
+            BigDecimal distance;
             List<RiderDto> ridersInRange = new ArrayList<RiderDto>();
 
             for (RiderDto rider : availableRiders) {
-                distance = DistanceCalculator.calculateDistance(coordinates[0], coordinates[1], rider.getStartingPosition()[0], rider.getStartingPosition()[1], 0.0, 0.0);
-                if (distance <= maximumDistance) {
+                distance = DistanceCalculator.calculateDistance(coordinates[0], coordinates[1], rider.getStartingPosition()[0], rider.getStartingPosition()[1], BigDecimal.ZERO, BigDecimal.ZERO);
+                if (distance.compareTo(BigDecimal.valueOf(maximumDistance)) <= 0) {
                     ridersInRange.add(rider);
                 }
             }
@@ -168,7 +172,7 @@ public class RiderService {
             }
 
             if (updatedRider.getUserDetails() != null) {
-                riderToUpdate.get().setUserDetailsEntity(updatedRider.getUserDetails());
+                riderToUpdate.get().setUserDetailsEntity(userDetailsMapper.toEntity(updatedRider.getUserDetails()));
             }
 
             if (updatedRider.getIsAvailable() != null) {

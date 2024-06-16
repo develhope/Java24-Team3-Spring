@@ -41,7 +41,7 @@ public class OwnerMapper {
         ownerDto.setPassword(ownerEntity.getPassword());
         ownerDto.setIsDeleted(ownerEntity.getIsDeleted());
         ownerDto.setIsVerified(ownerEntity.getIsVerified());
-        ownerDto.setUserDetails(userDetailsMapper.toDTO(ownerEntity.getUserDetails()));
+        ownerDto.setUserDetails(userDetailsMapper.toDto(ownerEntity.getUserDetails()));
 
         return ownerDto;
     }

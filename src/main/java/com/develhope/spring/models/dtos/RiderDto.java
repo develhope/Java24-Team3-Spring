@@ -12,8 +12,8 @@ public class RiderDto extends UserDto {
     public RiderDto() {
     }
 
-    public RiderDto(String email, String password, Boolean isDeleted, Boolean isVerified, UserDetailsEntity userDetails) {
-        super(email, password, isDeleted, isVerified, userDetails);
+    public RiderDto(String email, String password, Boolean isDeleted, Boolean isVerified, UserDetailsDto userDetailsDto) {
+        super(email, password, isDeleted, isVerified, userDetailsDto);
         this.startingPosition = new BigDecimal[2];
         this.currentPosition = new BigDecimal[2];
         this.isAvailable = false;

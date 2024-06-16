@@ -2,10 +2,14 @@ package com.develhope.spring.mappers;
 
 import com.develhope.spring.models.dtos.RiderDto;
 import com.develhope.spring.models.entities.RiderEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RiderMapper {
+
+    @Autowired
+    UserDetailsMapper userDetailsMapper;
 
     public RiderEntity toEntity(RiderDto riderDto) {
         if (riderDto == null) {
@@ -19,7 +23,7 @@ public class RiderMapper {
         riderEntity.setPassword(riderDto.getPassword());
         riderEntity.setIsDeleted(riderDto.getIsDeleted());
         riderEntity.setIsVerified(riderDto.getIsVerified());
-        riderEntity.setUserDetailsEntity(riderDto.getUserDetails());
+        riderEntity.setUserDetailsEntity(userDetailsMapper.toEntity(riderDto.getUserDetails()));
         riderEntity.setStartingPosition(riderDto.getCurrentPosition());
         riderEntity.setCurrentPosition(riderDto.getCurrentPosition());
 
@@ -38,7 +42,7 @@ public class RiderMapper {
         riderDto.setPassword(riderEntity.getPassword());
         riderDto.setIsDeleted(riderEntity.getIsDeleted());
         riderDto.setIsVerified(riderEntity.getIsVerified());
-        riderDto.setUserDetailsEntity(riderEntity.getUserDetails());
+        riderDto.setUserDetails(userDetailsMapper.toDto(riderEntity.getUserDetails()));
         riderDto.setStartingPosition(riderEntity.getStartingPosition());
         riderDto.setCurrentPosition(riderEntity.getCurrentPosition());
 
