@@ -110,6 +110,21 @@ public class ProductService {
     }
 
     /**
+     * @param productType a productType used as parameter for the research
+     * @return a list of products with the selected productType
+     */
+    public ResponseModel getProductByProductType(String productType) {
+        ProductTypeEntity productTypeFound = this.productTypeDao.findByProductType(productType);
+        List<ProductEntity> productsFound = this.productDao.findByProductTypesContains(productTypeFound);
+        List<ProductDto> productFoundDto = productsFound.stream().map(productMapper::toDto).toList();
+        if (productFoundDto.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No products were found with the selected parameter");
+        } else {
+            return new ResponseModel(ResponseCode.E, productFoundDto);
+        }
+    }
+
+    /**
      * @param id             product id
      * @param productUpdates ProductDto
      * @return a product updated
