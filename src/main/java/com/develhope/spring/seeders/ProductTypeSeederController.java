@@ -9,22 +9,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/productSeeder")
-public class ProductSeederController {
+@RequestMapping("/productTypeSeeder")
+public class ProductTypeSeederController {
 
     @Autowired
-    private ProductSeederService productSeederService;
+    private ProductTypeSeederService productTypeSeederService;
 
     @PostMapping
     public ResponseEntity<ResponseModel> initDatabaseData() {
-        ResponseModel response = productSeederService.testProducts();
+        ResponseModel response = productTypeSeederService.injectTestProductTypes();
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping
     public ResponseEntity<ResponseModel> cleanDatabase() {
-        ResponseModel response = productSeederService.cleanDB();
+        ResponseModel response = productTypeSeederService.cleanDB();
         return ResponseEntity.ok(response);
     }
-
 }

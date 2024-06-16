@@ -24,8 +24,8 @@ public interface RestaurantDao extends JpaRepository<RestaurantEntity, String> {
 
     //List<RestaurantEntity> findByRestaurantTypeEntityIn(Collection<RestaurantTypeEntity> restaurantTypeEntities);
 
-    @Query("SELECT r FROM RestaurantEntity r JOIN r.restaurantTypeEntities rt WHERE rt.typeName = :typeName")
-    List<RestaurantEntity> findByRestaurantTypeEntityIn(@Param("typeName") String typeName);
+    @Query(value="SELECT * FROM restaurant WHERE id_restaurant IN (SELECT restaurant_id FROM restaurant_restaurant_type rrt WHERE rrt.restaurant_type IN ?1)", nativeQuery = true)
+    List<RestaurantEntity> findByRestaurantTypeEntityIn( List<String> typeName);
 
     Optional<RestaurantEntity> findByRestaurantNameIgnoreCase(String RestaurantName);
     List<RestaurantEntity> findByIsDeliveryAvailableTrue();

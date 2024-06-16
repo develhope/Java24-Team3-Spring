@@ -53,18 +53,19 @@ public class RestaurantController {
         return  ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("nearAddress")
+    @GetMapping("/nearAddress")
     public ResponseEntity<ResponseModel> getRestaurantNearAddress(@RequestBody AddressDto addressDto, @RequestParam BigDecimal radious){
         ResponseModel response  = restaurantService.getRestaurantWithinRadious(addressDto, radious);;
         return  ResponseEntity.ok().body(response);
     }
 
-//    @ResponseBody
-//    @GetMapping("/byType")
-//    public ResponseEntity<ResponseModel> getRestaurantByType(@RequestParam(value="restaurantType") List<RestaurantTypeDto> restaurantTypeDtos) {
-//        ResponseModel response  = restaurantService.getRestaurantByType(restaurantTypeDtos);
-//        return  ResponseEntity.ok().body(response);
-//    }
+
+    @ResponseBody
+    @GetMapping("/byType")
+    public ResponseEntity<ResponseModel> getRestaurantByType(@RequestParam(value="restaurantType") List<String> restaurantTypeStrings) {
+        ResponseModel response  = restaurantService.getRestaurantByType(restaurantTypeStrings);
+        return  ResponseEntity.ok().body(response);
+    }
 
     @ResponseBody
     @PatchMapping("{id}")

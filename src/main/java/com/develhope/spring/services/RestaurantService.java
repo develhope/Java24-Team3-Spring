@@ -305,9 +305,14 @@ public class RestaurantService {
     }
 
 
-//    public ResponseModel getRestaurantByType(List<RestaurantTypeDto> restaurantTypeDtos) {
-//        if (restaurantTypeDtos == null) return  new ResponseModel(ResponseCode.E).addMessageDetails("You have chosen no restaurantType.");
-//        List<RestaurantEntity> restaurantEntities = resDao.findByRestaurantTypeEntityIn(restaurantTypeMapper.toEntity(restaurantTypeDtos));
-//        return new ResponseModel(ResponseCode.E, restaurantEntities);
-//    }
+    public ResponseModel getRestaurantByType(List<String> restaurantTypeStrings) {
+        if (restaurantTypeStrings == null) return  new ResponseModel(ResponseCode.E).addMessageDetails("You have chosen no restaurantType.");
+        List<RestaurantEntity> restaurantEntities = resDao.findByRestaurantTypeEntityIn(restaurantTypeStrings);
+        List<RestaurantDto> restaurantDtos = new ArrayList<>();
+        for(RestaurantEntity r:restaurantEntities){
+            restaurantDtos.add(restaurantMapper.toDto(r));
+        }
+        return new ResponseModel(ResponseCode.E, restaurantDtos);
+        //return restaurantDtos;
+    }
 }

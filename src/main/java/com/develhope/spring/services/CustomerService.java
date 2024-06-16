@@ -1,11 +1,13 @@
 package com.develhope.spring.services;
 
 import com.develhope.spring.daos.UserDetailsDao;
+import com.develhope.spring.daos.CartDao;
 import com.develhope.spring.exceptions.InvalidCustomerException;
 import com.develhope.spring.mappers.CustomerMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.CustomerDto;
+import com.develhope.spring.models.entities.CartEntity;
 import com.develhope.spring.models.entities.CustomerEntity;
 import com.develhope.spring.daos.CustomerDao;
 import com.develhope.spring.models.entities.UserDetailsEntity;
@@ -23,15 +25,14 @@ public class CustomerService {
     private final CustomerDao customerDao;
     private final CustomerMapper customerMapper;
     private final CustomerValidator customerValidator;
-    private final UserDetailsDao userDetailsDao;
+    private final CartDao cartDao;
 
-    public CustomerService(CustomerDao customerDao, CustomerMapper customerMapper, CustomerValidator customerValidator, UserDetailsDao userDetailsDao) {
+    public CustomerService(CustomerDao customerDao, CustomerMapper customerMapper, CustomerValidator customerValidator, CartDao cartDao) {
         this.customerDao = customerDao;
         this.customerMapper = customerMapper;
         this.customerValidator = customerValidator;
-        this.userDetailsDao = userDetailsDao;
+        this.cartDao = cartDao;
     }
-
 
     /**
      * @param customerDto CustomerDto
@@ -137,12 +138,10 @@ public class CustomerService {
             if (customerUpdates.getIsVerified() != null) {
                 customerToUpdate.get().setIsVerified(customerEntityUpdates.getIsVerified());
             }
-//            if (customerUpdates.getUserDetails() != null) {
-//                controlla se adress record è da salvare prima
-//                UserDetailsEntity updatedUserDetails = userDetailsDao.save(customerUpdates.getUserDetails());
-//                customerToUpdate.get().setUserDetailsEntity(updatedUserDetails);
-//            }
-            return new ResponseModel(ResponseCode.G, customerMapper.toDTO(customerDao.saveAndFlush(customerToUpdate.get())));
+            if (customerUpdates.getUserDetails() != null) {
+                customerToUpdate.get().setUserDetailsEntity(customerEntityUpdates.getUserDetails());
+            }
+            return new ResponseModel(ResponseCode.G, this.customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
         }
         return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
     }

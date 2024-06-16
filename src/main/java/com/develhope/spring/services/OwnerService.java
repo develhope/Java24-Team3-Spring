@@ -2,7 +2,6 @@ package com.develhope.spring.services;
 
 import com.develhope.spring.daos.OwnerDao;
 import com.develhope.spring.daos.UserDetailsDao;
-import com.develhope.spring.exceptions.IdException;
 import com.develhope.spring.mappers.OwnerMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
@@ -10,7 +9,6 @@ import com.develhope.spring.models.dtos.OwnerDto;
 import com.develhope.spring.models.entities.OwnerEntity;
 import com.develhope.spring.validators.ContactValidator;
 import com.develhope.spring.validators.IdValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,10 +41,10 @@ public class OwnerService {
         try {
             // validate
             idValidator.noId(ownerDto.getId());
-            idValidator.noId(ownerDto.getUserDetailsDto().getId());
+            idValidator.noId(ownerDto.getUserDetails().getId());
             contactValidator.validateEmail(ownerDto.getEmail());
             contactValidator.validatePassword(ownerDto.getPassword());
-            contactValidator.validatePhoneNumber(ownerDto.getUserDetailsDto().getPhoneNumber());
+            contactValidator.validatePhoneNumber(ownerDto.getUserDetails().getPhoneNumber());
 
 
             OwnerEntity newOwner = ownerMapper.toEntity(ownerDto);
@@ -159,7 +157,7 @@ public class OwnerService {
             if (ownerUpdates.getIsVerified() != null) {
                 ownerToUpdate.get().setIsVerified(ownerUpdates.getIsVerified());
             }
-            if (ownerUpdates.getUserDetailsDto() != null) {
+            if (ownerUpdates.getUserDetails() != null) {
                 //UserDetailsEntity updatedUserDetails = userDetailsDao.save(ownerEntityUpdates.getUserDetails());
                 ownerToUpdate.get().setUserDetailsEntity(ownerEntityUpdates.getUserDetails());
             }

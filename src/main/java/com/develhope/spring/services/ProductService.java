@@ -1,13 +1,15 @@
 package com.develhope.spring.services;
 
 import com.develhope.spring.exceptions.InvalidProductException;
+import com.develhope.spring.mappers.ProductTypeMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
-import com.develhope.spring.models.dtos.OperatingHoursDto;
 import com.develhope.spring.models.dtos.ProductDto;
+import com.develhope.spring.models.dtos.ProductTypeDto;
 import com.develhope.spring.models.entities.ProductEntity;
 import com.develhope.spring.mappers.ProductMapper;
 import com.develhope.spring.daos.ProductDao;
+import com.develhope.spring.models.entities.ProductTypeEntity;
 import com.develhope.spring.validators.IdValidator;
 import com.develhope.spring.validators.ProductValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +26,17 @@ public class ProductService {
     private final ProductDao productDao;
     private final ProductMapper productMapper;
     private final ProductValidator productValidator;
+    private final ProductTypeMapper productTypeMapper;
 
     @Autowired
     private IdValidator idValidator;
 
     @Autowired
-    public ProductService(ProductDao productDao, ProductMapper productMapper, ProductValidator productValidator) {
+    public ProductService(ProductDao productDao, ProductMapper productMapper, ProductValidator productValidator, ProductTypeMapper productTypeMapper) {
         this.productDao = productDao;
         this.productMapper = productMapper;
         this.productValidator = productValidator;
+        this.productTypeMapper = productTypeMapper;
     }
 
     public List<ProductDto> createProducts(List<ProductDto> productDtos) throws Exception {
@@ -142,6 +146,18 @@ public class ProductService {
             if (productUpdates.getProductTypes() != null) {
                 productToUpdate.get().setProductTypes(productEntityUpdates.getProductTypes());
             }
+            return new ResponseModel(ResponseCode.G, this.productMapper.toDto(this.productDao.saveAndFlush(productToUpdate.get())));
+        }
+        return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
+    }
+
+    public ResponseModel updateProductsProductTypes(String id, List<ProductTypeDto> productTypeUpdates) {
+        Optional<ProductEntity> productToUpdate = this.productDao.findById(id);
+        if (productToUpdate.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("Product not found with the selected ID");
+        } else if (productTypeUpdates != null) {
+            List<ProductTypeEntity> productTypeEntityUpdates = productTypeMapper.toEntityList(productTypeUpdates);
+            productToUpdate.get().setProductTypes(productTypeEntityUpdates);
             return new ResponseModel(ResponseCode.G, this.productMapper.toDto(this.productDao.saveAndFlush(productToUpdate.get())));
         }
         return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");

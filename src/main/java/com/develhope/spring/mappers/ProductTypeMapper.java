@@ -1,8 +1,6 @@
 package com.develhope.spring.mappers;
 
 import com.develhope.spring.models.dtos.ProductTypeDto;
-import com.develhope.spring.models.dtos.ProductTypeDto;
-import com.develhope.spring.models.entities.ProductTypeEntity;
 import com.develhope.spring.models.entities.ProductTypeEntity;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +16,6 @@ public class ProductTypeMapper {
         }
 
         ProductTypeEntity productTypeEntity = new ProductTypeEntity();
-        productTypeEntity.setId(productTypeDTO.getId());
         productTypeEntity.setProductType(productTypeDTO.getProductType());
 
         return productTypeEntity;
@@ -30,35 +27,35 @@ public class ProductTypeMapper {
         }
 
         ProductTypeDto productTypeDto = new ProductTypeDto();
-        productTypeDto.setId(productTypeEntity.getId());
         productTypeDto.setProductType(productTypeEntity.getProductType());
 
         return productTypeDto;
     }
 
-    public List<ProductTypeDto> toDto(List<ProductTypeEntity> productTypeEntities) {
-        if (productTypeEntities == null) return null;
-
-
-        List<ProductTypeDto> productTypeDtos = new ArrayList<>();
-        for (ProductTypeEntity p : productTypeEntities) {
-            productTypeDtos.add(
-                    this.toDto(p)
-            );
+    public List<ProductTypeEntity> toEntityList(List<ProductTypeDto> productTypeDTOs){
+        if (productTypeDTOs == null) {
+            return null;
         }
-        return productTypeDtos;
+
+        List<ProductTypeEntity> productTypeEntities = new ArrayList<>(productTypeDTOs.size());
+        for (ProductTypeDto productTypeDto : productTypeDTOs) {
+            productTypeEntities.add(toEntity(productTypeDto));
+        }
+
+        return productTypeEntities;
     }
 
-    public List<ProductTypeEntity> toEntity(List<ProductTypeDto> productTypeDtos) {
-        if (productTypeDtos == null) return null;
-
-        List<ProductTypeEntity> productTypeEntities = new ArrayList<>();
-        for (ProductTypeDto p : productTypeDtos) {
-            productTypeEntities.add(
-                    this.toEntity(p)
-            );
+    public List<ProductTypeDto> toDtoList(List<ProductTypeEntity> productTypeEntities){
+        if (productTypeEntities == null) {
+            return null;
         }
-        return productTypeEntities;
+
+        List<ProductTypeDto> productTypeDTOs = new ArrayList<>(productTypeEntities.size());
+        for (ProductTypeEntity productTypeEntity : productTypeEntities) {
+            productTypeDTOs.add(toDto(productTypeEntity));
+        }
+
+        return productTypeDTOs;
     }
 
 }

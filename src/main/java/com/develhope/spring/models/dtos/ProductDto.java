@@ -21,8 +21,7 @@ public class ProductDto {
     public ProductDto() {
     }
 
-    public ProductDto(String id, String name, BigDecimal price, String ingredients, List<ProductTypeDto> productTypes) {
-        this.id = id;
+    public ProductDto(String name, BigDecimal price, String ingredients, List<ProductTypeDto> productTypes) {
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;

@@ -6,6 +6,10 @@ import java.math.RoundingMode;
 
 public class DistanceCalculator_Euclide {
 
+    // Earth radius in meters
+    private static final BigDecimal EARTH_RADIUS = new BigDecimal("4200"); // Earth radius in kilometers
+    // more precision radious by latitude: https://rechneronline.de/earth-radius/
+
     /**
      * Calculates the distance between two points in a 3D Cartesian space.
      * @param x1 The latitude of the first point.
@@ -17,6 +21,7 @@ public class DistanceCalculator_Euclide {
      * @return The distance between the two points.
      */
     public static BigDecimal calculateDistance(BigDecimal x1, BigDecimal x2, BigDecimal y1, BigDecimal y2, BigDecimal z1, BigDecimal z2) {
+
         MathContext mc = new MathContext(10, RoundingMode.HALF_UP);
 
         // Calculate the differences

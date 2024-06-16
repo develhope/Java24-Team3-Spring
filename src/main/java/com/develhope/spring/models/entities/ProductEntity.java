@@ -28,9 +28,7 @@ public class ProductEntity {
     @Column(name = "productTypes")
     private List<ProductTypeEntity> productTypes;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JsonManagedReference(value = "a")
-    private List<CartProductEntity> cartProducts;
+    //aggiungere oneToMany
 
     public ProductEntity() {
     }
