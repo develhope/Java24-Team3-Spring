@@ -35,8 +35,6 @@ public class AddressEntity {
     @Column
     private BigDecimal lon;
 
-
-
     public AddressEntity() {
     }
 

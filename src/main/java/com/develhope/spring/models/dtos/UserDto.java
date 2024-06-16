@@ -3,15 +3,10 @@ package com.develhope.spring.models.dtos;
 public class UserDto {
 
     private String id;
-
     private String email;
-
     private String password;
-
     private Boolean isDeleted = false;
-
     private Boolean isVerified = false;
-
     private UserDetailsDto userDetails;
 
     public UserDto() {
