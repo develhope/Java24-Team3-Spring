@@ -60,7 +60,7 @@ public class PaymentService {
     }
 
     /**
-     * @param id payment ID
+     * @param id payment id
      * @return a single payment found with the selected ID
      */
     public ResponseModel getPaymentById(String id) {
@@ -72,10 +72,21 @@ public class PaymentService {
         }
     }
 
-    //getPaymentByOrderId
+    /**
+     * @param orderId order id
+     * @return
+     */
+    public ResponseModel getPaymentByOrderId(String orderId) {
+        Optional<PaymentEntity> paymentFound = this.paymentDao.findByOrderId(orderId);
+        if(paymentFound.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No payment found with the selected ID");
+        } else {
+            return new ResponseModel(ResponseCode.C, this.paymentMapper.toDto(paymentFound.get()));
+        }
+    }
 
     /**
-     * @param id            payment ID
+     * @param id            payment id
      * @param paymentStatus the new payment status
      * @return a payment with the status updated
      */

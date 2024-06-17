@@ -41,8 +41,11 @@ public class PaymentController {
         return ResponseEntity.ok(paymentFound);
     }
 
-    //@GetMapping
-    //getSinglePaymentByOrderId
+    @GetMapping("/orderId/{orderId}")
+    public ResponseEntity<ResponseModel> getPaymentByOrderId(@PathVariable String orderId) {
+        ResponseModel paymentFound = this.paymentService.getPaymentByOrderId(orderId);
+        return ResponseEntity.ok(paymentFound);
+    }
 
     @PutMapping("/{id}/paymentStatus")
     public ResponseEntity<ResponseModel> updatePaymentStatus(@PathVariable String id, @RequestParam PaymentStatus paymentStatus) {
