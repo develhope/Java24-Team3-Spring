@@ -4,24 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantDto {
-        private Long id_restaurant;
 
-        private String email;
+    private Long id_restaurant;
+    private String email;
+    private String restaurantName;
+    private String restaurantPhoneNumber;
+    private AddressDto addressDto;
 
-        private String restaurantName;
+    String description;
+    Boolean isDeliveryAvailable;
+    Boolean isTakeAwayAvailable;
 
-        private String restaurantPhoneNumber;
-
-       private AddressDto addressDto ;
-
-        String description;
-
-        Boolean isDeliveryAvailable;
-        Boolean isTakeAwayAvailable;
-
-        private List<ProductDto> productDtos = new ArrayList<>();
-
-        private List<OperatingHoursDto> operatingHoursDto;
+    private List<ProductDto> productDtos = new ArrayList<>();
+    private List<OperatingHoursDto> operatingHoursDto;
 
     public RestaurantDto(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressDto addressDto, String description, Boolean isDeliveryAvaible, Boolean isTakeAwayAvaible, List<ProductDto> productDtos, List<OperatingHoursDto> operatingHoursDto) {
         this.id_restaurant = id_user;

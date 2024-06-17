@@ -2,6 +2,7 @@ package com.develhope.spring.controllers;
 
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.ProductDto;
+import com.develhope.spring.models.dtos.ProductTypeDto;
 import com.develhope.spring.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/products")
@@ -51,10 +53,23 @@ public class ProductController {
         return ResponseEntity.ok(productsFoundList);
     }
 
+    @GetMapping("/productTypes")
+    public ResponseEntity<ResponseModel> getProductsByProductType(@RequestParam String productType) {
+        ResponseModel productsFoundList = this.productService.getProductByProductType(productType);
+        return ResponseEntity.ok(productsFoundList);
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<ResponseModel> updateProduct(@PathVariable String id, @RequestBody ProductDto productDto) {
         ResponseModel updatedProduct = this.productService.updateProduct(id, productDto);
         return ResponseEntity.ok(updatedProduct);
+    }
+
+    @PutMapping("/{id}/productTypes")
+    public ResponseEntity<ResponseModel> updateProductsProductTypes(@PathVariable String id, @RequestBody List<ProductTypeDto> productTypeDto) {
+        ResponseModel updatedProductsProductTypes = this.productService.updateProductsProductTypes(id, productTypeDto);
+        return ResponseEntity.ok(updatedProductsProductTypes);
     }
 
     @DeleteMapping("/{id}")
