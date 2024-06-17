@@ -13,6 +13,9 @@ public class PaymentEntity {
     private String id;
 
     @Column(nullable = false)
+    private String orderId;
+
+    @Column(nullable = false)
     private PaymentMethod paymentMethod;
 
     @Column(nullable = false)
@@ -23,7 +26,8 @@ public class PaymentEntity {
     public PaymentEntity() {
     }
 
-    public PaymentEntity(PaymentMethod paymentMethod, PaymentStatus paymentStatus, BigDecimal totalPrice) {
+    public PaymentEntity(String orderId, PaymentMethod paymentMethod, PaymentStatus paymentStatus, BigDecimal totalPrice) {
+        this.orderId = orderId;
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
         this.totalPrice = totalPrice;
@@ -35,6 +39,14 @@ public class PaymentEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public PaymentMethod getPaymentMethod() {

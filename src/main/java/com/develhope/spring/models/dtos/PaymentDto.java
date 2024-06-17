@@ -9,6 +9,8 @@ public class PaymentDto {
 
     private String id;
 
+    private String orderId;
+
     private PaymentMethod paymentMethod;
 
     private PaymentStatus paymentStatus;
@@ -21,6 +23,14 @@ public class PaymentDto {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public PaymentMethod getPaymentMethod() {

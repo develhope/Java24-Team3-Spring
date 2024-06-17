@@ -130,12 +130,12 @@ public class RiderService {
             int distance;
             List<RiderDto> ridersInRange = new ArrayList<RiderDto>();
 
-            for (RiderDto rider : availableRiders) {
-                distance = DistanceCalculator.calculateDistance(coordinates[0], coordinates[1], rider.getStartingPosition()[0], rider.getStartingPosition()[1], 0.0, 0.0);
-                if (distance <= maximumDistance) {
-                    ridersInRange.add(rider);
-                }
-            }
+//            for (RiderDto rider : availableRiders) {
+//                distance = DistanceCalculator.calculateDistance(coordinates[0], coordinates[1], rider.getStartingPosition()[0], rider.getStartingPosition()[1], 0.0, 0.0);
+//                if (distance <= maximumDistance) {
+//                    ridersInRange.add(rider);
+//                }
+//            }
 
             return new ResponseModel(ResponseCode.E, ridersInRange);
         }
@@ -167,9 +167,9 @@ public class RiderService {
                 riderToUpdate.get().setIsVerified(updatedRider.getIsVerified());
             }
 
-            if (updatedRider.getUserDetails() != null) {
-                riderToUpdate.get().setUserDetailsEntity(updatedRider.getUserDetails());
-            }
+//            if (updatedRider.getUserDetails() != null) {
+//                riderToUpdate.get().setUserDetailsEntity(updatedRider.getUserDetails());
+//            }
 
             if (updatedRider.getIsAvailable() != null) {
                 riderToUpdate.get().setIsAvailable(updatedRider.getIsAvailable());
