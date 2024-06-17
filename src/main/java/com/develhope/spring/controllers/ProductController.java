@@ -53,6 +53,13 @@ public class ProductController {
         return ResponseEntity.ok(productsFoundList);
     }
 
+    @GetMapping("/productTypes")
+    public ResponseEntity<ResponseModel> getProductsByProductType(@RequestParam String productType) {
+        ResponseModel productsFoundList = this.productService.getProductByProductType(productType);
+        return ResponseEntity.ok(productsFoundList);
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<ResponseModel> updateProduct(@PathVariable String id, @RequestBody ProductDto productDto) {
         ResponseModel updatedProduct = this.productService.updateProduct(id, productDto);
@@ -60,7 +67,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}/productTypes")
-    public ResponseEntity<ResponseModel> updateProductsProductTypes(@PathVariable String id, @RequestBody List<ProductTypeDto> productTypeDto){
+    public ResponseEntity<ResponseModel> updateProductsProductTypes(@PathVariable String id, @RequestBody List<ProductTypeDto> productTypeDto) {
         ResponseModel updatedProductsProductTypes = this.productService.updateProductsProductTypes(id, productTypeDto);
         return ResponseEntity.ok(updatedProductsProductTypes);
     }
