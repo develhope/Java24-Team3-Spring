@@ -183,8 +183,6 @@ public class CustomerService {
             CartEntity cart = customerEntity.get().getCart();
             if (cart != null) {
                 customerEntity.get().setCart(null);
-                //this.cartDao.delete(cart);
-                this.customerDao.saveAndFlush(customerEntity.get());
             }
             customerEntity.get().setIsDeleted(true);
             customerEntity.get().setIsVerified(false);
@@ -196,6 +194,7 @@ public class CustomerService {
     public ResponseModel deleteAllCustomers() {
         List<CustomerEntity> allCustomers = this.customerDao.findAll();
         for(CustomerEntity customer : allCustomers) {
+            customer.setCart(null);
             customer.setIsDeleted(true);
             customer.setIsVerified(false);
         }
