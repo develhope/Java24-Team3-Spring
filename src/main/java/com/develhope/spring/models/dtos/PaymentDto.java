@@ -13,7 +13,7 @@ public class PaymentDto {
 
     private PaymentMethod paymentMethod;
 
-    private PaymentStatus paymentStatus;
+    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
 
     private BigDecimal totalPrice;
 

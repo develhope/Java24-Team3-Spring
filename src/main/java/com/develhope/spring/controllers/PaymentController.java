@@ -28,7 +28,6 @@ public class PaymentController {
         return ResponseEntity.created(URI.create("api/v1/payments")).body(newPayment);
     }
 
-
     @GetMapping
     public ResponseEntity<ResponseModel> getAllPayments() {
         ResponseModel payments = this.paymentService.getAllPayments();
