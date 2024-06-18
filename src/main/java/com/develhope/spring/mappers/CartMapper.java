@@ -44,7 +44,7 @@ public class CartMapper {
         return cartEntity;
     }
 
-    public CartDto toDTO(CartEntity cartEntity) {
+    public CartDto toDto(CartEntity cartEntity) {
         if (cartEntity == null) {
             return null;
         }
