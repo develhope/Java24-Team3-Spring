@@ -118,11 +118,8 @@ public class UserDetailsService {
             if (userDetailsUpdates.getPhoneNumber() != null) {
                 userDetailsToUpdate.get().setPhoneNumber(userDetailsUpdates.getPhoneNumber());
             }
-            if (userDetailsUpdates.getCreationDate() != null) {
-                userDetailsToUpdate.get().setCreationDate(userDetailsUpdates.getCreationDate());
-            }
             if (userDetailsUpdates.getUpdateDate() != null) {
-                userDetailsToUpdate.get().setUpdateDate(userDetailsUpdates.getUpdateDate());
+                userDetailsToUpdate.get().setUpdateDate(LocalDate.now());
             }
             return new ResponseModel(ResponseCode.G, this.userDetailsMapper.toDTO(this.userDetailsDao.saveAndFlush(userDetailsToUpdate.get())));
         }
