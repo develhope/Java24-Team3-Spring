@@ -163,6 +163,15 @@ public class CustomerService {
         return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
     }
 
+    public ResponseModel setIsVerified(String id, Boolean isVerified) {
+        Optional<CustomerEntity> customerToUpdate = this.customerDao.findById(id);
+        if (customerToUpdate.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
+        }
+        customerToUpdate.get().setIsVerified(isVerified);
+        return new ResponseModel(ResponseCode.G, this.customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
+    }
+
     /**
      * @param id customer id
      */
@@ -173,15 +182,24 @@ public class CustomerService {
             Optional<CustomerEntity> customerEntity = customerDao.findById(id);
             CartEntity cart = customerEntity.get().getCart();
             if (cart != null) {
-                this.cartDao.delete(cart);
+                customerEntity.get().setCart(null);
+                //this.cartDao.delete(cart);
+                this.customerDao.saveAndFlush(customerEntity.get());
             }
             customerEntity.get().setIsDeleted(true);
+            customerEntity.get().setIsVerified(false);
+            this.customerDao.saveAndFlush(customerEntity.get());
             return new ResponseModel(ResponseCode.H).addMessageDetails("Customer successfully deleted");
         }
     }
 
     public ResponseModel deleteAllCustomers() {
-        this.customerDao.deleteAll();
+        List<CustomerEntity> allCustomers = this.customerDao.findAll();
+        for(CustomerEntity customer : allCustomers) {
+            customer.setIsDeleted(true);
+            customer.setIsVerified(false);
+        }
+        this.customerDao.saveAll(allCustomers);
         return new ResponseModel(ResponseCode.H).addMessageDetails("All customers have been deleted");
     }
 
