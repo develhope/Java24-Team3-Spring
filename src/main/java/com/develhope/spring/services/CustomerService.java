@@ -175,7 +175,7 @@ public class CustomerService {
             if (cart != null) {
                 this.cartDao.delete(cart);
             }
-            this.customerDao.deleteById(id);
+            customerEntity.get().setIsDeleted(true);
             return new ResponseModel(ResponseCode.H).addMessageDetails("Customer successfully deleted");
         }
     }
