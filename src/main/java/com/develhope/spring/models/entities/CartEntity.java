@@ -17,7 +17,7 @@ public class CartEntity {
     @JsonManagedReference(value = "cart_cartProducts")
     private List<CartProductEntity> cartProducts;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     @JsonManagedReference(value = "cart_customer")
     private CustomerEntity customer;
