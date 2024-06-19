@@ -8,6 +8,7 @@ import com.develhope.spring.models.entities.OperatingHoursEntity;
 import com.develhope.spring.models.entities.RestaurantEntity;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +28,7 @@ public class AddressMapper {
                 addressEntity.getStreet(),
                 addressEntity.getNumber(),
                 addressEntity.getNote(),
-                addressEntity.getLat(),
-                addressEntity.getLon()
+                new BigDecimal[]{addressEntity.getLat(), addressEntity.getLon()}
         );
     }
 
@@ -45,8 +45,7 @@ public class AddressMapper {
                 addressDto.getStreet(),
                 addressDto.getNumber(),
                 addressDto.getNote(),
-                addressDto.getLat(),
-                addressDto.getLon()
+                addressDto.getCoordinates()[0], addressDto.getCoordinates()[1]
         );
     }
 }

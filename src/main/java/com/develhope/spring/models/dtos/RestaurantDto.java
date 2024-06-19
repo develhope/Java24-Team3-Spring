@@ -4,47 +4,77 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantDto {
+    private String id_restaurant;
 
-    private Long id_restaurant;
-    private String email;
+    private OwnerDto ownerDto;
+
     private String restaurantName;
+
+    private String restaurantEmail;
+
     private String restaurantPhoneNumber;
+
     private AddressDto addressDto;
 
     String description;
+
     Boolean isDeliveryAvailable;
     Boolean isTakeAwayAvailable;
 
-    private List<ProductDto> productDtos = new ArrayList<>();
-    private List<OperatingHoursDto> operatingHoursDto;
+    private List<OperatingHoursDto> operatingHoursDtos;
 
-    public RestaurantDto(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressDto addressDto, String description, Boolean isDeliveryAvaible, Boolean isTakeAwayAvaible, List<ProductDto> productDtos, List<OperatingHoursDto> operatingHoursDto) {
-        this.id_restaurant = id_user;
-        this.email = email;
+    private List<RestaurantTypeDto> restaurantTypeDtos = new ArrayList<>();
+
+    private List<ProductDto> productDtos = new ArrayList<>();
+
+    public RestaurantDto() {
+    }
+
+    public RestaurantDto(String id_restaurant, OwnerDto ownerDto, String restaurantName, String restaurantEmail, String restaurantPhoneNumber, AddressDto addressDto, String description, Boolean isDeliveryAvailable, Boolean isTakeAwayAvailable, List<OperatingHoursDto> operatingHoursDto, List<RestaurantTypeDto> restaurantTypeDtoList, List<ProductDto> productDtos) {
+        this.id_restaurant = id_restaurant;
+        this.ownerDto = ownerDto;
         this.restaurantName = restaurantName;
+        this.restaurantEmail = restaurantEmail;
         this.restaurantPhoneNumber = restaurantPhoneNumber;
         this.addressDto = addressDto;
         this.description = description;
-        this.isDeliveryAvailable = isDeliveryAvaible;
-        this.isTakeAwayAvailable = isTakeAwayAvaible;
+        this.isDeliveryAvailable = isDeliveryAvailable;
+        this.isTakeAwayAvailable = isTakeAwayAvailable;
+        this.operatingHoursDtos = operatingHoursDto;
+        this.restaurantTypeDtos = restaurantTypeDtoList;
         this.productDtos = productDtos;
-        this.operatingHoursDto = operatingHoursDto;
     }
 
-    public Long getId_restaurant() {
+    public OwnerDto getOwnerDto() {
+        return ownerDto;
+    }
+
+    public void setOwnerDto(OwnerDto ownerDto) {
+        this.ownerDto = ownerDto;
+    }
+
+    public List<RestaurantTypeDto> getRestaurantTypeDtos() {
+        return restaurantTypeDtos;
+    }
+
+    public void setRestaurantTypeDtos(List<RestaurantTypeDto> restaurantTypeDtos) {
+        this.restaurantTypeDtos = restaurantTypeDtos;
+    }
+
+    public String getId_restaurant() {
         return id_restaurant;
     }
 
-    public void setId_restaurant(Long id_restaurant) {
+    public void setId_restaurant(String id_restaurant) {
         this.id_restaurant = id_restaurant;
     }
 
-    public String getEmail() {
-        return email;
+    public String getRestaurantEmail() {
+        return restaurantEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setRestaurantEmail(String restaurantEmail) {
+        this.restaurantEmail = restaurantEmail;
     }
 
     public String getRestaurantName() {
@@ -67,7 +97,7 @@ public class RestaurantDto {
         return addressDto;
     }
 
-    public void setAddressEntity(AddressDto addressDto) {
+    public void setAddressDto(AddressDto addressDto) {
         this.addressDto = addressDto;
     }
 
@@ -83,16 +113,16 @@ public class RestaurantDto {
         return isDeliveryAvailable;
     }
 
-    public void setIsDeliveryAvailable(boolean deliveryAvailable) {
-        isDeliveryAvailable = deliveryAvailable;
+    public void setIsDeliveryAvailable(Boolean isDeliveryAvailable) {
+        this.isDeliveryAvailable = isDeliveryAvailable;
     }
 
     public Boolean getIsTakeAwayAvailable() {
         return isTakeAwayAvailable;
     }
 
-    public void setIsTakeAwayAvailable(boolean takeAwayAvailable) {
-        isTakeAwayAvailable = takeAwayAvailable;
+    public void setIsTakeAwayAvailable(Boolean isTakeAwayAvailable) {
+        this.isTakeAwayAvailable = isTakeAwayAvailable;
     }
 
     public List<ProductDto> getProductDtos() {
@@ -103,11 +133,11 @@ public class RestaurantDto {
         this.productDtos = productDtos;
     }
 
-    public List<OperatingHoursDto> getOperatingHoursDto() {
-        return operatingHoursDto;
+    public List<OperatingHoursDto> getOperatingHoursDtos() {
+        return operatingHoursDtos;
     }
 
-    public void setOperatingHours(List<OperatingHoursDto> operatingHoursDto) {
-        this.operatingHoursDto = operatingHoursDto;
+    public void setOperatingHoursDtos(List<OperatingHoursDto> operatingHoursDtos) {
+        this.operatingHoursDtos = operatingHoursDtos;
     }
 }

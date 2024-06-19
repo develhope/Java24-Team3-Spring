@@ -25,7 +25,7 @@ public class UserDetailsMapper {
         return userDetailsEntity;
     }
 
-    public UserDetailsDto toDTO(UserDetailsEntity userDetailsEntity) {
+    public UserDetailsDto toDto(UserDetailsEntity userDetailsEntity) {
         if (userDetailsEntity == null) {
             return null;
         }

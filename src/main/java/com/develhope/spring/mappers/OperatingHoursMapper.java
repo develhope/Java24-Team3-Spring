@@ -17,7 +17,7 @@ public class OperatingHoursMapper {
         List<OperatingHoursDto> operatingHoursDtos = new ArrayList<>();
         for (OperatingHoursEntity o : operatingHoursEntities) {
             operatingHoursDtos.add(
-                    new OperatingHoursDto()
+                    new OperatingHoursDto(o.getId_oparatingHours(),o.getDayOfWeek(),o.getOpeningHour(),o.getClosingHour())
             );
         }
         return operatingHoursDtos;
@@ -29,7 +29,7 @@ public class OperatingHoursMapper {
         List<OperatingHoursEntity> operatingHoursEntities = new ArrayList<>();
         for (OperatingHoursDto o : operatingHoursDtos) {
             operatingHoursEntities.add(
-                    new OperatingHoursEntity()
+                    new OperatingHoursEntity(o.getId_oparatingHours(), o.getDayOfWeek(),o.getOpeningHour(),o.getClosingHour())
             );
         }
         return operatingHoursEntities;

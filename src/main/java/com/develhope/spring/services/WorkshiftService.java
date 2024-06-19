@@ -73,7 +73,7 @@ public class WorkshiftService {
     }
 
     public ResponseModel getByStartingBefore(LocalTime hour) {
-        List<WorkshiftEntity> workshifts = this.dao.findByStartingBefore(hour);
+        List<WorkshiftEntity> workshifts = this.dao.findByStartBefore(hour);
         if (workshifts.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts starting before " + hour.toString() + " found.");
         } else {
@@ -82,7 +82,7 @@ public class WorkshiftService {
     }
 
     public ResponseModel getByStartingAfter(LocalTime hour) {
-        List<WorkshiftEntity> workshifts = this.dao.findByStartingAfter(hour);
+        List<WorkshiftEntity> workshifts = this.dao.findByStartAfter(hour);
         if (workshifts.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts starting after " + hour.toString() + " found.");
         } else {
@@ -100,7 +100,7 @@ public class WorkshiftService {
                 minHour = shift;
             }
 
-            List<WorkshiftEntity> workshifts = this.dao.findByStartingBetween(minHour, maxHour);
+            List<WorkshiftEntity> workshifts = this.dao.findByStartBetween(minHour, maxHour);
             if (workshifts.isEmpty()) {
                 return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts starting betweeen " + minHour.toString() + " and " + maxHour.toString() + " found.");
             } else {
@@ -110,7 +110,7 @@ public class WorkshiftService {
     }
 
     public ResponseModel getByEndingBefore(LocalTime hour) {
-        List<WorkshiftEntity> workshifts = this.dao.findByEndingBefore(hour);
+        List<WorkshiftEntity> workshifts = this.dao.findByEndBefore(hour);
         if (workshifts.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts ending before " + hour.toString() + " found.");
         } else {
@@ -119,7 +119,7 @@ public class WorkshiftService {
     }
 
     public ResponseModel getByEndingAfter(LocalTime hour) {
-        List<WorkshiftEntity> workshifts = this.dao.findByEndingAfter(hour);
+        List<WorkshiftEntity> workshifts = this.dao.findByEndAfter(hour);
         if (workshifts.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts ending after " + hour.toString() + " found.");
         } else {
@@ -137,7 +137,7 @@ public class WorkshiftService {
                 minHour = shift;
             }
 
-            List<WorkshiftEntity> workshifts = this.dao.findByEndingBetween(minHour, maxHour);
+            List<WorkshiftEntity> workshifts = this.dao.findByEndBetween(minHour, maxHour);
             if (workshifts.isEmpty()) {
                 return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts ending betweeen " + minHour.toString() + " and " + maxHour.toString() + " found.");
             } else {
@@ -160,12 +160,12 @@ public class WorkshiftService {
                 toUpdate.get().setDayOfWeek(update.getDayOfWeek());
             }
 
-            if (updated.getStartingHour() != null) {
-                toUpdate.get().setStartingHour(update.getStartingHour());
+            if (updated.getStart() != null) {
+                toUpdate.get().setStart(update.getStart());
             }
 
-            if (updated.getEndingHour() != null) {
-                toUpdate.get().setEndingHour(update.getEndingHour());
+            if (updated.getEnd() != null) {
+                toUpdate.get().setEnd(update.getEnd());
             }
 
             return new ResponseModel(ResponseCode.G, this.mapper.toDto(this.dao.saveAndFlush(toUpdate.get())));

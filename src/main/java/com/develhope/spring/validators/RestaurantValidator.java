@@ -9,13 +9,17 @@ import org.springframework.stereotype.Component;
 public class RestaurantValidator {
     @Autowired
     RestaurantDao restaurantDao;
+    @Autowired
+    RestaurantDao resDao;
+
 
     public void validateRestaurantName(String restaurantName) throws RestaurantNameException {
         if (restaurantName == null || restaurantName.isEmpty()) {
             throw new RestaurantNameException("The restaurant name cannot be empty.");
         }
 
-        if (!restaurantName.matches("^[a-zA-Z0-9 ]*$")) {
+        // "^(?!\\d+$)[A-Za-z0-9 & ']+$"
+        if (!restaurantName.matches("^(?!\\d+$)[A-Za-z0-9À-ÖØ-öø-ÿ' &]+$")) {
             throw new RestaurantNameException("The restaurant name should only contain letters, numbers, or spaces.");
         }
 
@@ -23,16 +27,19 @@ public class RestaurantValidator {
             throw new RestaurantNameException("The length of the restaurant name must be between 3 and 50 characters.");
         }
 
-        //Controlla se il nome del ristorante è già stato utilizzato da un altro ristorante registrato nell’applicazione. Assicurati che ogni nome sia univoco.
-        // cerco se i ristoranti per nome, e lancio un eccezione se trovo un altro ristorante con lo stesso nome
-        // faccio il controllo sui nomi case insensitive
-        if (restaurantName == "ciao") {
-
+        // caseInsensitive restaurantName may be unique in the DB
+        if (resDao.findByRestaurantNameIgnoreCase(restaurantName).isPresent()) {
             throw new RestaurantNameException("This name has already been used.");
         }
 
         //Crea una lista di parole o frasi inappropriati o offensivi e verifica se il nome del ristorante contiene tali termini.
     }
+
+    public void validateOwner(){
+        //deve già esistere questo Owner
+    }
+
+
 
 
 }

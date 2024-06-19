@@ -6,7 +6,7 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "SCHEDULE")
+@Table(name = "restaurant_schedule")
 public class ScheduleEntity {
 
     @Id
@@ -14,29 +14,29 @@ public class ScheduleEntity {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "RESTAURANT_ID", nullable = false)
+    @JoinColumn(name = "restaurant_id", nullable = false)
     private RestaurantEntity restaurant;
 
-    @Column(name = "DAY", nullable = false)
+    @Column(name = "day", nullable = false)
     private DayOfWeek dayOfWeek;
 
-    @Column(name = "STARTING_HOUR", nullable = false)
-    private LocalTime startingHour;
+    @Column(name = "starting_hour", nullable = false)
+    private LocalTime start;
 
-    @Column(name = "ENDING_HOUR", nullable = false)
-    private LocalTime endingHour;
+    @Column(name = "ending_hour", nullable = false)
+    private LocalTime end;
 
     // CONSTRUCTORS
 
     public ScheduleEntity() {
     }
 
-    public ScheduleEntity(String id, RestaurantEntity restaurant, DayOfWeek dayOfWeek, LocalTime startingHour, LocalTime endingHour) {
+    public ScheduleEntity(String id, RestaurantEntity restaurant, DayOfWeek dayOfWeek, LocalTime start, LocalTime end) {
         this.id = id;
         this.restaurant = restaurant;
         this.dayOfWeek = dayOfWeek;
-        this.startingHour = startingHour;
-        this.endingHour = endingHour;
+        this.start = start;
+        this.end = end;
     }
 
     // GETTERS AND SETTERS
@@ -65,19 +65,20 @@ public class ScheduleEntity {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public LocalTime getStartingHour() {
-        return startingHour;
+    public LocalTime getStart() {
+        return start;
     }
 
-    public void setStartingHour(LocalTime startingHour) {
-        this.startingHour = startingHour;
+    public void setStart(LocalTime start) {
+        this.start = start;
     }
 
-    public LocalTime getEndingHour() {
-        return endingHour;
+    public LocalTime getEnd() {
+        return end;
     }
 
-    public void setEndingHour(LocalTime endingHour) {
-        this.endingHour = endingHour;
+    public void setEnd(LocalTime end) {
+        this.end = end;
     }
+
 }

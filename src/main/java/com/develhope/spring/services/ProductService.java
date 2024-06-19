@@ -11,11 +11,13 @@ import com.develhope.spring.models.entities.ProductEntity;
 import com.develhope.spring.mappers.ProductMapper;
 import com.develhope.spring.daos.ProductDao;
 import com.develhope.spring.models.entities.ProductTypeEntity;
+import com.develhope.spring.validators.IdValidator;
 import com.develhope.spring.validators.ProductValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,12 +31,29 @@ public class ProductService {
     private final ProductTypeDao productTypeDao;
 
     @Autowired
+    private IdValidator idValidator;
+
+    @Autowired
     public ProductService(ProductDao productDao, ProductMapper productMapper, ProductValidator productValidator, ProductTypeMapper productTypeMapper, ProductTypeDao productTypeDao) {
         this.productDao = productDao;
         this.productMapper = productMapper;
         this.productValidator = productValidator;
         this.productTypeMapper = productTypeMapper;
         this.productTypeDao = productTypeDao;
+    }
+
+    public List<ProductDto> createProducts(List<ProductDto> productDtos) throws Exception {
+        List<ProductDto> productDtosWithId = new ArrayList<>();
+        for (ProductDto p : productDtos) {
+            idValidator.noId(p.getId());
+            productValidator.validateProduct(p);
+            ProductEntity newProduct = productMapper.toEntity(p);
+            p.setId(newProduct.getId());
+            productDtosWithId.add(p);
+        }
+        return productDtosWithId;
+
+
     }
 
     /**

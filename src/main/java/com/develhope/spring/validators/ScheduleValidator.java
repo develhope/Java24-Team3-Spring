@@ -12,11 +12,11 @@ public class ScheduleValidator {
             throw new InvalidScheduleException("A schedule must be in a day of the week.");
         }
 
-        if (scheduleDto.getStartingHour() == null) {
+        if (scheduleDto.getStart() == null) {
             throw new InvalidScheduleException("A schedule must have a starting hour.");
         }
 
-        if (scheduleDto.getEndingHour() == null) {
+        if (scheduleDto.getEnd() == null) {
             throw new InvalidScheduleException("A schedule must have an ending hour.");
         }
     }
