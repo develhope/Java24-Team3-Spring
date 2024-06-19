@@ -2,7 +2,9 @@ package com.develhope.spring.validators;
 
 import com.develhope.spring.exceptions.InvalidRiderException;
 import com.develhope.spring.models.dtos.RiderDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RiderValidator {
 
     public void validateRider(RiderDto riderDto) throws InvalidRiderException {
