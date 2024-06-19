@@ -80,4 +80,5 @@ public class ScheduleEntity {
     public void setEnd(LocalTime end) {
         this.end = end;
     }
+
 }
