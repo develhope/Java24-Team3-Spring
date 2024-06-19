@@ -9,20 +9,20 @@ public class ScheduleDto {
 
     private DayOfWeek dayOfWeek;
 
-    private LocalTime startingHour;
+    private LocalTime start;
 
-    private LocalTime endingHour;
+    private LocalTime end;
 
     // CONSTRUCTORS
 
     public ScheduleDto() {
     }
 
-    public ScheduleDto(String id, DayOfWeek dayOfWeek, LocalTime startingHour, LocalTime endingHour) {
+    public ScheduleDto(String id, DayOfWeek dayOfWeek, LocalTime start, LocalTime end) {
         this.id = id;
         this.dayOfWeek = dayOfWeek;
-        this.startingHour = startingHour;
-        this.endingHour = endingHour;
+        this.start = start;
+        this.end = end;
     }
 
     // GETTERS AND SETTERS
@@ -43,19 +43,19 @@ public class ScheduleDto {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public LocalTime getStartingHour() {
-        return startingHour;
+    public LocalTime getStart() {
+        return start;
     }
 
-    public void setStartingHour(LocalTime startingHour) {
-        this.startingHour = startingHour;
+    public void setStart(LocalTime start) {
+        this.start = start;
     }
 
-    public LocalTime getEndingHour() {
-        return endingHour;
+    public LocalTime getEnd() {
+        return end;
     }
 
-    public void setEndingHour(LocalTime endingHour) {
-        this.endingHour = endingHour;
+    public void setEnd(LocalTime end) {
+        this.end = end;
     }
 }
