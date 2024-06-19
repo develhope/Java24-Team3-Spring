@@ -131,12 +131,6 @@ public class CustomerService {
             if (customerUpdates.getPassword() != null) {
                 customerToUpdate.get().setPassword(customerEntityUpdates.getPassword());
             }
-            if (customerUpdates.getIsDeleted() != null) {
-                customerToUpdate.get().setIsDeleted(customerEntityUpdates.getIsDeleted());
-            }
-            if (customerUpdates.getIsVerified() != null) {
-                customerToUpdate.get().setIsVerified(customerEntityUpdates.getIsVerified());
-            }
             if (customerUpdates.getUserDetails() != null) {
                 customerToUpdate.get().setUserDetailsEntity(customerEntityUpdates.getUserDetails());
             }
@@ -163,6 +157,11 @@ public class CustomerService {
         return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
     }
 
+    /**
+     * @param id customer id
+     * @param isVerified the status of isVerified
+     * @return isVerified status updated
+     */
     public ResponseModel setIsVerified(String id, Boolean isVerified) {
         Optional<CustomerEntity> customerToUpdate = this.customerDao.findById(id);
         if (customerToUpdate.isEmpty()) {
@@ -185,7 +184,6 @@ public class CustomerService {
                 customerEntity.get().setCart(null);
             }
             customerEntity.get().setIsDeleted(true);
-            customerEntity.get().setIsVerified(false);
             this.customerDao.saveAndFlush(customerEntity.get());
             return new ResponseModel(ResponseCode.H).addMessageDetails("Customer successfully deleted");
         }
@@ -196,7 +194,6 @@ public class CustomerService {
         for(CustomerEntity customer : allCustomers) {
             customer.setCart(null);
             customer.setIsDeleted(true);
-            customer.setIsVerified(false);
         }
         this.customerDao.saveAll(allCustomers);
         return new ResponseModel(ResponseCode.H).addMessageDetails("All customers have been deleted");
