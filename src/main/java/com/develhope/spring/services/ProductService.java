@@ -10,13 +10,11 @@ import com.develhope.spring.models.entities.ProductEntity;
 import com.develhope.spring.mappers.ProductMapper;
 import com.develhope.spring.daos.ProductDao;
 import com.develhope.spring.models.entities.ProductTypeEntity;
-import com.develhope.spring.validators.IdValidator;
 import com.develhope.spring.validators.ProductValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,16 +25,18 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final ProductValidator productValidator;
     private final ProductTypeMapper productTypeMapper;
+    private final ProductTypeDao productTypeDao;
 
     @Autowired
     private IdValidator idValidator;
 
     @Autowired
-    public ProductService(ProductDao productDao, ProductMapper productMapper, ProductValidator productValidator, ProductTypeMapper productTypeMapper) {
+    public ProductService(ProductDao productDao, ProductMapper productMapper, ProductValidator productValidator, ProductTypeMapper productTypeMapper, ProductTypeDao productTypeDao) {
         this.productDao = productDao;
         this.productMapper = productMapper;
         this.productValidator = productValidator;
         this.productTypeMapper = productTypeMapper;
+        this.productTypeDao = productTypeDao;
     }
 
     public List<ProductDto> createProducts(List<ProductDto> productDtos) throws Exception {
@@ -62,7 +62,9 @@ public class ProductService {
         try {
             productValidator.validateProduct(productDto);
             ProductEntity newProduct = this.productMapper.toEntity(productDto);
-            this.productDao.saveAndFlush(newProduct);
+            List<ProductTypeEntity> productTypeEntities = productTypeDao.saveAll(productTypeMapper.toEntityList(productDto.getProductTypes()));
+            newProduct.setProductTypes(productTypeEntities);
+            this.productDao.save(newProduct);
             return new ResponseModel(ResponseCode.B, productMapper.toDto(newProduct));
         } catch (InvalidProductException e) {
             return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
@@ -124,6 +126,21 @@ public class ProductService {
     }
 
     /**
+     * @param productType a productType used as parameter for the research
+     * @return a list of products with the selected productType
+     */
+    public ResponseModel getProductByProductType(String productType) {
+        ProductTypeEntity productTypeFound = this.productTypeDao.findByProductType(productType);
+        List<ProductEntity> productsFound = this.productDao.findByProductTypesContains(productTypeFound);
+        List<ProductDto> productFoundDto = productsFound.stream().map(productMapper::toDto).toList();
+        if (productFoundDto.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No products were found with the selected parameter");
+        } else {
+            return new ResponseModel(ResponseCode.E, productFoundDto);
+        }
+    }
+
+    /**
      * @param id             product id
      * @param productUpdates ProductDto
      * @return a product updated
@@ -144,7 +161,8 @@ public class ProductService {
                 productToUpdate.get().setIngredients(productEntityUpdates.getIngredients());
             }
             if (productUpdates.getProductTypes() != null) {
-                productToUpdate.get().setProductTypes(productEntityUpdates.getProductTypes());
+                List<ProductTypeEntity> productTypeEntities = productTypeDao.saveAll(productTypeMapper.toEntityList(productUpdates.getProductTypes()));
+                productToUpdate.get().setProductTypes(productTypeEntities);
             }
             return new ResponseModel(ResponseCode.G, this.productMapper.toDto(this.productDao.saveAndFlush(productToUpdate.get())));
         }

@@ -45,8 +45,8 @@ public class ProductTypeController {
         return ResponseEntity.ok(updatedProductType);
     }
 
-    @DeleteMapping("/{productTypeName}")
-    public ResponseEntity<ResponseModel> deleteProductType(@PathVariable String productTypeName) {
+    @DeleteMapping("/productType")
+    public ResponseEntity<ResponseModel> deleteProductType(@RequestParam String productTypeName) {
         ResponseModel deletedProductType = this.productTypeService.deleteProductType(productTypeName);
         return ResponseEntity.ok(deletedProductType);
     }

@@ -1,6 +1,5 @@
 package com.develhope.spring.models;
 
-
 public class ResponseModel {
     private ResponseCode code;
     private String message;

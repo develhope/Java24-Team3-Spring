@@ -1,6 +1,7 @@
 package com.develhope.spring.daos;
 
 import com.develhope.spring.models.entities.ProductEntity;
+import com.develhope.spring.models.entities.ProductTypeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,6 @@ public interface ProductDao extends JpaRepository<ProductEntity, String> {
     List<ProductEntity> findProductByName(String name);
 
     List<ProductEntity> findProductByPriceBetween(BigDecimal lowerBoundPrice, BigDecimal upperBoundPrice);
+
+    List<ProductEntity> findByProductTypesContains(ProductTypeEntity productType);
 }

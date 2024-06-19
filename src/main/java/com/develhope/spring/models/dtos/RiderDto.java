@@ -1,37 +1,34 @@
 package com.develhope.spring.models.dtos;
 
-import com.develhope.spring.models.entities.UserDetailsEntity;
-import java.math.BigDecimal;
-
 public class RiderDto extends UserDto {
 
-    private BigDecimal[] startingPosition;
-    private BigDecimal[] currentPosition;
+    private double[] startingPosition;
+    private double[] currentPosition;
     private Boolean isAvailable;
 
     public RiderDto() {
     }
 
-    public RiderDto(String email, String password, Boolean isDeleted, Boolean isVerified, UserDetailsDto userDetailsDto) {
-        super(email, password, isDeleted, isVerified, userDetailsDto);
-        this.startingPosition = new BigDecimal[2];
-        this.currentPosition = new BigDecimal[2];
+    public RiderDto(String email, String password, Boolean isDeleted, Boolean isVerified, UserDetailsDto userDetails) {
+        super(email, password, isDeleted, isVerified, userDetails);
+        this.startingPosition = new double[2];
+        this.currentPosition = new double[2];
         this.isAvailable = false;
     }
 
-    public BigDecimal[] getStartingPosition() {
+    public double[] getStartingPosition() {
         return startingPosition;
     }
 
-    public void setStartingPosition(BigDecimal[] startingPosition) {
+    public void setStartingPosition(double[] startingPosition) {
         this.startingPosition = startingPosition;
     }
 
-    public BigDecimal[] getCurrentPosition() {
+    public double[] getCurrentPosition() {
         return currentPosition;
     }
 
-    public void setCurrentPosition(BigDecimal[] currentPosition) {
+    public void setCurrentPosition(double[] currentPosition) {
         this.currentPosition = currentPosition;
     }
 
@@ -42,4 +39,5 @@ public class RiderDto extends UserDto {
     public void setIsAvailable(Boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
+
 }

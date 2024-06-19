@@ -8,8 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class RiderMapper {
 
+    private final UserDetailsMapper userDetailsMapper;
+
     @Autowired
-    UserDetailsMapper userDetailsMapper;
+    public RiderMapper(UserDetailsMapper userDetailsMapper) {
+        this.userDetailsMapper = userDetailsMapper;
+    }
 
     public RiderEntity toEntity(RiderDto riderDto) {
         if (riderDto == null) {
@@ -23,9 +27,9 @@ public class RiderMapper {
         riderEntity.setPassword(riderDto.getPassword());
         riderEntity.setIsDeleted(riderDto.getIsDeleted());
         riderEntity.setIsVerified(riderDto.getIsVerified());
-        riderEntity.setUserDetailsEntity(userDetailsMapper.toEntity(riderDto.getUserDetails()));
         riderEntity.setStartingPosition(riderDto.getCurrentPosition());
         riderEntity.setCurrentPosition(riderDto.getCurrentPosition());
+        riderEntity.setUserDetailsEntity(this.userDetailsMapper.toEntity(riderDto.getUserDetails()));
 
         return riderEntity;
     }
@@ -42,9 +46,9 @@ public class RiderMapper {
         riderDto.setPassword(riderEntity.getPassword());
         riderDto.setIsDeleted(riderEntity.getIsDeleted());
         riderDto.setIsVerified(riderEntity.getIsVerified());
-        riderDto.setUserDetails(userDetailsMapper.toDto(riderEntity.getUserDetails()));
         riderDto.setStartingPosition(riderEntity.getStartingPosition());
         riderDto.setCurrentPosition(riderEntity.getCurrentPosition());
+        riderDto.setUserDetails(this.userDetailsMapper.toDTO(riderEntity.getUserDetails()));
 
         return riderDto;
     }
