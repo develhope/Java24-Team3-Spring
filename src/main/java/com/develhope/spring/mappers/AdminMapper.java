@@ -5,7 +5,6 @@ import com.develhope.spring.models.entities.AdminEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class AdminMapper {
 
@@ -39,10 +38,11 @@ public class AdminMapper {
         adminDto.setId(adminEntity.getId());
         adminDto.setEmail(adminEntity.getEmail());
         adminDto.setPassword(adminEntity.getPassword());
-        adminDto.setUserDetails(userDetailsMapper.toDTO(adminEntity.getUserDetails()));
+        adminDto.setUserDetails(userDetailsMapper.toDto(adminEntity.getUserDetails()));
         adminDto.setIsDeleted(adminEntity.getIsDeleted());
         adminDto.setIsVerified(adminEntity.getIsVerified());
 
         return adminDto;
     }
+
 }

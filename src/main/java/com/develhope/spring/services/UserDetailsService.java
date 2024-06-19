@@ -39,7 +39,7 @@ public class UserDetailsService {
             userDetailsValidator.userDetailsValidator(userDetailsDto);
             UserDetailsEntity newUserDetails = this.userDetailsMapper.toEntity(userDetailsDto);
             this.userDetailsDao.saveAndFlush(newUserDetails);
-            return new ResponseModel(ResponseCode.B, this.userDetailsMapper.toDTO(newUserDetails));
+            return new ResponseModel(ResponseCode.B, this.userDetailsMapper.toDto(newUserDetails));
         } catch (InvalidUserDetailsException e) {
             return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
@@ -54,7 +54,7 @@ public class UserDetailsService {
         if (userDetailsFound.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("UserDetails not found with the selected ID");
         } else {
-            return new ResponseModel(ResponseCode.C, this.userDetailsMapper.toDTO(userDetailsFound.get()));
+            return new ResponseModel(ResponseCode.C, this.userDetailsMapper.toDto(userDetailsFound.get()));
         }
     }
 
@@ -62,7 +62,7 @@ public class UserDetailsService {
      * @return all users' UserDetails
      */
     public ResponseModel getAllUsersUserDetails() {
-        List<UserDetailsDto> userDetails = this.userDetailsDao.findAll().stream().map(this.userDetailsMapper::toDTO).toList();
+        List<UserDetailsDto> userDetails = this.userDetailsDao.findAll().stream().map(this.userDetailsMapper::toDto).toList();
         if (userDetails.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No UserDetails were found, the list may be empty");
         } else {
@@ -88,7 +88,7 @@ public class UserDetailsService {
      * @return all userDetails of customers found
      */
     public ResponseModel getUserDetailsByCreationDate(LocalDate creationDate) {
-        List<UserDetailsDto> userDetailsFound = this.userDetailsDao.findUserDetailsByCreationDate(creationDate).stream().map(userDetailsMapper::toDTO).toList();
+        List<UserDetailsDto> userDetailsFound = this.userDetailsDao.findUserDetailsByCreationDate(creationDate).stream().map(userDetailsMapper::toDto).toList();
         if (userDetailsFound.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No customers were found with the selected parameter");
         } else {
@@ -124,7 +124,7 @@ public class UserDetailsService {
             if (userDetailsUpdates.getUpdateDate() != null) {
                 userDetailsToUpdate.get().setUpdateDate(userDetailsUpdates.getUpdateDate());
             }
-            return new ResponseModel(ResponseCode.G, this.userDetailsMapper.toDTO(this.userDetailsDao.saveAndFlush(userDetailsToUpdate.get())));
+            return new ResponseModel(ResponseCode.G, this.userDetailsMapper.toDto(this.userDetailsDao.saveAndFlush(userDetailsToUpdate.get())));
         }
         return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
     }

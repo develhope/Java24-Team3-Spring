@@ -2,7 +2,9 @@ package com.develhope.spring.mappers;
 
 import com.develhope.spring.models.dtos.ScheduleDto;
 import com.develhope.spring.models.entities.ScheduleEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ScheduleMapper {
 
     public ScheduleEntity toEntity(ScheduleDto scheduleDto) {
@@ -14,8 +16,8 @@ public class ScheduleMapper {
 
         scheduleEntity.setId(scheduleDto.getId());
         scheduleEntity.setDayOfWeek(scheduleDto.getDayOfWeek());
-        scheduleEntity.setStartingHour(scheduleDto.getStartingHour());
-        scheduleEntity.setEndingHour(scheduleDto.getEndingHour());
+        scheduleEntity.setStart(scheduleDto.getStart());
+        scheduleEntity.setEnd(scheduleDto.getEnd());
 
         return scheduleEntity;
     }
@@ -29,8 +31,8 @@ public class ScheduleMapper {
 
         scheduleDto.setId(scheduleEntity.getId());
         scheduleDto.setDayOfWeek(scheduleEntity.getDayOfWeek());
-        scheduleDto.setStartingHour(scheduleEntity.getStartingHour());
-        scheduleDto.setEndingHour(scheduleEntity.getEndingHour());
+        scheduleDto.setStart(scheduleEntity.getStart());
+        scheduleDto.setEnd(scheduleEntity.getEnd());
 
         return scheduleDto;
     }

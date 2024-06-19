@@ -73,7 +73,7 @@ public class ScheduleService {
     }
 
     public ResponseModel getByStartingBefore(LocalTime hour) {
-        List<ScheduleEntity> schedules = this.dao.findByStartingBefore(hour);
+        List<ScheduleEntity> schedules = this.dao.findByStartBefore(hour);
         if (schedules.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No schedules starting before " + hour.toString() + " found.");
         } else {
@@ -82,7 +82,7 @@ public class ScheduleService {
     }
 
     public ResponseModel getByStartingAfter(LocalTime hour) {
-        List<ScheduleEntity> schedules = this.dao.findByStartingAfter(hour);
+        List<ScheduleEntity> schedules = this.dao.findByStartAfter(hour);
         if (schedules.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No schedules starting after " + hour.toString() + " found.");
         } else {
@@ -100,7 +100,7 @@ public class ScheduleService {
                 minHour = shift;
             }
 
-            List<ScheduleEntity> schedules = this.dao.findByStartingBetween(minHour, maxHour);
+            List<ScheduleEntity> schedules = this.dao.findByStartBetween(minHour, maxHour);
             if (schedules.isEmpty()) {
                 return new ResponseModel(ResponseCode.D).addMessageDetails("No schedules starting betweeen " + minHour.toString() + " and " + maxHour.toString() + " found.");
             } else {
@@ -110,7 +110,7 @@ public class ScheduleService {
     }
 
     public ResponseModel getByEndingBefore(LocalTime hour) {
-        List<ScheduleEntity> schedules = this.dao.findByEndingBefore(hour);
+        List<ScheduleEntity> schedules = this.dao.findByEndBefore(hour);
         if (schedules.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No schedules ending before " + hour.toString() + " found.");
         } else {
@@ -119,7 +119,7 @@ public class ScheduleService {
     }
 
     public ResponseModel getByEndingAfter(LocalTime hour) {
-        List<ScheduleEntity> schedules = this.dao.findByEndingAfter(hour);
+        List<ScheduleEntity> schedules = this.dao.findByEndAfter(hour);
         if (schedules.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No schedules ending after " + hour.toString() + " found.");
         } else {
@@ -137,7 +137,7 @@ public class ScheduleService {
                 minHour = shift;
             }
 
-            List<ScheduleEntity> schedules = this.dao.findByEndingBetween(minHour, maxHour);
+            List<ScheduleEntity> schedules = this.dao.findByEndBetween(minHour, maxHour);
             if (schedules.isEmpty()) {
                 return new ResponseModel(ResponseCode.D).addMessageDetails("No schedules ending betweeen " + minHour.toString() + " and " + maxHour.toString() + " found.");
             } else {
@@ -160,12 +160,12 @@ public class ScheduleService {
                 toUpdate.get().setDayOfWeek(update.getDayOfWeek());
             }
 
-            if (updated.getStartingHour() != null) {
-                toUpdate.get().setStartingHour(update.getStartingHour());
+            if (updated.getStart() != null) {
+                toUpdate.get().setStart(update.getStart());
             }
 
-            if (updated.getEndingHour() != null) {
-                toUpdate.get().setEndingHour(update.getEndingHour());
+            if (updated.getEnd() != null) {
+                toUpdate.get().setEnd(update.getEnd());
             }
 
             return new ResponseModel(ResponseCode.G, this.mapper.toDto(this.dao.saveAndFlush(toUpdate.get())));

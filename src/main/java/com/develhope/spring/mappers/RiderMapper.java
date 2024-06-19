@@ -34,7 +34,7 @@ public class RiderMapper {
         return riderEntity;
     }
 
-    public RiderDto toDTO(RiderEntity riderEntity) {
+    public RiderDto toDto(RiderEntity riderEntity) {
         if (riderEntity == null) {
             return null;
         }
@@ -48,7 +48,7 @@ public class RiderMapper {
         riderDto.setIsVerified(riderEntity.getIsVerified());
         riderDto.setStartingPosition(riderEntity.getStartingPosition());
         riderDto.setCurrentPosition(riderEntity.getCurrentPosition());
-        riderDto.setUserDetails(this.userDetailsMapper.toDTO(riderEntity.getUserDetails()));
+        riderDto.setUserDetails(this.userDetailsMapper.toDto(riderEntity.getUserDetails()));
 
         return riderDto;
     }

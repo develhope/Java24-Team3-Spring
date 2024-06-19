@@ -12,6 +12,7 @@ import com.develhope.spring.validators.RiderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +38,7 @@ public class RiderService {
             validator.validateRider(riderDto);
             RiderEntity newRider = this.mapper.toEntity(riderDto);
             this.dao.saveAndFlush(newRider);
-            return new ResponseModel(ResponseCode.B, this.mapper.toDTO(newRider));
+            return new ResponseModel(ResponseCode.B, this.mapper.toDto(newRider));
         } catch (InvalidRiderException e) {
             return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
@@ -46,7 +47,7 @@ public class RiderService {
     // READ
 
     public ResponseModel getAll() {
-        List<RiderDto> riders = this.dao.findAll().stream().map(mapper::toDTO).toList();
+        List<RiderDto> riders = this.dao.findAll().stream().map(mapper::toDto).toList();
         if (riders.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No riders found.");
         } else {
@@ -59,7 +60,7 @@ public class RiderService {
         if (riderFound.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Rider ID not found.");
         } else {
-            return new ResponseModel(ResponseCode.C, this.mapper.toDTO(riderFound.get()));
+            return new ResponseModel(ResponseCode.C, this.mapper.toDto(riderFound.get()));
         }
     }
 
@@ -68,12 +69,12 @@ public class RiderService {
         if (rider.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Rider e-mail not found.");
         } else {
-            return new ResponseModel(ResponseCode.C, this.mapper.toDTO(rider.get()));
+            return new ResponseModel(ResponseCode.C, this.mapper.toDto(rider.get()));
         }
     }
 
     public ResponseModel getByDeletedStatus(Boolean isDeleted) {
-        List<RiderDto> riders = this.dao.findByIsDeleted(isDeleted).stream().map(mapper::toDTO).toList();
+        List<RiderDto> riders = this.dao.findByIsDeleted(isDeleted).stream().map(mapper::toDto).toList();
         if (riders.isEmpty()) {
             String messageDetails;
             if (isDeleted) {
@@ -89,7 +90,7 @@ public class RiderService {
     }
 
     public ResponseModel getByVerifiedStatus(Boolean isVerified) {
-        List<RiderDto> riders = this.dao.findByIsVerified(isVerified).stream().map(mapper::toDTO).toList();
+        List<RiderDto> riders = this.dao.findByIsVerified(isVerified).stream().map(mapper::toDto).toList();
         if (riders.isEmpty()) {
             String messageDetails;
             if (isVerified) {
@@ -105,7 +106,7 @@ public class RiderService {
     }
 
     public ResponseModel getByAvailableStatus(Boolean isAvailable) {
-        List<RiderDto> riders = this.dao.findByIsAvailable(isAvailable).stream().map(mapper::toDTO).toList();
+        List<RiderDto> riders = this.dao.findByIsAvailable(isAvailable).stream().map(mapper::toDto).toList();
         if (riders.isEmpty()) {
             String messageDetails;
             if (isAvailable) {
@@ -121,17 +122,17 @@ public class RiderService {
     }
 
     public ResponseModel getByAvailabilityAndDistance(double[] coordinates, double maximumDistance) {
-        List<RiderDto> availableRiders = this.dao.findByIsAvailable(true).stream().map(mapper::toDTO).toList();
+        List<RiderDto> availableRiders = this.dao.findByIsAvailable(true).stream().map(mapper::toDto).toList();
         if (availableRiders.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No riders found.");
         } else {
 
-            double distance;
+            BigDecimal distance;
             List<RiderDto> ridersInRange = new ArrayList<RiderDto>();
 
             for (RiderDto rider : availableRiders) {
-                distance = DistanceCalculator.calculateDistance(coordinates[0], coordinates[1], rider.getStartingPosition()[0], rider.getStartingPosition()[1], 0.0, 0.0);
-                if (distance <= maximumDistance) {
+                distance = DistanceCalculator.calculateDistance(BigDecimal.valueOf(coordinates[0]), BigDecimal.valueOf(coordinates[1]), BigDecimal.valueOf(rider.getStartingPosition()[0]), BigDecimal.valueOf(rider.getStartingPosition()[1]), BigDecimal.valueOf(0.0), BigDecimal.valueOf(0.0));
+                if (distance.compareTo(BigDecimal.valueOf(maximumDistance)) <= 0) {
                     ridersInRange.add(rider);
                 }
             }
@@ -184,7 +185,7 @@ public class RiderService {
                 riderToUpdate.get().setCurrentPosition(updatedRiderEntity.getCurrentPosition());
             }
 
-            return new ResponseModel(ResponseCode.G, this.mapper.toDTO(this.dao.saveAndFlush(riderToUpdate.get())));
+            return new ResponseModel(ResponseCode.G, this.mapper.toDto(this.dao.saveAndFlush(riderToUpdate.get())));
         }
 
         return new ResponseModel(ResponseCode.A).addMessageDetails("Update failed (null body).");

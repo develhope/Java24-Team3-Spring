@@ -16,16 +16,16 @@ public interface WorkshiftDao extends JpaRepository<WorkshiftEntity, String> {
 
     List<WorkshiftEntity> findByDayOfWeek(DayOfWeek dayOfWeek);
 
-    List<WorkshiftEntity> findByStartingBefore(LocalTime hour);
+    List<WorkshiftEntity> findByStartBefore(LocalTime hour);
 
-    List<WorkshiftEntity> findByStartingAfter(LocalTime hour);
+    List<WorkshiftEntity> findByStartAfter(LocalTime hour);
 
-    List<WorkshiftEntity> findByStartingBetween(LocalTime minHour, LocalTime maxHour);
+    List<WorkshiftEntity> findByStartBetween(LocalTime minHour, LocalTime maxHour);
 
-    List<WorkshiftEntity> findByEndingBefore(LocalTime hour);
+    List<WorkshiftEntity> findByEndBefore(LocalTime hour);
 
-    List<WorkshiftEntity> findByEndingAfter(LocalTime hour);
+    List<WorkshiftEntity> findByEndAfter(LocalTime hour);
 
-    List<WorkshiftEntity> findByEndingBetween(LocalTime minHour, LocalTime maxHour);
+    List<WorkshiftEntity> findByEndBetween(LocalTime minHour, LocalTime maxHour);
 
 }
