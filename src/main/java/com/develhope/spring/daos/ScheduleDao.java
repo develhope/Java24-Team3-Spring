@@ -12,7 +12,6 @@ import java.util.Optional;
 @Repository
 public interface ScheduleDao extends JpaRepository<ScheduleEntity, String> {
 
-    Optional<ScheduleEntity> findById(String id);
 
     List<ScheduleEntity> findByDayOfWeek(DayOfWeek dayOfWeek);
 
