@@ -13,8 +13,6 @@ public enum ResponseCode {
     I(CodeType.SUCCESS, "Seeding completed successfully."),
     J(CodeType.SUCCESS, "Records in the database have been deleted.");
 
-
-
     private CodeType codeType;
     private String codeMessage;
 
@@ -38,4 +36,5 @@ public enum ResponseCode {
                 ", responseCodeMessage='" + codeMessage + '\'' +
                 '}';
     }
+
 }
