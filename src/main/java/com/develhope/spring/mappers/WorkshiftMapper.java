@@ -2,7 +2,9 @@ package com.develhope.spring.mappers;
 
 import com.develhope.spring.models.dtos.WorkshiftDto;
 import com.develhope.spring.models.entities.WorkshiftEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class WorkshiftMapper {
 
     public WorkshiftEntity toEntity(WorkshiftDto workshiftDto) {
@@ -14,8 +16,8 @@ public class WorkshiftMapper {
 
         workshiftEntity.setId(workshiftDto.getId());
         workshiftEntity.setDayOfWeek(workshiftDto.getDayOfWeek());
-        workshiftEntity.setStartingHour(workshiftDto.getStartingHour());
-        workshiftEntity.setEndingHour(workshiftDto.getEndingHour());
+        workshiftEntity.setStart(workshiftDto.getStart());
+        workshiftEntity.setEnd(workshiftDto.getEnd());
 
         return workshiftEntity;
     }
@@ -29,8 +31,8 @@ public class WorkshiftMapper {
 
         workshiftDto.setId(workshiftEntity.getId());
         workshiftDto.setDayOfWeek(workshiftEntity.getDayOfWeek());
-        workshiftDto.setStartingHour(workshiftEntity.getStartingHour());
-        workshiftDto.setEndingHour(workshiftEntity.getEndingHour());
+        workshiftDto.setStart(workshiftEntity.getStart());
+        workshiftDto.setEnd(workshiftEntity.getEnd());
 
         return workshiftDto;
     }

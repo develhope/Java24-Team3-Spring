@@ -16,16 +16,16 @@ public interface ScheduleDao extends JpaRepository<ScheduleEntity, String> {
 
     List<ScheduleEntity> findByDayOfWeek(DayOfWeek dayOfWeek);
 
-    List<ScheduleEntity> findByStartingBefore(LocalTime hour);
+    List<ScheduleEntity> findByStartBefore(LocalTime hour);
 
-    List<ScheduleEntity> findByStartingAfter(LocalTime hour);
+    List<ScheduleEntity> findByStartAfter(LocalTime hour);
 
-    List<ScheduleEntity> findByStartingBetween(LocalTime minHour, LocalTime maxHour);
+    List<ScheduleEntity> findByStartBetween(LocalTime minHour, LocalTime maxHour);
 
-    List<ScheduleEntity> findByEndingBefore(LocalTime hour);
+    List<ScheduleEntity> findByEndBefore(LocalTime hour);
 
-    List<ScheduleEntity> findByEndingAfter(LocalTime hour);
+    List<ScheduleEntity> findByEndAfter(LocalTime hour);
 
-    List<ScheduleEntity> findByEndingBetween(LocalTime minHour, LocalTime maxHour);
+    List<ScheduleEntity> findByEndBetween(LocalTime minHour, LocalTime maxHour);
 
 }
