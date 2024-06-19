@@ -5,6 +5,9 @@ public class ResponseModel {
     private String message;
     private Object object;
 
+    public ResponseModel() {
+    }
+
     public ResponseModel(ResponseCode code) {
         this.code = code;
         setStandardMessage();
@@ -17,7 +20,7 @@ public class ResponseModel {
     }
 
     private ResponseModel setStandardMessage(){
-        this.message = "CodeType: " + code.getCodeType().toString() + " - " + code.getCodeType().getMessage() + " CodeMessage: " + code.getCodeMessage();
+        this.message = "CodeMessage: " + code.getCodeMessage();
         return this;
     }
 
@@ -26,20 +29,30 @@ public class ResponseModel {
         return this;
     }
 
+
+
     public ResponseCode getCode() {
         return code;
     }
 
-    public void setCode(ResponseCode code) {
+    public ResponseModel setCodeAndStdMessage(ResponseCode code) {
         this.code = code;
+        setStandardMessage();
+        return this;
+    }
+
+    public ResponseModel setCode(ResponseCode code) {
+        this.code = code;
+        return this;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public ResponseModel setMessage(String message) {
         this.message = message;
+        return this;
     }
 
     public Object getObject() {

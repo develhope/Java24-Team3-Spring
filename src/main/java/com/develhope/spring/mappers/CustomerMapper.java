@@ -1,6 +1,5 @@
 package com.develhope.spring.mappers;
 
-import com.develhope.spring.daos.CartDao;
 import com.develhope.spring.models.dtos.CustomerDto;
 import com.develhope.spring.models.entities.CustomerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,7 @@ public class CustomerMapper {
         customerDto.setPassword(customerEntity.getPassword());
         customerDto.setIsDeleted(customerEntity.getIsDeleted());
         customerDto.setIsVerified(customerEntity.getIsVerified());
-        customerDto.setUserDetails(this.userDetailsMapper.toDTO(customerEntity.getUserDetails()));
+        customerDto.setUserDetails(this.userDetailsMapper.toDto(customerEntity.getUserDetails()));
 
         return customerDto;
     }
