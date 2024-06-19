@@ -1,5 +1,6 @@
 package com.develhope.spring.services;
 
+import com.develhope.spring.daos.ProductTypeDao;
 import com.develhope.spring.exceptions.InvalidProductException;
 import com.develhope.spring.mappers.ProductTypeMapper;
 import com.develhope.spring.models.ResponseCode;
@@ -10,11 +11,13 @@ import com.develhope.spring.models.entities.ProductEntity;
 import com.develhope.spring.mappers.ProductMapper;
 import com.develhope.spring.daos.ProductDao;
 import com.develhope.spring.models.entities.ProductTypeEntity;
+import com.develhope.spring.validators.IdValidator;
 import com.develhope.spring.validators.ProductValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
