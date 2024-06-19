@@ -14,15 +14,15 @@ public class WorkshiftValidator {
             throw new InvalidWorkshiftException("A workshift must be in a day of the week.");
         }
 
-        if (workshiftDto.getStartingHour() == null) {
+        if (workshiftDto.getStart() == null) {
             throw new InvalidWorkshiftException("A workshift must have a starting hour.");
         }
 
-        if (workshiftDto.getEndingHour() == null) {
+        if (workshiftDto.getEnd() == null) {
             throw new InvalidWorkshiftException("A workshift must have an ending hour.");
         }
 
-        if (!isWithinTheLimits(workshiftDto.getStartingHour(), workshiftDto.getEndingHour())) {
+        if (!isWithinTheLimits(workshiftDto.getStart(), workshiftDto.getEnd())) {
             throw new InvalidWorkshiftException("A workshift can only start before " + getStartingHourLimit().toString() + " and end after " + getEndingHourLimit().toString() + ".");
         }
     }
