@@ -29,7 +29,7 @@ public class RiderMapper {
         riderEntity.setIsVerified(riderDto.getIsVerified());
         riderEntity.setStartingPosition(riderDto.getCurrentPosition());
         riderEntity.setCurrentPosition(riderDto.getCurrentPosition());
-        riderEntity.setUserDetailsEntity(this.userDetailsMapper.toEntity(riderDto.getUserDetails()));
+        riderEntity.setUserDetails(this.userDetailsMapper.toEntity(riderDto.getUserDetails()));
 
         return riderEntity;
     }

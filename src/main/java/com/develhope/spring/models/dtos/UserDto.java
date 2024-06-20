@@ -67,4 +67,5 @@ public class UserDto {
     public void setUserDetails(UserDetailsDto userDetails) {
         this.userDetails = userDetails;
     }
+
 }

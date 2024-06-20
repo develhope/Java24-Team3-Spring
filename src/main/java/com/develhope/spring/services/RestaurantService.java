@@ -1,18 +1,14 @@
 package com.develhope.spring.services;
 
 import com.develhope.spring.daos.*;
-import com.develhope.spring.exceptions.ExceptionWithResponseCode;
-import com.develhope.spring.exceptions.InvalidContactException;
 import com.develhope.spring.mappers.*;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.*;
 import com.develhope.spring.models.entities.*;
 import com.develhope.spring.utils.DistanceCalculator;
-import com.develhope.spring.utils.DistanceCalculator_Euclide;
 import com.develhope.spring.utils.TimeCalculator;
 import com.develhope.spring.validators.*;
-import com.develhope.spring.services.*;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -223,10 +219,10 @@ public class RestaurantService {
             RestaurantEntity restaurantEntityInDB = optRes.get();
             if (resDtoUpdates != null) {
                 try {
-                    idValidator.noId(resDtoUpdates.getId_restaurant());
+                    idValidator.noId(resDtoUpdates.getId());
 
                     RestaurantEntity resEntityUpdates = restaurantMapper.toEntity(resDtoUpdates);
-                    if (resEntityUpdates.getId_restaurant() != null) {
+                    if (resEntityUpdates.getId() != null) {
                         return new ResponseModel(ResponseCode.F);
                     }
                     if (resEntityUpdates.getOwnerEntity() != null) {

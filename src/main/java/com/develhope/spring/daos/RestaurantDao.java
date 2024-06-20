@@ -27,8 +27,11 @@ public interface RestaurantDao extends JpaRepository<RestaurantEntity, String> {
     List<RestaurantEntity> findByRestaurantTypeEntityIn( List<String> typeName);
 
     Optional<RestaurantEntity> findByRestaurantNameIgnoreCase(String RestaurantName);
+
     List<RestaurantEntity> findByIsDeliveryAvailableTrue();
+
     List<RestaurantEntity> findByIsTakeAwayAvailableTrue();
+
     List<RestaurantEntity> findByIsTakeAwayAvailableTrueOrIsDeliveryAvailableTrue();
 
 }

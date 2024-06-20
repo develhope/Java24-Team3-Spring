@@ -88,7 +88,7 @@ public class AdminService {
                 adminUpdated.get().setIsVerified(adminDTO.getIsVerified());
             }
             if (adminDTO.getUserDetails() != null) {
-                adminUpdated.get().setUserDetailsEntity(userDetailsMapper.toEntity(adminDTO.getUserDetails()));
+                adminUpdated.get().setUserDetails(userDetailsMapper.toEntity(adminDTO.getUserDetails()));
             }
 
             return new ResponseModel(ResponseCode.G, this.adminMapper.toDto(this.adminDao.saveAndFlush(adminUpdated.get())));

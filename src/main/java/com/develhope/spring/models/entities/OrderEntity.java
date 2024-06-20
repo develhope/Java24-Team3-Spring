@@ -7,23 +7,23 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "order")
+@Table(name = "order_entity")
 public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false)
+    @Column(name = "order_type", nullable = false)
     private OrderType type;
 
-    @Column(nullable = false)
+    @Column(name = "order_status", nullable = false)
     private OrderStatus status;
 
-    @Column(nullable = false)
-    private LocalDateTime creationDate;
+    @Column(name = "creation_date", nullable = false)
+    private LocalDateTime creationDate = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private CustomerEntity customer;
 
@@ -31,23 +31,23 @@ public class OrderEntity {
     @JoinColumn(name = "cart_id", nullable = false)
     private CartEntity cart;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private PaymentEntity payment;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "restaurant_id", nullable = false, referencedColumnName = "id")
+    private RestaurantEntity restaurant;
 
     // CONSTRUCTORS
 
     public OrderEntity() {
     }
 
-    public OrderEntity(String id, OrderType type, OrderStatus status, LocalDateTime creationDate, CustomerEntity customer, CartEntity cart, PaymentEntity payment) {
+    public OrderEntity(String id, OrderType type, OrderStatus status, LocalDateTime creationDate) {
         this.id = id;
         this.type = type;
         this.status = status;
         this.creationDate = creationDate;
-        this.customer = customer;
-        this.cart = cart;
-        this.payment = payment;
     }
 
     // GETTERS AND SETTERS
@@ -108,4 +108,11 @@ public class OrderEntity {
         this.payment = payment;
     }
 
+    public RestaurantEntity getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(RestaurantEntity restaurant) {
+        this.restaurant = restaurant;
+    }
 }

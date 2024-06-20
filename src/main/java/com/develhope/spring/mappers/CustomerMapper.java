@@ -27,7 +27,7 @@ public class CustomerMapper {
         customerEntity.setPassword(customerDto.getPassword());
         customerEntity.setIsDeleted(customerDto.getIsDeleted());
         customerEntity.setIsVerified(customerDto.getIsVerified());
-        customerEntity.setUserDetailsEntity(this.userDetailsMapper.toEntity(customerDto.getUserDetails()));
+        customerEntity.setUserDetails(this.userDetailsMapper.toEntity(customerDto.getUserDetails()));
 
 
         return customerEntity;

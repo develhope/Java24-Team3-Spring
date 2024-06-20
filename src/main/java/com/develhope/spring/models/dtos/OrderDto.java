@@ -13,7 +13,7 @@ public class OrderDto {
 
     private OrderStatus status;
 
-    private LocalDateTime creationDate;
+    private LocalDateTime creationDate = LocalDateTime.now();
 
     private String customerId;
 
@@ -21,12 +21,14 @@ public class OrderDto {
 
     private String paymentId;
 
+    private String restaurantId;
+
     // CONSTRUCTORS
 
     public OrderDto() {
     }
 
-    public OrderDto(String id, OrderType type, OrderStatus status, LocalDateTime creationDate, String customerId, String cartId, String paymentId) {
+    public OrderDto(String id, OrderType type, OrderStatus status, LocalDateTime creationDate, String customerId, String cartId, String paymentId, String restaurantId) {
         this.id = id;
         this.type = type;
         this.status = status;
@@ -34,6 +36,7 @@ public class OrderDto {
         this.customerId = customerId;
         this.cartId = cartId;
         this.paymentId = paymentId;
+        this.restaurantId = restaurantId;
     }
 
     // GETTERS AND SETTERS
@@ -94,4 +97,11 @@ public class OrderDto {
         this.paymentId = paymentId;
     }
 
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+    }
 }

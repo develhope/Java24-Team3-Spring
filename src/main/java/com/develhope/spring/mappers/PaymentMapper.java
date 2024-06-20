@@ -1,11 +1,20 @@
 package com.develhope.spring.mappers;
 
+import com.develhope.spring.daos.OrderDao;
 import com.develhope.spring.models.dtos.PaymentDto;
 import com.develhope.spring.models.entities.PaymentEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PaymentMapper {
+
+    private final OrderDao orderDao;
+
+    @Autowired
+    public PaymentMapper(OrderDao orderDao) {
+        this.orderDao = orderDao;
+    }
 
     public PaymentEntity toEntity(PaymentDto paymentDto) {
         if (paymentDto == null) {
@@ -15,10 +24,10 @@ public class PaymentMapper {
         PaymentEntity paymentEntity = new PaymentEntity();
 
         paymentEntity.setId(paymentDto.getId());
-        paymentEntity.setOrderId(paymentDto.getOrderId());
-        paymentEntity.setPaymentMethod(paymentDto.getPaymentMethod());
-        paymentEntity.setPaymentStatus(paymentDto.getPaymentStatus());
+        paymentEntity.setMethod(paymentDto.getMethod());
+        paymentEntity.setStatus(paymentDto.getStatus());
         paymentEntity.setTotalPrice(paymentDto.getTotalPrice());
+        paymentEntity.setOrder(orderDao.findById(paymentDto.getOrderId()).get());
 
         return paymentEntity;
     }
@@ -31,10 +40,10 @@ public class PaymentMapper {
         PaymentDto paymentDto = new PaymentDto();
 
         paymentDto.setId(paymentEntity.getId());
-        paymentDto.setOrderId(paymentEntity.getOrderId());
-        paymentDto.setPaymentMethod(paymentEntity.getPaymentMethod());
-        paymentDto.setPaymentStatus(paymentEntity.getPaymentStatus());
+        paymentDto.setMethod(paymentEntity.getMethod());
+        paymentDto.setStatus(paymentEntity.getStatus());
         paymentDto.setTotalPrice(paymentEntity.getTotalPrice());
+        paymentDto.setOrderId(paymentEntity.getOrder().getId());
 
         return paymentDto;
     }

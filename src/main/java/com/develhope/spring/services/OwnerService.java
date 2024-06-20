@@ -159,7 +159,7 @@ public class OwnerService {
             }
             if (ownerUpdates.getUserDetails() != null) {
                 //UserDetailsEntity updatedUserDetails = userDetailsDao.save(ownerEntityUpdates.getUserDetails());
-                ownerToUpdate.get().setUserDetailsEntity(ownerEntityUpdates.getUserDetails());
+                ownerToUpdate.get().setUserDetails(ownerEntityUpdates.getUserDetails());
             }
             return new ResponseModel(ResponseCode.G, ownerMapper.toDto(ownerDao.saveAndFlush(ownerToUpdate.get())));
         }

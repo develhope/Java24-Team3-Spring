@@ -40,6 +40,7 @@ public class RestaurantMapper {
         }
 
         List<ProductDto> productDtos = new ArrayList<>();
+
         if (restaurantEntity.getProductEntities() == null) {
             productDtos = null;
         } else {
@@ -50,9 +51,8 @@ public class RestaurantMapper {
             }
         }
 
-
         return new RestaurantDto(
-                restaurantEntity.getId_restaurant(),
+                restaurantEntity.getId(),
                 ownerMapper.toDto(restaurantEntity.getOwnerEntity()),
                 restaurantEntity.getRestaurantName(),
                 restaurantEntity.getRestaurantEmail(),
@@ -88,7 +88,7 @@ public class RestaurantMapper {
 
         new RestaurantEntity();
         return new RestaurantEntity(
-                resDto.getId_restaurant(),
+                resDto.getId(),
                 ownerMapper.toEntity(resDto.getOwnerDto()),
                 resDto.getRestaurantName(),
                 resDto.getRestaurantEmail(),
@@ -133,7 +133,7 @@ public class RestaurantMapper {
 
 
         return new RestaurantByLocationDto(
-                restaurantEntity.getId_restaurant(),
+                restaurantEntity.getId(),
                 restaurantEntity.getRestaurantName(),
                 null,
                 null,

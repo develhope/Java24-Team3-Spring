@@ -170,7 +170,7 @@ public class RiderService {
             }
 
             if (updatedRider.getUserDetails() != null) {
-                riderToUpdate.get().setUserDetailsEntity(updatedRiderEntity.getUserDetails());
+                riderToUpdate.get().setUserDetails(updatedRiderEntity.getUserDetails());
             }
 
             if (updatedRider.getIsAvailable() != null) {

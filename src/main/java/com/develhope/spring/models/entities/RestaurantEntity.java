@@ -10,7 +10,7 @@ public class RestaurantEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id_restaurant;
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
@@ -44,7 +44,6 @@ public class RestaurantEntity {
             inverseJoinColumns = @JoinColumn(name = "hour_id"))
     private List<OperatingHoursEntity> operatingHoursEntities;
 
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "restaurant_restaurantType",
             joinColumns = @JoinColumn(name = "restaurant_id"),
@@ -52,18 +51,20 @@ public class RestaurantEntity {
             uniqueConstraints = @UniqueConstraint(columnNames = {"restaurant_id", "restaurantType"}))
     private List<RestaurantTypeEntity> restaurantTypeEntities;
 
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "restaurant_product",
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<ProductEntity> productEntities;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<OrderEntity> orders;
+
     public RestaurantEntity() {
     }
 
-    public RestaurantEntity(String id_restaurant, OwnerEntity ownerEntity, String restaurantName, String restaurantEmail, String restaurantPhoneNumber, AddressEntity addressEntity, String description, boolean isDeliveryAvailable, boolean isTakeAwayAvailable, List<OperatingHoursEntity> operatingHoursEntity, List<RestaurantTypeEntity> restaurantTypeEntity, List<ProductEntity> productEntities) {
-        this.id_restaurant = id_restaurant;
+    public RestaurantEntity(String id, OwnerEntity ownerEntity, String restaurantName, String restaurantEmail, String restaurantPhoneNumber, AddressEntity addressEntity, String description, boolean isDeliveryAvailable, boolean isTakeAwayAvailable, List<OperatingHoursEntity> operatingHoursEntity, List<RestaurantTypeEntity> restaurantTypeEntity, List<ProductEntity> productEntities) {
+        this.id = id;
         this.ownerEntity = ownerEntity;
         this.restaurantName = restaurantName;
         this.restaurantEmail = restaurantEmail;
@@ -101,12 +102,12 @@ public class RestaurantEntity {
         this.restaurantTypeEntities = restaurantTypeEntities;
     }
 
-    public String getId_restaurant() {
-        return id_restaurant;
+    public String getId() {
+        return id;
     }
 
-    public void setId_restaurant(String id_restaurant) {
-        this.id_restaurant = id_restaurant;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getRestaurantName() {

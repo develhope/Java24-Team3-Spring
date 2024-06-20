@@ -64,6 +64,33 @@ public class OrderService {
         }
     }
 
+    public ResponseModel getByCustomerId(String customerId) {
+        List<OrderEntity> orders = this.dao.findByCustomerId(customerId);
+        if (orders.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No orders created by this customer ID found.");
+        } else {
+            return new ResponseModel(ResponseCode.E, orders);
+        }
+    }
+
+    public ResponseModel getByPaymentId(String paymentId) {
+        Optional<OrderEntity> orderFound = this.dao.findByPaymentId(paymentId);
+        if (orderFound.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No order associated to this payment found.");
+        } else {
+            return new ResponseModel(ResponseCode.C, this.mapper.toDto(orderFound.get()));
+        }
+    }
+
+    public ResponseModel getByRestaurantId(String restaurantId) {
+        List<OrderEntity> orders = this.dao.findByRestaurantId(restaurantId);
+        if (orders.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No orders associated to this restaurant found.");
+        } else {
+            return new ResponseModel(ResponseCode.E, orders);
+        }
+    }
+
     public ResponseModel getByStatus(OrderStatus status) {
         List<OrderDto> orders = this.dao.findByStatus(status).stream().map(mapper::toDto).toList();
         if (orders.isEmpty()) {
@@ -138,16 +165,8 @@ public class OrderService {
                 orderToUpdate.get().setCreationDate(updatedOrderEntity.getCreationDate());
             }
 
-            if (updatedOrder.getCustomerId() != null) {
-                orderToUpdate.get().setCustomer(updatedOrderEntity.getCustomer());
-            }
-
             if (updatedOrder.getCartId() != null) {
                 orderToUpdate.get().setCart(updatedOrderEntity.getCart());
-            }
-
-            if (updatedOrder.getPaymentId() != null) {
-                orderToUpdate.get().setPayment(updatedOrderEntity.getPayment());
             }
 
             return new ResponseModel(ResponseCode.G, this.mapper.toDto(this.dao.saveAndFlush(orderToUpdate.get())));

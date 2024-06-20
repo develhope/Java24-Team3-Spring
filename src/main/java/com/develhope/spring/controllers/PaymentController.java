@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("api/v1/payments")
+@RequestMapping("api/v1/Payments")
 public class PaymentController {
 
     private final PaymentService paymentService;
@@ -22,51 +22,71 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
+    // POST
+
     @PostMapping
-    public ResponseEntity<ResponseModel> createPayment(@RequestBody PaymentDto paymentDto) {
-        ResponseModel newPayment = this.paymentService.createPayment(paymentDto);
-        return ResponseEntity.created(URI.create("api/v1/payments")).body(newPayment);
+    public ResponseEntity<ResponseModel> create(@RequestBody PaymentDto paymentDto) {
+        ResponseModel newPayment = this.paymentService.create(paymentDto);
+        return ResponseEntity.created(URI.create("api/v1/Payments")).body(newPayment);
     }
 
+    // GET
+
     @GetMapping
-    public ResponseEntity<ResponseModel> getAllPayments() {
-        ResponseModel payments = this.paymentService.getAllPayments();
+    public ResponseEntity<ResponseModel> getAll() {
+        ResponseModel payments = this.paymentService.getAll();
         return ResponseEntity.ok(payments);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseModel> getPaymentsById(@PathVariable String id) {
-        ResponseModel paymentFound = this.paymentService.getPaymentById(id);
+    @GetMapping("/searchById")
+    public ResponseEntity<ResponseModel> getById(@RequestParam String id) {
+        ResponseModel paymentFound = this.paymentService.getById(id);
         return ResponseEntity.ok(paymentFound);
     }
 
-    @GetMapping("/orderId/{orderId}")
-    public ResponseEntity<ResponseModel> getPaymentByOrderId(@PathVariable String orderId) {
-        ResponseModel paymentFound = this.paymentService.getPaymentByOrderId(orderId);
+    @GetMapping("/searchByOrderId")
+    public ResponseEntity<ResponseModel> getByOrderId(@RequestParam String orderId) {
+        ResponseModel paymentFound = this.paymentService.getByOrderId(orderId);
         return ResponseEntity.ok(paymentFound);
     }
+
+    @GetMapping("/searchByStatus")
+    public ResponseEntity<ResponseModel> getByStatus(@RequestParam PaymentStatus status) {
+        ResponseModel payments = this.paymentService.getByStatus(status);
+        return ResponseEntity.ok(payments);
+    }
+
+    @GetMapping("/searchByMethod")
+    public ResponseEntity<ResponseModel> getByMethod(@RequestParam PaymentMethod method) {
+        ResponseModel payments = this.paymentService.getByMethod(method);
+        return ResponseEntity.ok(payments);
+    }
+
+    // PUT
 
     @PutMapping("/{id}/paymentStatus")
-    public ResponseEntity<ResponseModel> updatePaymentStatus(@PathVariable String id, @RequestParam PaymentStatus paymentStatus) {
-        ResponseModel updatedPaymentsPaymentStatus = this.paymentService.updatePaymentStatus(id, paymentStatus);
+    public ResponseEntity<ResponseModel> updateStatus(@PathVariable String id, @RequestParam PaymentStatus paymentStatus) {
+        ResponseModel updatedPaymentsPaymentStatus = this.paymentService.updateStatus(id, paymentStatus);
         return ResponseEntity.ok(updatedPaymentsPaymentStatus);
     }
 
     @PutMapping("/{id}/paymentMethod")
-    public ResponseEntity<ResponseModel> updatePaymentMethod(@PathVariable String id, @RequestParam PaymentMethod paymentMethod) {
-        ResponseModel updatedPaymentsPaymentMethod = this.paymentService.updatePaymentMethod(id, paymentMethod);
+    public ResponseEntity<ResponseModel> updateMethod(@PathVariable String id, @RequestParam PaymentMethod paymentMethod) {
+        ResponseModel updatedPaymentsPaymentMethod = this.paymentService.updateMethod(id, paymentMethod);
         return ResponseEntity.ok(updatedPaymentsPaymentMethod);
     }
 
+    // DELETE
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseModel> deletePayment(@PathVariable String id) {
-        ResponseModel deletedPayment = this.paymentService.deletePaymentById(id);
+    public ResponseEntity<ResponseModel> deleteById(@PathVariable String id) {
+        ResponseModel deletedPayment = this.paymentService.deleteById(id);
         return ResponseEntity.ok(deletedPayment);
     }
 
     @DeleteMapping
-    public ResponseEntity<ResponseModel> deleteAllPayments() {
-        ResponseModel deletedPayments = this.paymentService.deleteAllPayments();
+    public ResponseEntity<ResponseModel> deleteAll() {
+        ResponseModel deletedPayments = this.paymentService.deleteAll();
         return ResponseEntity.ok(deletedPayments);
     }
 

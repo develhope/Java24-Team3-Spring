@@ -9,13 +9,24 @@ public class PaymentDto {
 
     private String id;
 
-    private String orderId;
+    private PaymentMethod method;
 
-    private PaymentMethod paymentMethod;
-
-    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+    private PaymentStatus status = PaymentStatus.PENDING;
 
     private BigDecimal totalPrice;
+
+    private String orderId;
+
+    public PaymentDto() {
+    }
+
+    public PaymentDto(String id, PaymentMethod method, PaymentStatus status, BigDecimal totalPrice, String orderId) {
+        this.id = id;
+        this.method = method;
+        this.status = status;
+        this.totalPrice = totalPrice;
+        this.orderId = orderId;
+    }
 
     public String getId() {
         return id;
@@ -23,6 +34,30 @@ public class PaymentDto {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public PaymentMethod getMethod() {
+        return method;
+    }
+
+    public void setMethod(PaymentMethod method) {
+        this.method = method;
+    }
+
+    public PaymentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PaymentStatus status) {
+        this.status = status;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public String getOrderId() {
@@ -33,27 +68,4 @@ public class PaymentDto {
         this.orderId = orderId;
     }
 
-    public PaymentMethod getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
 }
