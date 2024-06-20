@@ -6,14 +6,14 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "rider_workshift")
+@Table(name = "workshift")
 public class WorkshiftEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rider_id", nullable = false)
     private RiderEntity rider;
 

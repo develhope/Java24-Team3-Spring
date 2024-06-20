@@ -4,7 +4,6 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(name = "restaurant")
 public class RestaurantEntity {
@@ -173,6 +172,4 @@ public class RestaurantEntity {
         isTakeAwayAvailable = takeAwayAvaible;
     }
 
-
 }
-
