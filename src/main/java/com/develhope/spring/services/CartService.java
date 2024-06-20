@@ -8,6 +8,7 @@ import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.CartDto;
 import com.develhope.spring.models.entities.CartEntity;
 import com.develhope.spring.validators.CartValidator;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,7 @@ public class CartService {
             cartValidator.validateCart(cartDto);
             CartEntity newCart = this.cartMapper.toEntity(cartDto);
             this.cartDao.saveAndFlush(newCart);
-            return new ResponseModel(ResponseCode.B, this.cartMapper.toDTO(newCart));
+            return new ResponseModel(ResponseCode.B, this.cartMapper.toDto(newCart));
         } catch (InvalidCartException e) {
             return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
@@ -52,7 +53,7 @@ public class CartService {
         if (cartFound.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Cart not found with the selected ID");
         } else {
-            return new ResponseModel(ResponseCode.C, this.cartMapper.toDTO(cartFound.get()));
+            return new ResponseModel(ResponseCode.C, this.cartMapper.toDto(cartFound.get()));
         }
     }
 
@@ -78,7 +79,7 @@ public class CartService {
             CartEntity cartEntityUpdates = this.cartMapper.toEntity(cartUpdates);
             if (cartUpdates.getCartProducts() != null) {
                 cartToUpdate.get().setCartProducts(cartEntityUpdates.getCartProducts());
-                return new ResponseModel(ResponseCode.G, this.cartMapper.toDTO(this.cartDao.saveAndFlush(cartToUpdate.get())));
+                return new ResponseModel(ResponseCode.G, this.cartMapper.toDto(this.cartDao.saveAndFlush(cartToUpdate.get())));
             }
         }
         return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
@@ -88,6 +89,7 @@ public class CartService {
      * @param id cart id
      * @Effect: delete a cart by ID
      */
+    @Transactional
     public ResponseModel deleteCart(String id) {
         if (!this.cartDao.existsById(id)) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Cart not found with the selected ID");
@@ -100,6 +102,7 @@ public class CartService {
     /**
      * @Effect: delete all carts
      */
+    @Transactional
     public ResponseModel deleteAllCarts() {
         this.cartDao.deleteAll();
         return new ResponseModel(ResponseCode.H).addMessageDetails("All carts have been deleted");

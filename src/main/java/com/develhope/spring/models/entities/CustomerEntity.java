@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Table(name = "customer")
 public class CustomerEntity extends UserEntity {
 
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "customer",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference(value = "cart_customer")
     private CartEntity cart;
 
