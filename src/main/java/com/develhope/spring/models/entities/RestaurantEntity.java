@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "restaurant")
 public class RestaurantEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id_restaurant;
@@ -30,8 +31,10 @@ public class RestaurantEntity {
 
     @Column
     String description;
+
     @Column
     boolean isDeliveryAvailable;
+
     @Column
     boolean isTakeAwayAvailable;
 
@@ -55,8 +58,6 @@ public class RestaurantEntity {
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<ProductEntity> productEntities;
-
-
 
     public RestaurantEntity() {
     }

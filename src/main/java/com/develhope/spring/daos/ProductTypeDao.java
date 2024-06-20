@@ -10,4 +10,5 @@ public interface ProductTypeDao extends JpaRepository<ProductTypeEntity, String>
     ProductTypeEntity findByProductType(String productType);
 
     void deleteByProductType(String productType);
+
 }

@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-
 @Repository
 public interface RestaurantDao extends JpaRepository<RestaurantEntity, String> {
 
@@ -31,4 +30,5 @@ public interface RestaurantDao extends JpaRepository<RestaurantEntity, String> {
     List<RestaurantEntity> findByIsDeliveryAvailableTrue();
     List<RestaurantEntity> findByIsTakeAwayAvailableTrue();
     List<RestaurantEntity> findByIsTakeAwayAvailableTrueOrIsDeliveryAvailableTrue();
+
 }

@@ -16,4 +16,5 @@ public interface ProductDao extends JpaRepository<ProductEntity, String> {
     List<ProductEntity> findProductByPriceBetween(BigDecimal lowerBoundPrice, BigDecimal upperBoundPrice);
 
     List<ProductEntity> findByProductTypesContains(ProductTypeEntity productType);
+
 }
