@@ -68,6 +68,12 @@ public class CustomerController {
         return ResponseEntity.ok(updatedCustomer);
     }
 
+    @PatchMapping("/isVerified/{id}")
+    public ResponseEntity<ResponseModel> setIsVerified(@PathVariable String id, @RequestParam Boolean isVerified) {
+        ResponseModel updateVerifiedStatus = this.customerService.setIsVerified(id, isVerified);
+        return ResponseEntity.ok(updateVerifiedStatus);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseModel> deleteCustomerById(@PathVariable String id) {
         ResponseModel deletedCustomer = this.customerService.deleteCustomer(id);

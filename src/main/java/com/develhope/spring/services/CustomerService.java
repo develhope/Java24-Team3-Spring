@@ -1,6 +1,5 @@
 package com.develhope.spring.services;
 
-import com.develhope.spring.daos.UserDetailsDao;
 import com.develhope.spring.daos.CartDao;
 import com.develhope.spring.exceptions.InvalidCustomerException;
 import com.develhope.spring.mappers.CustomerMapper;
@@ -10,7 +9,6 @@ import com.develhope.spring.models.dtos.CustomerDto;
 import com.develhope.spring.models.entities.CartEntity;
 import com.develhope.spring.models.entities.CustomerEntity;
 import com.develhope.spring.daos.CustomerDao;
-import com.develhope.spring.models.entities.UserDetailsEntity;
 import com.develhope.spring.validators.CustomerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,7 @@ public class CustomerService {
     private final CustomerValidator customerValidator;
     private final CartDao cartDao;
 
+    @Autowired
     public CustomerService(CustomerDao customerDao, CustomerMapper customerMapper, CustomerValidator customerValidator, CartDao cartDao) {
         this.customerDao = customerDao;
         this.customerMapper = customerMapper;
@@ -132,12 +131,6 @@ public class CustomerService {
             if (customerUpdates.getPassword() != null) {
                 customerToUpdate.get().setPassword(customerEntityUpdates.getPassword());
             }
-            if (customerUpdates.getIsDeleted() != null) {
-                customerToUpdate.get().setIsDeleted(customerEntityUpdates.getIsDeleted());
-            }
-            if (customerUpdates.getIsVerified() != null) {
-                customerToUpdate.get().setIsVerified(customerEntityUpdates.getIsVerified());
-            }
             if (customerUpdates.getUserDetails() != null) {
                 customerToUpdate.get().setUserDetailsEntity(customerEntityUpdates.getUserDetails());
             }
@@ -166,18 +159,43 @@ public class CustomerService {
 
     /**
      * @param id customer id
+     * @param isVerified the status of isVerified
+     * @return isVerified status updated
+     */
+    public ResponseModel setIsVerified(String id, Boolean isVerified) {
+        Optional<CustomerEntity> customerToUpdate = this.customerDao.findById(id);
+        if (customerToUpdate.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
+        }
+        customerToUpdate.get().setIsVerified(isVerified);
+        return new ResponseModel(ResponseCode.G, this.customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
+    }
+
+    /**
+     * @param id customer id
      */
     public ResponseModel deleteCustomer(String id) {
         if (!this.customerDao.existsById(id)) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
         } else {
-            this.customerDao.deleteById(id);
+            Optional<CustomerEntity> customerEntity = customerDao.findById(id);
+            CartEntity cart = customerEntity.get().getCart();
+            if (cart != null) {
+                customerEntity.get().setCart(null);
+            }
+            customerEntity.get().setIsDeleted(true);
+            this.customerDao.saveAndFlush(customerEntity.get());
             return new ResponseModel(ResponseCode.H).addMessageDetails("Customer successfully deleted");
         }
     }
 
     public ResponseModel deleteAllCustomers() {
-        this.customerDao.deleteAll();
+        List<CustomerEntity> allCustomers = this.customerDao.findAll();
+        for(CustomerEntity customer : allCustomers) {
+            customer.setCart(null);
+            customer.setIsDeleted(true);
+        }
+        this.customerDao.saveAll(allCustomers);
         return new ResponseModel(ResponseCode.H).addMessageDetails("All customers have been deleted");
     }
 
