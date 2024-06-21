@@ -58,27 +58,13 @@ public class ReviewService {
 
     // READ
 
-    public ResponseModel getMeanRating(String restaurantId) {
-        List<ReviewEntity> restaurantReviews = reviewDao.findByRestaurantId(restaurantId);
-
-        if (restaurantReviews.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("No reviews found for this restaurant");
+    public ResponseModel getAll() {
+        List<ReviewDto> reviews = this.reviewDao.findAll().stream().map(reviewMapper::toDto).toList();
+        if (reviews.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("no review found");
+        } else {
+            return new ResponseModel(ResponseCode.E, reviews);
         }
-
-        double totalRating = 0;
-
-        for (ReviewEntity review : restaurantReviews) {
-            totalRating += review.getRating().getValue();
-        }
-
-        double meanRating = totalRating / restaurantReviews.size();
-
-        /*
-        Map<String, Object> responseData = new HashMap<>();
-        responseData.put("meanRating", meanRating);
-        */
-
-        return new ResponseModel(ResponseCode.B, meanRating);
     }
 
     public ResponseModel getById(String id) {
@@ -92,19 +78,10 @@ public class ReviewService {
         }
     }
 
-    public ResponseModel getAll() {
-        List<ReviewDto> reviews = this.reviewDao.findAll().stream().map(reviewMapper::toDto).toList();
-        if (reviews.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("No review found");
-        } else {
-            return new ResponseModel(ResponseCode.E, reviews);
-        }
-    }
-
     public ResponseModel getByOrderId(String orderId) {
         Optional<ReviewEntity> orderFound = this.reviewDao.findByOrderId(orderId);
         if (orderFound.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("No reviews associated to this order found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("no reviews associated to this order found.");
         } else {
             return new ResponseModel(ResponseCode.C, this.reviewMapper.toDto(orderFound.get()));
         }
@@ -113,7 +90,7 @@ public class ReviewService {
     public ResponseModel getByCustomerId(String customerId) {
         List<ReviewEntity> orders = this.reviewDao.findByCustomerId(customerId);
         if (orders.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("No reviews created by this customer found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("no reviews created by this customer found.");
         } else {
             return new ResponseModel(ResponseCode.E, orders);
         }
@@ -122,36 +99,36 @@ public class ReviewService {
     public ResponseModel getByRestaurantId(String restaurantId) {
         List<ReviewEntity> orders = this.reviewDao.findByRestaurantId(restaurantId);
         if (orders.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("No reviews associated to this restaurant found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("o reviews associated to this restaurant found.");
         } else {
             return new ResponseModel(ResponseCode.E, orders);
         }
     }
 
-    public ResponseModel getByCreationDateAfter(LocalDateTime dateTime) {
+    public ResponseModel getCreatedAfter(LocalDateTime dateTime) {
         List<ReviewEntity> orders = this.reviewDao.findByCreationDateAfter(dateTime);
         if (orders.isEmpty()) {
-            String messageDetails = "No reviews created after " + dateTime.toString() + " found.";
+            String messageDetails = "no reviews created after " + dateTime.toString() + " found.";
             return new ResponseModel(ResponseCode.D).addMessageDetails(messageDetails);
         } else {
             return new ResponseModel(ResponseCode.E, orders);
         }
     }
 
-    public ResponseModel getByCreationDateBefore(LocalDateTime dateTime) {
+    public ResponseModel getCreatedBefore(LocalDateTime dateTime) {
         List<ReviewEntity> orders = this.reviewDao.findByCreationDateBefore(dateTime);
         if (orders.isEmpty()) {
-            String messageDetails = "No orders created before " + dateTime.toString() + " found.";
+            String messageDetails = "no orders created before " + dateTime.toString() + " found.";
             return new ResponseModel(ResponseCode.D).addMessageDetails(messageDetails);
         } else {
             return new ResponseModel(ResponseCode.E, orders);
         }
     }
 
-    public ResponseModel getByCreationDateBetween(LocalDateTime dateTime1, LocalDateTime dateTime2) {
+    public ResponseModel getCreatedBetween(LocalDateTime dateTime1, LocalDateTime dateTime2) {
         List<ReviewEntity> orders = this.reviewDao.findByCreationDateBetween(dateTime1, dateTime2);
         if (orders.isEmpty()) {
-            String messageDetails = "No orders created between " + dateTime1.toString() + " and " + dateTime2.toString() + " found.";
+            String messageDetails = "no orders created between " + dateTime1.toString() + " and " + dateTime2.toString() + " found.";
             return new ResponseModel(ResponseCode.D).addMessageDetails(messageDetails);
         } else {
             return new ResponseModel(ResponseCode.E, orders);
@@ -198,6 +175,29 @@ public class ReviewService {
         }
     }
 
+    public ResponseModel getMeanRating(String restaurantId) {
+        List<ReviewEntity> restaurantReviews = reviewDao.findByRestaurantId(restaurantId);
+
+        if (restaurantReviews.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("no reviews found for this restaurant");
+        }
+
+        double totalRating = 0;
+
+        for (ReviewEntity review : restaurantReviews) {
+            totalRating += review.getRating().getValue();
+        }
+
+        double meanRating = totalRating / restaurantReviews.size();
+
+        /*
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("meanRating", meanRating);
+        */
+
+        return new ResponseModel(ResponseCode.B, meanRating);
+    }
+
     // UPDATE
 
     public ResponseModel updateReview(String id, ReviewDto reviewDto) {
@@ -224,7 +224,7 @@ public class ReviewService {
         if (!reviewDao.existsById(id)) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("review not found.");
         } else {
-            this.reviewDao.findById(id).get().setOrder(null);
+            reviewDao.findById(id).get().getOrder().setReview(null);
             this.reviewDao.deleteById(id);
             return new ResponseModel(ResponseCode.H).addMessageDetails("review successfully deleted.");
         }
