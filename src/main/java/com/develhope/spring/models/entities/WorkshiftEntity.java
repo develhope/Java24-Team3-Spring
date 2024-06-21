@@ -6,37 +6,41 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "rider_workshift")
+@Table(name = "workshift")
 public class WorkshiftEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "rider_id", nullable = false)
-    private RiderEntity rider;
-
     @Column(name = "day", nullable = false)
     private DayOfWeek dayOfWeek;
 
     @Column(name = "starting_hour", nullable = false)
-    private LocalTime start;
+    private LocalTime end;
 
     @Column(name = "ending_hour", nullable = false)
-    private LocalTime end;
+    private LocalTime start;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rider_id", nullable = false, referencedColumnName = "id")
+    private RiderEntity rider;
 
     // CONSTRUCTORS
 
     public WorkshiftEntity() {
     }
 
-    public WorkshiftEntity(String id, RiderEntity rider, DayOfWeek dayOfWeek, LocalTime start, LocalTime end) {
+    public WorkshiftEntity(String id,
+                           DayOfWeek dayOfWeek,
+                           LocalTime end,
+                           LocalTime start,
+                           RiderEntity rider) {
         this.id = id;
-        this.rider = rider;
         this.dayOfWeek = dayOfWeek;
-        this.start = start;
         this.end = end;
+        this.start = start;
+        this.rider = rider;
     }
 
     // GETTERS AND SETTERS
@@ -49,20 +53,20 @@ public class WorkshiftEntity {
         this.id = id;
     }
 
-    public RiderEntity getRider() {
-        return rider;
-    }
-
-    public void setRider(RiderEntity rider) {
-        this.rider = rider;
-    }
-
     public DayOfWeek getDayOfWeek() {
         return dayOfWeek;
     }
 
     public void setDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
+    }
+
+    public LocalTime getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalTime end) {
+        this.end = end;
     }
 
     public LocalTime getStart() {
@@ -73,11 +77,12 @@ public class WorkshiftEntity {
         this.start = start;
     }
 
-    public LocalTime getEnd() {
-        return end;
+    public RiderEntity getRider() {
+        return rider;
     }
 
-    public void setEnd(LocalTime end) {
-        this.end = end;
+    public void setRider(RiderEntity rider) {
+        this.rider = rider;
     }
+
 }

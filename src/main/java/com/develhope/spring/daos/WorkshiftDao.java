@@ -7,12 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface WorkshiftDao extends JpaRepository<WorkshiftEntity, String> {
-
-    Optional<WorkshiftEntity> findById(String id);
 
     List<WorkshiftEntity> findByDayOfWeek(DayOfWeek dayOfWeek);
 

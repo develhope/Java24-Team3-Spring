@@ -132,7 +132,7 @@ public class CustomerService {
                 customerToUpdate.get().setPassword(customerEntityUpdates.getPassword());
             }
             if (customerUpdates.getUserDetails() != null) {
-                customerToUpdate.get().setUserDetailsEntity(customerEntityUpdates.getUserDetails());
+                customerToUpdate.get().setUserDetails(customerEntityUpdates.getUserDetails());
             }
             return new ResponseModel(ResponseCode.G, this.customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
         }

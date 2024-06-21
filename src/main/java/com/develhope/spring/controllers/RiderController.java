@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("api/v1/riders")
+@RequestMapping("/api/v1/riders")
 public class RiderController {
 
     private final RiderService riderService;
@@ -20,9 +20,11 @@ public class RiderController {
         this.riderService = riderService;
     }
 
+    // POST
+
     @PostMapping
-    public ResponseEntity<ResponseModel> createRider(@RequestBody RiderDto riderDto) {
-        ResponseModel newRider = this.riderService.addRider(riderDto);
+    public ResponseEntity<ResponseModel> create(@RequestBody RiderDto riderDto) {
+        ResponseModel newRider = this.riderService.createRider(riderDto);
         return ResponseEntity.created(URI.create("api/v1/riders")).body(newRider);
     }
 
@@ -35,7 +37,7 @@ public class RiderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseModel> getRiderById(@PathVariable String id) {
+    public ResponseEntity<ResponseModel> getById(@PathVariable String id) {
         ResponseModel rider = this.riderService.getById(id);
         return ResponseEntity.ok(rider);
     }
@@ -47,28 +49,29 @@ public class RiderController {
     }
 
     @GetMapping("/deleted")
-    public ResponseEntity<ResponseModel> getByDeletedStatus(@RequestParam Boolean isDeleted) {
-        ResponseModel riders = this.riderService.getByDeletedStatus(isDeleted);
+    public ResponseEntity<ResponseModel> getByDeleted(@RequestParam Boolean isDeleted) {
+        ResponseModel riders = this.riderService.getByDeleted(isDeleted);
         return ResponseEntity.ok(riders);
     }
 
     @GetMapping("/verified")
-    public ResponseEntity<ResponseModel> getByVerifiedStatus(@RequestParam Boolean isVerified) {
-        ResponseModel riders = this.riderService.getByVerifiedStatus(isVerified);
+    public ResponseEntity<ResponseModel> getByVerified(@RequestParam Boolean isVerified) {
+        ResponseModel riders = this.riderService.getByVerified(isVerified);
         return ResponseEntity.ok(riders);
     }
 
     @GetMapping("/available")
-    public ResponseEntity<ResponseModel> getByAvailableStatus(@RequestParam Boolean isAvailable) {
-        ResponseModel riders = this.riderService.getByVerifiedStatus(isAvailable);
+    public ResponseEntity<ResponseModel> getByAvailable(@RequestParam Boolean available) {
+        ResponseModel riders = this.riderService.getByAvailable(available);
         return ResponseEntity.ok(riders);
     }
 
     // PUT
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseModel> update(@PathVariable String id, @RequestBody RiderDto riderDto) {
-        ResponseModel rider = this.riderService.update(id, riderDto);
+    public ResponseEntity<ResponseModel> update(@PathVariable String id,
+                                                @RequestBody RiderDto riderDto) {
+        ResponseModel rider = this.riderService.updateDetails(id, riderDto);
         return ResponseEntity.ok(rider);
     }
 
@@ -76,8 +79,14 @@ public class RiderController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseModel> delete(@PathVariable String id) {
-        ResponseModel rider = this.riderService.delete(id);
+        ResponseModel rider = this.riderService.deleteById(id);
         return ResponseEntity.ok(rider);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ResponseModel> deleteAll() {
+        ResponseModel deletedRiders = this.riderService.deleteAll();
+        return ResponseEntity.ok(deletedRiders);
     }
 
 }

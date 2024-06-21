@@ -1,19 +1,34 @@
 package com.develhope.spring.models.dtos;
 
+import java.util.List;
+
 public class RiderDto extends UserDto {
 
-    private double[] startingPosition;
-    private double[] currentPosition;
-    private Boolean isAvailable;
+    private double[] startingPosition = new double[2];
+
+    private double[] currentPosition = new double[2];
+
+    private boolean available = false;
+
+    private List<WorkshiftDto> workshifts;
 
     public RiderDto() {
     }
 
-    public RiderDto(String email, String password, Boolean isDeleted, Boolean isVerified, UserDetailsDto userDetails) {
+    public RiderDto(UserDetailsDto userDetails,
+                    String email,
+                    String password,
+                    Boolean isDeleted,
+                    Boolean isVerified,
+                    double[] startingPosition,
+                    double[] currentPosition,
+                    boolean available,
+                    List<WorkshiftDto> workshifts) {
         super(email, password, isDeleted, isVerified, userDetails);
-        this.startingPosition = new double[2];
-        this.currentPosition = new double[2];
-        this.isAvailable = false;
+        this.startingPosition = startingPosition;
+        this.currentPosition = currentPosition;
+        this.available = available;
+        this.workshifts = workshifts;
     }
 
     public double[] getStartingPosition() {
@@ -32,12 +47,20 @@ public class RiderDto extends UserDto {
         this.currentPosition = currentPosition;
     }
 
-    public Boolean getIsAvailable() {
-        return isAvailable;
+    public boolean getAvailable() {
+        return available;
     }
 
-    public void setIsAvailable(Boolean isAvailable) {
-        this.isAvailable = isAvailable;
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public List<WorkshiftDto> getWorkshifts() {
+        return workshifts;
+    }
+
+    public void setWorkshifts(List<WorkshiftDto> workshifts) {
+        this.workshifts = workshifts;
     }
 
 }

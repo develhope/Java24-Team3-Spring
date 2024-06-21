@@ -9,10 +9,12 @@ import org.springframework.stereotype.Component;
 public class RiderMapper {
 
     private final UserDetailsMapper userDetailsMapper;
+    private final WorkshiftMapper workshiftMapper;
 
     @Autowired
-    public RiderMapper(UserDetailsMapper userDetailsMapper) {
+    public RiderMapper(UserDetailsMapper userDetailsMapper, WorkshiftMapper workshiftMapper) {
         this.userDetailsMapper = userDetailsMapper;
+        this.workshiftMapper = workshiftMapper;
     }
 
     public RiderEntity toEntity(RiderDto riderDto) {
@@ -27,9 +29,15 @@ public class RiderMapper {
         riderEntity.setPassword(riderDto.getPassword());
         riderEntity.setIsDeleted(riderDto.getIsDeleted());
         riderEntity.setIsVerified(riderDto.getIsVerified());
+        riderEntity.setUserDetails(this.userDetailsMapper.toEntity(riderDto.getUserDetails()));
+
         riderEntity.setStartingPosition(riderDto.getCurrentPosition());
         riderEntity.setCurrentPosition(riderDto.getCurrentPosition());
-        riderEntity.setUserDetailsEntity(this.userDetailsMapper.toEntity(riderDto.getUserDetails()));
+        riderEntity.setAvailable(riderDto.getAvailable());
+
+        if (riderDto.getWorkshifts() != null) {
+            riderEntity.setWorkshifts(this.workshiftMapper.toEntities(riderDto.getWorkshifts()));
+        }
 
         return riderEntity;
     }
@@ -46,9 +54,15 @@ public class RiderMapper {
         riderDto.setPassword(riderEntity.getPassword());
         riderDto.setIsDeleted(riderEntity.getIsDeleted());
         riderDto.setIsVerified(riderEntity.getIsVerified());
+        riderDto.setUserDetails(this.userDetailsMapper.toDto(riderEntity.getUserDetails()));
+
         riderDto.setStartingPosition(riderEntity.getStartingPosition());
         riderDto.setCurrentPosition(riderEntity.getCurrentPosition());
-        riderDto.setUserDetails(this.userDetailsMapper.toDto(riderEntity.getUserDetails()));
+        riderDto.setAvailable(riderEntity.getAvailable());
+
+        if (riderEntity.getWorkshifts() != null) {
+            riderDto.setWorkshifts(this.workshiftMapper.toDtos(riderEntity.getWorkshifts()));
+        }
 
         return riderDto;
     }

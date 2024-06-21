@@ -16,8 +16,6 @@ public interface RiderDao extends JpaRepository<RiderEntity, String> {
 
     List<RiderEntity> findByIsVerified(Boolean isVerified);
 
-    List<RiderEntity> findByIsAvailable(Boolean isAvailable);
-
-    // List<RiderEntity> findByDistance(BigDecimal[] coordinates, Integer maximumDistance);
+    List<RiderEntity> findByAvailable(Boolean isAvailable);
 
 }

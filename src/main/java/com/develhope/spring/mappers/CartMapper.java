@@ -40,7 +40,6 @@ public class CartMapper {
         cartEntity.setCartProducts(cartProductDtoListToEntity(cartDto.getCartProducts()));
         cartEntity.setCustomer(customerDao.findById(cartDto.getCustomerId()).get());
 
-
         return cartEntity;
     }
 

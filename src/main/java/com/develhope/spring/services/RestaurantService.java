@@ -1,18 +1,14 @@
 package com.develhope.spring.services;
 
 import com.develhope.spring.daos.*;
-import com.develhope.spring.exceptions.ExceptionWithResponseCode;
-import com.develhope.spring.exceptions.InvalidContactException;
 import com.develhope.spring.mappers.*;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.*;
 import com.develhope.spring.models.entities.*;
 import com.develhope.spring.utils.DistanceCalculator;
-import com.develhope.spring.utils.DistanceCalculator_Euclide;
 import com.develhope.spring.utils.TimeCalculator;
 import com.develhope.spring.validators.*;
-import com.develhope.spring.services.*;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +41,6 @@ public class RestaurantService {
     // Convertire la velocità da km/h a m/min
     BigDecimal velocityMPerMin = velocityKmPerH.multiply(BigDecimal.valueOf(1000))
             .divide(BigDecimal.valueOf(60), 10, RoundingMode.HALF_UP);
-
-
-
-
 
     @Autowired
     private RestaurantValidator restaurantValidator;
@@ -95,7 +87,6 @@ public class RestaurantService {
     @Autowired
     ProductService productService;
 
-
 //    public RestaurantDto createRestaurant(RestaurantDto resDto) throws Exception {
 //
 //
@@ -117,7 +108,6 @@ public class RestaurantService {
 //        return resDtoSaved;
 //    }
 
-
     public ResponseModel createRestaurant(RestaurantDtoCreate resDtoCreate) {
 
         try {
@@ -135,7 +125,6 @@ public class RestaurantService {
                 throw new Exception("The id " + resDtoCreate.getId_owner() + "is not present in owers database.");
 
             operatingHoursValidator.validateOperatingHours(resDtoCreate.getOperatingHoursDtos());
-
 
             // convert Dto to Entity and save in DB
             RestaurantEntity resEntity = restaurantMapper.toEntity(restaurantMapper.toDto(resDtoCreate));
@@ -159,6 +148,15 @@ public class RestaurantService {
         }
     }
 
+    public ResponseModel getAll() {
+        List<RestaurantEntity> restaurants = resDao.findAll();
+
+        if (restaurants.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No restaurants found.");
+        } else {
+            return new ResponseModel(ResponseCode.E, restaurants);
+        }
+    }
 
     public ResponseModel getRestaurantById(String id) {
         Optional<RestaurantEntity> optRes = resDao.findById(id);
@@ -171,7 +169,6 @@ public class RestaurantService {
             return new ResponseModel(ResponseCode.D);
         }
     }
-
 
     public ResponseModel getRestaurantByDeliveryOrTakeAway(boolean delivery, boolean takeAway) {
         List<RestaurantEntity> restaurantEntityList =
@@ -215,7 +212,6 @@ public class RestaurantService {
         }
     }
 
-
     public ResponseModel updateRestaurant(String id, RestaurantDto resDtoUpdates) {
         Optional<RestaurantEntity> optRes = resDao.findById(id);
 
@@ -223,10 +219,10 @@ public class RestaurantService {
             RestaurantEntity restaurantEntityInDB = optRes.get();
             if (resDtoUpdates != null) {
                 try {
-                    idValidator.noId(resDtoUpdates.getId_restaurant());
+                    idValidator.noId(resDtoUpdates.getId());
 
                     RestaurantEntity resEntityUpdates = restaurantMapper.toEntity(resDtoUpdates);
-                    if (resEntityUpdates.getId_restaurant() != null) {
+                    if (resEntityUpdates.getId() != null) {
                         return new ResponseModel(ResponseCode.F);
                     }
                     if (resEntityUpdates.getOwnerEntity() != null) {
@@ -254,7 +250,7 @@ public class RestaurantService {
                         restaurantEntityInDB.setIsDeliveryAvailable(resDtoUpdates.getIsDeliveryAvailable());
                     }
                     if (resDtoUpdates.getIsTakeAwayAvailable() != null) {
-                        restaurantEntityInDB.setIsTakeAwayAvaible(resEntityUpdates.getIsTakeAwayAvaible());
+                        restaurantEntityInDB.setIsTakeAwayAvailable(resEntityUpdates.getIsTakeAwayAvailable());
                     }
                     if (resEntityUpdates.getOperatingHoursEntities() != null) {
                         throw new Exception("Operating Hours of a restaurant can only be modified through a specific endpoit.");
@@ -304,7 +300,6 @@ public class RestaurantService {
         }
     }
 
-
     public ResponseModel getRestaurantByType(List<String> restaurantTypeStrings) {
         if (restaurantTypeStrings == null) return  new ResponseModel(ResponseCode.E).addMessageDetails("You have chosen no restaurantType.");
         List<RestaurantEntity> restaurantEntities = resDao.findByRestaurantTypeEntityIn(restaurantTypeStrings);
@@ -315,4 +310,5 @@ public class RestaurantService {
         return new ResponseModel(ResponseCode.E, restaurantDtos);
         //return restaurantDtos;
     }
+
 }

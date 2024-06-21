@@ -19,8 +19,6 @@ import java.util.List;
 @RequestMapping("/restaurant")
 public class RestaurantController {
 
-
-
     @Autowired
     private RestaurantService restaurantService;
 
@@ -46,6 +44,12 @@ public class RestaurantController {
         return  ResponseEntity.ok().body(response);
     }
 
+    @GetMapping
+    public ResponseEntity<ResponseModel> getAll() {
+        ResponseModel response  = restaurantService.getAll();
+        return  ResponseEntity.ok().body(response);
+    }
+
     @ResponseBody
     @GetMapping("/{id}")
     public ResponseEntity<ResponseModel> getRestaurant(@PathVariable("id") String id) {
@@ -58,7 +62,6 @@ public class RestaurantController {
         ResponseModel response  = restaurantService.getRestaurantWithinRadious(addressDto, radious);;
         return  ResponseEntity.ok().body(response);
     }
-
 
     @ResponseBody
     @GetMapping("/byType")
@@ -75,8 +78,9 @@ public class RestaurantController {
     }
 
     @ResponseBody
-    @GetMapping
-    public ResponseEntity<ResponseModel> getRestaurantByDeliveryOrTakeAway(@RequestParam(required = false)  boolean delivery, @RequestParam(required = false)  boolean takeAway) {
+    @GetMapping("/deliveryOrTakeAway")
+    public ResponseEntity<ResponseModel> getRestaurantByDeliveryOrTakeAway(@RequestParam(required = false)  boolean delivery,
+                                                                           @RequestParam(required = false)  boolean takeAway) {
         ResponseModel response  = restaurantService.getRestaurantByDeliveryOrTakeAway(delivery, takeAway);
         return ResponseEntity.ok().body(response);
     }

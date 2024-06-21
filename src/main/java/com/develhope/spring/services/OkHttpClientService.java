@@ -21,12 +21,11 @@ import java.math.BigDecimal;
  * @Service
  * @see <a href="https://www.geoapify.com/geocoding-api?gad_source=1&gclid=CjwKCAjw9IayBhBJEiwAVuc3fguNCm6wsJkEj22aOsvPPBoCRMaxdkS1Ha7ND7xdtkF4uHduR8rVzhoCsRwQAvD_BwE">GeoApify Geocoding API</a>
  * @api_key Associated with the Gmail account of Chiara de Guglielmo (profilo superfalso)
- */
+*/
 @Service
 public class OkHttpClientService {
 
     private static final String API_KEY = "6cba6eee747f4f4496edf3a7cbfb2617";
-
 
     @GetMapping("/Coordinates")
     public AddressDto getAddressDtoWithCoordinates(AddressDto addressDto) throws Exception {
@@ -65,8 +64,6 @@ public class OkHttpClientService {
             String firstResultStreet = firstResult.getJSONObject("properties").getString("street");
             String firstResultNumber = firstResult.getJSONObject("properties").getString("housenumber");
 
-
-
             addressDto.setCountry(firstResultCountry);
             addressDto.setPostcode(firstResultPostcode);
             addressDto.setCity(firstResultCity);
@@ -78,4 +75,5 @@ public class OkHttpClientService {
             throw new Exception("GeoApify's response code is not 200.");
         }
     }
+
 }

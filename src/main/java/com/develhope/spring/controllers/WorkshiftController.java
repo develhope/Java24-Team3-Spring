@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("api/v1/workshifts")
+@RequestMapping("/api/v1/workshifts")
 public class WorkshiftController {
 
     private final WorkshiftService service;
@@ -20,11 +20,15 @@ public class WorkshiftController {
         this.service = service;
     }
 
+    // POST
+
     @PostMapping
     public ResponseEntity<ResponseModel> create(@RequestBody WorkshiftDto workshiftDto) {
         ResponseModel newWorkshift = this.service.create(workshiftDto);
         return ResponseEntity.created(URI.create("api/v1/workshifts")).body(newWorkshift);
     }
+
+    // GET
 
     @GetMapping
     public ResponseEntity<ResponseModel> getAll() {
@@ -38,11 +42,15 @@ public class WorkshiftController {
         return ResponseEntity.ok(workshiftFound);
     }
 
+    // PUT
+
     @PutMapping("/{id}")
     public ResponseEntity<ResponseModel> update(@PathVariable String id, @RequestBody WorkshiftDto workshiftDto) {
         ResponseModel updatedWorkshift = this.service.update(id, workshiftDto);
         return ResponseEntity.ok(updatedWorkshift);
     }
+
+    // DELETE
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseModel> delete(@PathVariable String id) {

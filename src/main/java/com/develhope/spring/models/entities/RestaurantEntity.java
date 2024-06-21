@@ -4,19 +4,19 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(name = "restaurant")
 public class RestaurantEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id_restaurant;
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private OwnerEntity ownerEntity;
 
-    @Column
+    @Column(name = "restaurant_name")
     private String restaurantName;
 
     @Column
@@ -26,13 +26,15 @@ public class RestaurantEntity {
     private String restaurantPhoneNumber;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "adress_id")
+    @JoinColumn(name = "address_id")
     private AddressEntity addressEntity;
 
     @Column
     String description;
+
     @Column
     boolean isDeliveryAvailable;
+
     @Column
     boolean isTakeAwayAvailable;
 
@@ -42,7 +44,6 @@ public class RestaurantEntity {
             inverseJoinColumns = @JoinColumn(name = "hour_id"))
     private List<OperatingHoursEntity> operatingHoursEntities;
 
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "restaurant_restaurantType",
             joinColumns = @JoinColumn(name = "restaurant_id"),
@@ -50,20 +51,36 @@ public class RestaurantEntity {
             uniqueConstraints = @UniqueConstraint(columnNames = {"restaurant_id", "restaurantType"}))
     private List<RestaurantTypeEntity> restaurantTypeEntities;
 
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "restaurant_product",
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<ProductEntity> productEntities;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<OrderEntity> orders;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ReviewEntity> reviews;
 
     public RestaurantEntity() {
     }
 
-    public RestaurantEntity(String id_restaurant, OwnerEntity ownerEntity, String restaurantName, String restaurantEmail, String restaurantPhoneNumber, AddressEntity addressEntity, String description, boolean isDeliveryAvailable, boolean isTakeAwayAvailable, List<OperatingHoursEntity> operatingHoursEntity, List<RestaurantTypeEntity> restaurantTypeEntity, List<ProductEntity> productEntities) {
-        this.id_restaurant = id_restaurant;
+    public RestaurantEntity(String id,
+                            OwnerEntity ownerEntity,
+                            String restaurantName,
+                            String restaurantEmail,
+                            String restaurantPhoneNumber,
+                            AddressEntity addressEntity,
+                            String description,
+                            boolean isDeliveryAvailable,
+                            boolean isTakeAwayAvailable,
+                            List<OperatingHoursEntity> operatingHoursEntity,
+                            List<RestaurantTypeEntity> restaurantTypeEntity,
+                            List<ProductEntity> productEntities,
+                            List<OrderEntity> orders,
+                            List<ReviewEntity> reviews) {
+        this.id = id;
         this.ownerEntity = ownerEntity;
         this.restaurantName = restaurantName;
         this.restaurantEmail = restaurantEmail;
@@ -75,6 +92,8 @@ public class RestaurantEntity {
         this.operatingHoursEntities = operatingHoursEntity;
         this.restaurantTypeEntities = restaurantTypeEntity;
         this.productEntities = productEntities;
+        this.orders = orders;
+        this.reviews = reviews;
     }
 
     public OwnerEntity getOwnerEntity() {
@@ -101,12 +120,12 @@ public class RestaurantEntity {
         this.restaurantTypeEntities = restaurantTypeEntities;
     }
 
-    public String getId_restaurant() {
-        return id_restaurant;
+    public String getId() {
+        return id;
     }
 
-    public void setId_restaurant(String id_restaurant) {
-        this.id_restaurant = id_restaurant;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getRestaurantName() {
@@ -165,14 +184,27 @@ public class RestaurantEntity {
         isDeliveryAvailable = deliveryAvailable;
     }
 
-    public boolean getIsTakeAwayAvaible() {
+    public boolean getIsTakeAwayAvailable() {
         return isTakeAwayAvailable;
     }
 
-    public void setIsTakeAwayAvaible(boolean takeAwayAvaible) {
+    public void setIsTakeAwayAvailable(boolean takeAwayAvaible) {
         isTakeAwayAvailable = takeAwayAvaible;
     }
 
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
 
+    public void setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
+    }
+
+    public List<ReviewEntity> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewEntity> reviews) {
+        this.reviews = reviews;
+    }
 }
-

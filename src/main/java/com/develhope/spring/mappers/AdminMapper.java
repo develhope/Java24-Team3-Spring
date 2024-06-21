@@ -21,7 +21,7 @@ public class AdminMapper {
         adminEntity.setId(adminDTO.getId());
         adminEntity.setEmail(adminDTO.getEmail());
         adminEntity.setPassword(adminDTO.getPassword());
-        adminEntity.setUserDetailsEntity(userDetailsMapper.toEntity(adminDTO.getUserDetails()));
+        adminEntity.setUserDetails(userDetailsMapper.toEntity(adminDTO.getUserDetails()));
         adminEntity.setIsDeleted(adminDTO.getIsDeleted());
         adminEntity.setIsVerified(adminDTO.getIsVerified());
 

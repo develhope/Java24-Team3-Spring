@@ -7,13 +7,10 @@ import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.RiderDto;
 import com.develhope.spring.models.entities.RiderEntity;
-import com.develhope.spring.utils.DistanceCalculator;
 import com.develhope.spring.validators.RiderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +30,7 @@ public class RiderService {
 
     // CREATE
 
-    public ResponseModel addRider(RiderDto riderDto) {
+    public ResponseModel createRider(RiderDto riderDto) {
         try {
             validator.validateRider(riderDto);
             RiderEntity newRider = this.mapper.toEntity(riderDto);
@@ -49,7 +46,7 @@ public class RiderService {
     public ResponseModel getAll() {
         List<RiderDto> riders = this.dao.findAll().stream().map(mapper::toDto).toList();
         if (riders.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("No riders found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("no riders found.");
         } else {
             return new ResponseModel(ResponseCode.E, riders);
         }
@@ -58,7 +55,7 @@ public class RiderService {
     public ResponseModel getById(String id) {
         Optional<RiderEntity> riderFound = this.dao.findById(id);
         if (riderFound.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("Rider ID not found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("rider ID not found.");
         } else {
             return new ResponseModel(ResponseCode.C, this.mapper.toDto(riderFound.get()));
         }
@@ -67,20 +64,20 @@ public class RiderService {
     public ResponseModel getByEmail(String email) {
         Optional<RiderEntity> rider = this.dao.findByEmail(email);
         if (rider.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("Rider e-mail not found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("no riders associated to this e-mail found.");
         } else {
             return new ResponseModel(ResponseCode.C, this.mapper.toDto(rider.get()));
         }
     }
 
-    public ResponseModel getByDeletedStatus(Boolean isDeleted) {
+    public ResponseModel getByDeleted(Boolean isDeleted) {
         List<RiderDto> riders = this.dao.findByIsDeleted(isDeleted).stream().map(mapper::toDto).toList();
         if (riders.isEmpty()) {
             String messageDetails;
             if (isDeleted) {
-                messageDetails = "No deleted riders found.";
+                messageDetails = "no deleted riders found.";
             } else {
-                messageDetails = "No active riders found.";
+                messageDetails = "no registered riders found.";
             }
 
             return new ResponseModel(ResponseCode.D).addMessageDetails(messageDetails);
@@ -89,14 +86,14 @@ public class RiderService {
         }
     }
 
-    public ResponseModel getByVerifiedStatus(Boolean isVerified) {
+    public ResponseModel getByVerified(Boolean isVerified) {
         List<RiderDto> riders = this.dao.findByIsVerified(isVerified).stream().map(mapper::toDto).toList();
         if (riders.isEmpty()) {
             String messageDetails;
             if (isVerified) {
-                messageDetails = "No verified riders found.";
+                messageDetails = "no verified riders found.";
             } else {
-                messageDetails = "No riders that are not yet verified found.";
+                messageDetails = "no riders that are not yet verified found.";
             }
 
             return new ResponseModel(ResponseCode.D).addMessageDetails(messageDetails);
@@ -105,14 +102,14 @@ public class RiderService {
         }
     }
 
-    public ResponseModel getByAvailableStatus(Boolean isAvailable) {
-        List<RiderDto> riders = this.dao.findByIsAvailable(isAvailable).stream().map(mapper::toDto).toList();
+    public ResponseModel getByAvailable(Boolean isAvailable) {
+        List<RiderDto> riders = this.dao.findByAvailable(isAvailable).stream().map(mapper::toDto).toList();
         if (riders.isEmpty()) {
             String messageDetails;
             if (isAvailable) {
-                messageDetails = "No available riders found.";
+                messageDetails = "no available riders found.";
             } else {
-                messageDetails = "No riders that are not available found.";
+                messageDetails = "no idle riders found.";
             }
 
             return new ResponseModel(ResponseCode.D).addMessageDetails(messageDetails);
@@ -121,8 +118,9 @@ public class RiderService {
         }
     }
 
+    /*
     public ResponseModel getByAvailabilityAndDistance(double[] coordinates, double maximumDistance) {
-        List<RiderDto> availableRiders = this.dao.findByIsAvailable(true).stream().map(mapper::toDto).toList();
+        List<RiderDto> availableRiders = this.dao.findByAvailable(true).stream().map(mapper::toDto).toList();
         if (availableRiders.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No riders found.");
         } else {
@@ -140,20 +138,21 @@ public class RiderService {
             return new ResponseModel(ResponseCode.E, ridersInRange);
         }
     }
+    */
 
     // UPDATE
 
-    public ResponseModel update(String id, RiderDto updatedRider) {
+    public ResponseModel updateDetails(String id, RiderDto updatedRider) {
 
         Optional<RiderEntity> riderToUpdate = this.dao.findById(id);
 
         if (riderToUpdate.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("Rider ID not found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("rider ID not found.");
         } else if (updatedRider != null) {
 
             RiderEntity updatedRiderEntity = this.mapper.toEntity(updatedRider);
 
-            if (updatedRider.getEmail() != null) {
+            if (updatedRider.getEmail() != null || !updatedRider.getEmail().isEmpty()) {
                 riderToUpdate.get().setEmail(updatedRiderEntity.getEmail());
             }
 
@@ -170,41 +169,29 @@ public class RiderService {
             }
 
             if (updatedRider.getUserDetails() != null) {
-                riderToUpdate.get().setUserDetailsEntity(updatedRiderEntity.getUserDetails());
-            }
-
-            if (updatedRider.getIsAvailable() != null) {
-                riderToUpdate.get().setIsAvailable(updatedRiderEntity.getIsAvailable());
-            }
-
-            if (updatedRider.getStartingPosition() != null) {
-                riderToUpdate.get().setStartingPosition(updatedRiderEntity.getStartingPosition());
-            }
-
-            if (updatedRider.getCurrentPosition() != null) {
-                riderToUpdate.get().setCurrentPosition(updatedRiderEntity.getCurrentPosition());
+                riderToUpdate.get().setUserDetails(updatedRiderEntity.getUserDetails());
             }
 
             return new ResponseModel(ResponseCode.G, this.mapper.toDto(this.dao.saveAndFlush(riderToUpdate.get())));
         }
 
-        return new ResponseModel(ResponseCode.A).addMessageDetails("Update failed (null body).");
+        return new ResponseModel(ResponseCode.A).addMessageDetails("update failed (null body).");
     }
 
     // DELETE
 
-    public ResponseModel delete(String id) {
+    public ResponseModel deleteById(String id) {
         if (!this.dao.existsById(id)) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("Rider ID not found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("rider ID not found.");
         } else {
             this.dao.deleteById(id);
-            return new ResponseModel(ResponseCode.H).addMessageDetails("Rider deleted successfully.");
+            return new ResponseModel(ResponseCode.H).addMessageDetails("rider successfully deleted.");
         }
     }
 
     public ResponseModel deleteAll() {
         this.dao.deleteAll();
-        return new ResponseModel(ResponseCode.H).addMessageDetails("All riders deleted.");
+        return new ResponseModel(ResponseCode.H).addMessageDetails("all riders have been successfully deleted.");
     }
 
 }

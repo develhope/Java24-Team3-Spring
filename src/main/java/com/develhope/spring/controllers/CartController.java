@@ -39,7 +39,8 @@ public class CartController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseModel> updateCartProducts(@PathVariable String id, @RequestBody CartDto cartDto) {
+    public ResponseEntity<ResponseModel> updateCartProducts(@PathVariable String id,
+                                                            @RequestBody CartDto cartDto) {
         ResponseModel updatedCart = this.cartService.updateCartsCartProducts(id, cartDto);
         return ResponseEntity.ok(updatedCart);
     }

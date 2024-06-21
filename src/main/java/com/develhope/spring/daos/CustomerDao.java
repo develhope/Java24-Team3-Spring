@@ -15,4 +15,5 @@ public interface CustomerDao extends JpaRepository<CustomerEntity, String> {
     List<CustomerEntity> findCustomerByIsDeleted(Boolean isDeleted);
 
     List<CustomerEntity> findCustomerByIsVerified(Boolean isVerified);
+
 }

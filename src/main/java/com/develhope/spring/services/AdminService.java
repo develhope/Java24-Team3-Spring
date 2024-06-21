@@ -21,17 +21,17 @@ import java.util.Optional;
 @Service
 public class AdminService {
 
-    @Autowired
+
     private final AdminDao adminDao;
-    @Autowired
+
     private final AdminMapper adminMapper;
-    @Autowired
+
     private final AdminValidator adminValidator;
 
-    @Autowired
+
     private UserDetailsMapper userDetailsMapper;
 
-
+    @Autowired
     public AdminService(AdminDao adminDao, AdminMapper adminMapper, AdminValidator adminValidator, UserDetailsMapper userDetailsMapper) {
         this.adminDao = adminDao;
         this.adminMapper = adminMapper;
@@ -88,7 +88,7 @@ public class AdminService {
                 adminUpdated.get().setIsVerified(adminDTO.getIsVerified());
             }
             if (adminDTO.getUserDetails() != null) {
-                adminUpdated.get().setUserDetailsEntity(userDetailsMapper.toEntity(adminDTO.getUserDetails()));
+                adminUpdated.get().setUserDetails(userDetailsMapper.toEntity(adminDTO.getUserDetails()));
             }
 
             return new ResponseModel(ResponseCode.G, this.adminMapper.toDto(this.adminDao.saveAndFlush(adminUpdated.get())));

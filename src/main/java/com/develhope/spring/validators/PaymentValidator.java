@@ -8,15 +8,12 @@ import org.springframework.stereotype.Component;
 public class PaymentValidator {
 
     public void validatePayment(PaymentDto paymentDto) throws InvalidPaymentException {
-        if(paymentDto.getOrderId() == null) {
-            throw new InvalidPaymentException("Payment must be assigned to an order");
-        }
 
-        if (paymentDto.getPaymentMethod() == null) {
+        if (paymentDto.getMethod() == null) {
             throw new InvalidPaymentException("Payment method can't be null");
         }
 
-        if (paymentDto.getPaymentStatus() == null) {
+        if (paymentDto.getStatus() == null) {
             throw new InvalidPaymentException("Payment status can't be null");
         }
 

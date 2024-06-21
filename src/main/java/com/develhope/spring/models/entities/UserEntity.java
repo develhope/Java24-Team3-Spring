@@ -78,7 +78,7 @@ public class UserEntity {
         return userDetails;
     }
 
-    public void setUserDetailsEntity(UserDetailsEntity userDetails) {
+    public void setUserDetails(UserDetailsEntity userDetails) {
         this.userDetails = userDetails;
     }
 }

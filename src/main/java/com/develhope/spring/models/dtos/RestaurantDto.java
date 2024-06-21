@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantDto {
-    private String id_restaurant;
+
+    private String id;
 
     private OwnerDto ownerDto;
 
@@ -19,6 +20,7 @@ public class RestaurantDto {
     String description;
 
     Boolean isDeliveryAvailable;
+
     Boolean isTakeAwayAvailable;
 
     private List<OperatingHoursDto> operatingHoursDtos;
@@ -27,11 +29,28 @@ public class RestaurantDto {
 
     private List<ProductDto> productDtos = new ArrayList<>();
 
+    private List<OrderDto> orders;
+
+    private List<ReviewDto> reviews;
+
     public RestaurantDto() {
     }
 
-    public RestaurantDto(String id_restaurant, OwnerDto ownerDto, String restaurantName, String restaurantEmail, String restaurantPhoneNumber, AddressDto addressDto, String description, Boolean isDeliveryAvailable, Boolean isTakeAwayAvailable, List<OperatingHoursDto> operatingHoursDto, List<RestaurantTypeDto> restaurantTypeDtoList, List<ProductDto> productDtos) {
-        this.id_restaurant = id_restaurant;
+    public RestaurantDto(String id,
+                         OwnerDto ownerDto,
+                         String restaurantName,
+                         String restaurantEmail,
+                         String restaurantPhoneNumber,
+                         AddressDto addressDto,
+                         String description,
+                         Boolean isDeliveryAvailable,
+                         Boolean isTakeAwayAvailable,
+                         List<OperatingHoursDto> operatingHoursDto,
+                         List<RestaurantTypeDto> restaurantTypeDtoList,
+                         List<ProductDto> productDtos,
+                         List<OrderDto> orders,
+                         List<ReviewDto> reviews) {
+        this.id = id;
         this.ownerDto = ownerDto;
         this.restaurantName = restaurantName;
         this.restaurantEmail = restaurantEmail;
@@ -43,6 +62,8 @@ public class RestaurantDto {
         this.operatingHoursDtos = operatingHoursDto;
         this.restaurantTypeDtos = restaurantTypeDtoList;
         this.productDtos = productDtos;
+        this.orders = orders;
+        this.reviews = reviews;
     }
 
     public OwnerDto getOwnerDto() {
@@ -61,12 +82,12 @@ public class RestaurantDto {
         this.restaurantTypeDtos = restaurantTypeDtos;
     }
 
-    public String getId_restaurant() {
-        return id_restaurant;
+    public String getId() {
+        return id;
     }
 
-    public void setId_restaurant(String id_restaurant) {
-        this.id_restaurant = id_restaurant;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getRestaurantEmail() {
@@ -140,4 +161,21 @@ public class RestaurantDto {
     public void setOperatingHoursDtos(List<OperatingHoursDto> operatingHoursDtos) {
         this.operatingHoursDtos = operatingHoursDtos;
     }
+
+    public List<OrderDto> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderDto> orders) {
+        this.orders = orders;
+    }
+
+    public List<ReviewDto> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewDto> reviews) {
+        this.reviews = reviews;
+    }
+
 }
