@@ -25,7 +25,7 @@ public class ResponseModel {
     }
 
     public ResponseModel addMessageDetails(String messageDetails) {
-        this.message += " MessageDetails: " + messageDetails;
+        this.message += " Message details: " + messageDetails;
         return this;
     }
 

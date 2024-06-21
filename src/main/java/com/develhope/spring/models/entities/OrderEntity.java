@@ -27,14 +27,17 @@ public class OrderEntity {
     @JoinColumn(name = "customer_id", nullable = false)
     private CustomerEntity customer;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id", nullable = false)
     private CartEntity cart;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private PaymentEntity payment;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private ReviewEntity review;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false, referencedColumnName = "id")
     private RestaurantEntity restaurant;
 
@@ -114,5 +117,13 @@ public class OrderEntity {
 
     public void setRestaurant(RestaurantEntity restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public ReviewEntity getReview() {
+        return review;
+    }
+
+    public void setReview(ReviewEntity review) {
+        this.review = review;
     }
 }

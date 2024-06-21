@@ -29,10 +29,27 @@ public class RestaurantDto {
 
     private List<ProductDto> productDtos = new ArrayList<>();
 
+    private List<OrderDto> orders;
+
+    private List<ReviewDto> reviews;
+
     public RestaurantDto() {
     }
 
-    public RestaurantDto(String id, OwnerDto ownerDto, String restaurantName, String restaurantEmail, String restaurantPhoneNumber, AddressDto addressDto, String description, Boolean isDeliveryAvailable, Boolean isTakeAwayAvailable, List<OperatingHoursDto> operatingHoursDto, List<RestaurantTypeDto> restaurantTypeDtoList, List<ProductDto> productDtos) {
+    public RestaurantDto(String id,
+                         OwnerDto ownerDto,
+                         String restaurantName,
+                         String restaurantEmail,
+                         String restaurantPhoneNumber,
+                         AddressDto addressDto,
+                         String description,
+                         Boolean isDeliveryAvailable,
+                         Boolean isTakeAwayAvailable,
+                         List<OperatingHoursDto> operatingHoursDto,
+                         List<RestaurantTypeDto> restaurantTypeDtoList,
+                         List<ProductDto> productDtos,
+                         List<OrderDto> orders,
+                         List<ReviewDto> reviews) {
         this.id = id;
         this.ownerDto = ownerDto;
         this.restaurantName = restaurantName;
@@ -45,6 +62,8 @@ public class RestaurantDto {
         this.operatingHoursDtos = operatingHoursDto;
         this.restaurantTypeDtos = restaurantTypeDtoList;
         this.productDtos = productDtos;
+        this.orders = orders;
+        this.reviews = reviews;
     }
 
     public OwnerDto getOwnerDto() {
@@ -141,6 +160,22 @@ public class RestaurantDto {
 
     public void setOperatingHoursDtos(List<OperatingHoursDto> operatingHoursDtos) {
         this.operatingHoursDtos = operatingHoursDtos;
+    }
+
+    public List<OrderDto> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderDto> orders) {
+        this.orders = orders;
+    }
+
+    public List<ReviewDto> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewDto> reviews) {
+        this.reviews = reviews;
     }
 
 }

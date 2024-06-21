@@ -23,12 +23,22 @@ public class OrderDto {
 
     private String restaurantId;
 
+    private String reviewId;
+
     // CONSTRUCTORS
 
     public OrderDto() {
     }
 
-    public OrderDto(String id, OrderType type, OrderStatus status, LocalDateTime creationDate, String customerId, String cartId, String paymentId, String restaurantId) {
+    public OrderDto(String id,
+                    OrderType type,
+                    OrderStatus status,
+                    LocalDateTime creationDate,
+                    String customerId,
+                    String cartId,
+                    String paymentId,
+                    String restaurantId,
+                    String reviewId) {
         this.id = id;
         this.type = type;
         this.status = status;
@@ -37,6 +47,7 @@ public class OrderDto {
         this.cartId = cartId;
         this.paymentId = paymentId;
         this.restaurantId = restaurantId;
+        this.reviewId = reviewId;
     }
 
     // GETTERS AND SETTERS
@@ -103,5 +114,13 @@ public class OrderDto {
 
     public void setRestaurantId(String restaurantId) {
         this.restaurantId = restaurantId;
+    }
+
+    public String getReviewId() {
+        return reviewId;
+    }
+
+    public void setReviewId(String reviewId) {
+        this.reviewId = reviewId;
     }
 }

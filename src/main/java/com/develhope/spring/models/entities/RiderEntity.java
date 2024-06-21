@@ -14,9 +14,9 @@ public class RiderEntity extends UserEntity {
     private double[] currentPosition;
 
     @Column(name = "available", nullable = false)
-    private Boolean isAvailable;
+    private Boolean available = false;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<WorkshiftEntity> workshifts;
 
     // CONSTRUCTORS
@@ -28,7 +28,7 @@ public class RiderEntity extends UserEntity {
         super(email, password, isDeleted, isVerified, userDetails);
         this.startingPosition = new double[2];
         this.currentPosition = new double[2];
-        this.isAvailable = false;
+        this.available = false;
         this.workshifts = workshifts;
     }
 
@@ -50,12 +50,12 @@ public class RiderEntity extends UserEntity {
         this.currentPosition = currentPosition;
     }
 
-    public Boolean getIsAvailable() {
-        return isAvailable;
+    public Boolean getAvailable() {
+        return available;
     }
 
-    public void setIsAvailable(Boolean available) {
-        isAvailable = available;
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 
     public List<WorkshiftEntity> getWorkshifts() {

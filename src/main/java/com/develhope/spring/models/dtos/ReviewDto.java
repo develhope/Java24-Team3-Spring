@@ -1,55 +1,66 @@
 package com.develhope.spring.models.dtos;
 
 import com.develhope.spring.models.Rating;
-import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class ReviewDto {
 
-    private String id_review;
+    private String id;
 
-    private String id_order;
+    private String orderId;
 
-    private Date date;
+    private LocalDateTime creationDate = LocalDateTime.now();
 
     private Rating rating;
 
     private String comment;
 
+    private String restaurantId;
+
+    private String customerId;
+
     public ReviewDto() {
     }
 
-    public ReviewDto(String id_review, String id_order, Date date, Rating rating, String comment) {
-        this.id_review = id_review;
-        this.id_order = id_order;
-        this.date = date;
+    public ReviewDto(String id,
+                     String orderId,
+                     LocalDateTime creationDate,
+                     Rating rating,
+                     String comment,
+                     String restaurantId,
+                     String customerId) {
+        this.id = id;
+        this.orderId = orderId;
+        this.creationDate = creationDate;
         this.rating = rating;
         this.comment = comment;
+        this.restaurantId = restaurantId;
+        this.customerId = customerId;
     }
 
-    public String getId_review() {
-        return id_review;
+    public String getId() {
+        return id;
     }
 
-    public void setId_review(String id_review) {
-        this.id_review = id_review;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getId_order() {
-        return id_order;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setId_order(String id_order) {
-        this.id_order = id_order;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
-    public Date getDate() {
-        return date;
+    public LocalDateTime getCreationDate() {
+        return creationDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 
     public Rating getRating() {
@@ -66,5 +77,21 @@ public class ReviewDto {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 }

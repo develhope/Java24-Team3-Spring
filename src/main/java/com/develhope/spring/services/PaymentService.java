@@ -37,7 +37,6 @@ public class PaymentService {
      * @return a new payment
      */
     public ResponseModel create(PaymentDto paymentDto) {
-
         try {
             paymentValidator.validatePayment(paymentDto);
             PaymentEntity newPayment = this.paymentMapper.toEntity(paymentDto);
@@ -46,7 +45,6 @@ public class PaymentService {
         } catch (InvalidPaymentException e) {
             return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
-
     }
 
     // READ
@@ -149,10 +147,11 @@ public class PaymentService {
      */
     public ResponseModel deleteById(String id) {
         if (!paymentDao.existsById(id)) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("Payment not found with the selected ID");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("payment not found.");
         } else {
+            this.paymentDao.findById(id).get().setOrder(null);
             this.paymentDao.deleteById(id);
-            return new ResponseModel(ResponseCode.H).addMessageDetails("Payment successfully deleted");
+            return new ResponseModel(ResponseCode.H).addMessageDetails("payment successfully deleted.");
         }
     }
 
@@ -160,8 +159,14 @@ public class PaymentService {
      * @return delete all payments
      */
     public ResponseModel deleteAll() {
+        List<PaymentEntity> payments = this.paymentDao.findAll();
+
+        for(PaymentEntity payment : payments) {
+            payment.getOrder().setReview(null);
+        }
+
         this.paymentDao.deleteAll();
-        return new ResponseModel(ResponseCode.H).addMessageDetails("All payments have been deleted");
+        return new ResponseModel(ResponseCode.H).addMessageDetails("all payments have been successfully deleted.");
     }
 
 }

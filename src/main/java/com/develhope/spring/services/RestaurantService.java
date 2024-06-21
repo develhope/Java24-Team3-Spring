@@ -42,10 +42,6 @@ public class RestaurantService {
     BigDecimal velocityMPerMin = velocityKmPerH.multiply(BigDecimal.valueOf(1000))
             .divide(BigDecimal.valueOf(60), 10, RoundingMode.HALF_UP);
 
-
-
-
-
     @Autowired
     private RestaurantValidator restaurantValidator;
 
@@ -91,7 +87,6 @@ public class RestaurantService {
     @Autowired
     ProductService productService;
 
-
 //    public RestaurantDto createRestaurant(RestaurantDto resDto) throws Exception {
 //
 //
@@ -113,7 +108,6 @@ public class RestaurantService {
 //        return resDtoSaved;
 //    }
 
-
     public ResponseModel createRestaurant(RestaurantDtoCreate resDtoCreate) {
 
         try {
@@ -131,7 +125,6 @@ public class RestaurantService {
                 throw new Exception("The id " + resDtoCreate.getId_owner() + "is not present in owers database.");
 
             operatingHoursValidator.validateOperatingHours(resDtoCreate.getOperatingHoursDtos());
-
 
             // convert Dto to Entity and save in DB
             RestaurantEntity resEntity = restaurantMapper.toEntity(restaurantMapper.toDto(resDtoCreate));
@@ -155,6 +148,15 @@ public class RestaurantService {
         }
     }
 
+    public ResponseModel getAll() {
+        List<RestaurantEntity> restaurants = resDao.findAll();
+
+        if (restaurants.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No restaurants found.");
+        } else {
+            return new ResponseModel(ResponseCode.E, restaurants);
+        }
+    }
 
     public ResponseModel getRestaurantById(String id) {
         Optional<RestaurantEntity> optRes = resDao.findById(id);
@@ -167,7 +169,6 @@ public class RestaurantService {
             return new ResponseModel(ResponseCode.D);
         }
     }
-
 
     public ResponseModel getRestaurantByDeliveryOrTakeAway(boolean delivery, boolean takeAway) {
         List<RestaurantEntity> restaurantEntityList =
@@ -211,7 +212,6 @@ public class RestaurantService {
         }
     }
 
-
     public ResponseModel updateRestaurant(String id, RestaurantDto resDtoUpdates) {
         Optional<RestaurantEntity> optRes = resDao.findById(id);
 
@@ -250,7 +250,7 @@ public class RestaurantService {
                         restaurantEntityInDB.setIsDeliveryAvailable(resDtoUpdates.getIsDeliveryAvailable());
                     }
                     if (resDtoUpdates.getIsTakeAwayAvailable() != null) {
-                        restaurantEntityInDB.setIsTakeAwayAvaible(resEntityUpdates.getIsTakeAwayAvaible());
+                        restaurantEntityInDB.setIsTakeAwayAvailable(resEntityUpdates.getIsTakeAwayAvailable());
                     }
                     if (resEntityUpdates.getOperatingHoursEntities() != null) {
                         throw new Exception("Operating Hours of a restaurant can only be modified through a specific endpoit.");
@@ -300,7 +300,6 @@ public class RestaurantService {
         }
     }
 
-
     public ResponseModel getRestaurantByType(List<String> restaurantTypeStrings) {
         if (restaurantTypeStrings == null) return  new ResponseModel(ResponseCode.E).addMessageDetails("You have chosen no restaurantType.");
         List<RestaurantEntity> restaurantEntities = resDao.findByRestaurantTypeEntityIn(restaurantTypeStrings);
@@ -311,4 +310,5 @@ public class RestaurantService {
         return new ResponseModel(ResponseCode.E, restaurantDtos);
         //return restaurantDtos;
     }
+
 }

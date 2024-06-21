@@ -112,7 +112,7 @@ public class OrderService {
     }
 
     public ResponseModel getByCreationDateAfter(LocalDateTime dateTime) {
-        List<OrderDto> orders = this.dao.findByCreationDateAfter(dateTime).stream().map(mapper::toDto).toList();
+        List<OrderEntity> orders = this.dao.findByCreationDateAfter(dateTime);
         if (orders.isEmpty()) {
             String messageDetails = "No orders created after " + dateTime.toString() + " found.";
             return new ResponseModel(ResponseCode.D).addMessageDetails(messageDetails);
@@ -122,7 +122,7 @@ public class OrderService {
     }
 
     public ResponseModel getByCreationDateBefore(LocalDateTime dateTime) {
-        List<OrderDto> orders = this.dao.findByCreationDateBefore(dateTime).stream().map(mapper::toDto).toList();
+        List<OrderEntity> orders = this.dao.findByCreationDateBefore(dateTime);
         if (orders.isEmpty()) {
             String messageDetails = "No orders created before " + dateTime.toString() + " found.";
             return new ResponseModel(ResponseCode.D).addMessageDetails(messageDetails);
@@ -132,7 +132,7 @@ public class OrderService {
     }
 
     public ResponseModel getByCreationDateBetween(LocalDateTime dateTime1, LocalDateTime dateTime2) {
-        List<OrderDto> orders = this.dao.findByCreationDateBetween(dateTime1, dateTime2).stream().map(mapper::toDto).toList();
+        List<OrderEntity> orders = this.dao.findByCreationDateBetween(dateTime1, dateTime2);
         if (orders.isEmpty()) {
             String messageDetails = "No orders created between " + dateTime1.toString() + " and " + dateTime2.toString() + " found.";
             return new ResponseModel(ResponseCode.D).addMessageDetails(messageDetails);
@@ -161,10 +161,6 @@ public class OrderService {
                 orderToUpdate.get().setStatus(updatedOrderEntity.getStatus());
             }
 
-            if (updatedOrder.getCreationDate() != null) {
-                orderToUpdate.get().setCreationDate(updatedOrderEntity.getCreationDate());
-            }
-
             if (updatedOrder.getCartId() != null) {
                 orderToUpdate.get().setCart(updatedOrderEntity.getCart());
             }
@@ -175,20 +171,34 @@ public class OrderService {
         return new ResponseModel(ResponseCode.A).addMessageDetails("Update failed (null body).");
     }
 
+    public ResponseModel updateStatus(String id, OrderStatus status) {
+
+        Optional<OrderEntity> orderToUpdate = this.dao.findById(id);
+
+        if (orderToUpdate.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("Order not found.");
+        } else {
+            orderToUpdate.get().setStatus(status);
+            return new ResponseModel(ResponseCode.G, this.mapper.toDto(this.dao.saveAndFlush(orderToUpdate.get())));
+        }
+
+    }
+
     // DELETE
 
-    public ResponseModel delete(String id) {
+    public ResponseModel deleteById(String id) {
         if (!this.dao.existsById(id)) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("Order ID not found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("order ID not found.");
         } else {
             this.dao.deleteById(id);
-            return new ResponseModel(ResponseCode.H).addMessageDetails("Order deleted successfully.");
+            return new ResponseModel(ResponseCode.H).addMessageDetails("order successfully deleted.");
         }
     }
 
     public ResponseModel deleteAll() {
+
         this.dao.deleteAll();
-        return new ResponseModel(ResponseCode.H).addMessageDetails("All orders deleted.");
+        return new ResponseModel(ResponseCode.H).addMessageDetails("all orders have been successfully deleted.");
     }
 
 }

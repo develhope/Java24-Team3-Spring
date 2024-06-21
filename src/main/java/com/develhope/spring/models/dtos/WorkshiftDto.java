@@ -13,16 +13,23 @@ public class WorkshiftDto {
 
     private LocalTime end;
 
+    private String riderId;
+
     // CONSTRUCTORS
 
     public WorkshiftDto() {
     }
 
-    public WorkshiftDto(String id, DayOfWeek dayOfWeek, LocalTime start, LocalTime end) {
+    public WorkshiftDto(String id,
+                        DayOfWeek dayOfWeek,
+                        LocalTime start,
+                        LocalTime end,
+                        String riderId) {
         this.id = id;
         this.dayOfWeek = dayOfWeek;
         this.start = start;
         this.end = end;
+        this.riderId = riderId;
     }
 
     // GETTERS AND SETTERS
@@ -58,4 +65,13 @@ public class WorkshiftDto {
     public void setEnd(LocalTime end) {
         this.end = end;
     }
+
+    public String getRiderId() {
+        return riderId;
+    }
+
+    public void setRiderId(String riderId) {
+        this.riderId = riderId;
+    }
+
 }

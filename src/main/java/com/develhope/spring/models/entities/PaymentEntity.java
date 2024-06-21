@@ -21,7 +21,7 @@ public class PaymentEntity {
     @Column(name = "total", nullable = false)
     private BigDecimal totalPrice;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
     private OrderEntity order;
 

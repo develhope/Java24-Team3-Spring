@@ -10,7 +10,6 @@ public enum Rating {
     private final int value;
 
     Rating(int value) {
-
         this.value = value;
     }
 

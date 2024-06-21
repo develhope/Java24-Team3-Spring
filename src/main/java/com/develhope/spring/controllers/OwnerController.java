@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
-
 @RestController
 @RequestMapping("/owner")
 public class OwnerController {

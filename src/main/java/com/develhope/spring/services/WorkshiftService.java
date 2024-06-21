@@ -48,7 +48,7 @@ public class WorkshiftService {
     public ResponseModel getAll() {
         List<WorkshiftDto> workshifts = this.dao.findAll().stream().map(mapper::toDto).toList();
         if (workshifts.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("no workshifts found.");
         } else {
             return new ResponseModel(ResponseCode.E, workshifts);
         }
@@ -57,7 +57,7 @@ public class WorkshiftService {
     public ResponseModel getById(String id) {
         Optional<WorkshiftEntity> workshift = this.dao.findById(id);
         if (workshift.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("Workshift empty or not found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("workshift ID not found.");
         } else {
             return new ResponseModel(ResponseCode.C, mapper.toDto(workshift.get()));
         }
@@ -66,7 +66,7 @@ public class WorkshiftService {
     public ResponseModel getByDayOfWeek(DayOfWeek dayOfWeek) {
         List<WorkshiftEntity> workshifts = this.dao.findByDayOfWeek(dayOfWeek);
         if (workshifts.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts on " + dayOfWeek.toString() + " found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("no workshifts on " + dayOfWeek.toString() + " found.");
         } else {
             return new ResponseModel(ResponseCode.C, workshifts);
         }
@@ -75,7 +75,7 @@ public class WorkshiftService {
     public ResponseModel getByStartingBefore(LocalTime hour) {
         List<WorkshiftEntity> workshifts = this.dao.findByStartBefore(hour);
         if (workshifts.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts starting before " + hour.toString() + " found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("no workshifts starting before " + hour.toString() + " found.");
         } else {
             return new ResponseModel(ResponseCode.C, workshifts);
         }
@@ -84,7 +84,7 @@ public class WorkshiftService {
     public ResponseModel getByStartingAfter(LocalTime hour) {
         List<WorkshiftEntity> workshifts = this.dao.findByStartAfter(hour);
         if (workshifts.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts starting after " + hour.toString() + " found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("no workshifts starting after " + hour.toString() + " found.");
         } else {
             return new ResponseModel(ResponseCode.C, workshifts);
         }
@@ -92,7 +92,7 @@ public class WorkshiftService {
 
     public ResponseModel getByStartingBetween(LocalTime minHour, LocalTime maxHour) {
         if (minHour.equals(maxHour)) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("The start and the end of the time range cannot be the same.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("the start and the end of the time range cannot be the same.");
         } else {
             if (minHour.isAfter(maxHour)) {
                 LocalTime shift = maxHour;
@@ -102,7 +102,7 @@ public class WorkshiftService {
 
             List<WorkshiftEntity> workshifts = this.dao.findByStartBetween(minHour, maxHour);
             if (workshifts.isEmpty()) {
-                return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts starting betweeen " + minHour.toString() + " and " + maxHour.toString() + " found.");
+                return new ResponseModel(ResponseCode.D).addMessageDetails("no workshifts starting betweeen " + minHour.toString() + " and " + maxHour.toString() + " found.");
             } else {
                 return new ResponseModel(ResponseCode.C, workshifts);
             }
@@ -112,7 +112,7 @@ public class WorkshiftService {
     public ResponseModel getByEndingBefore(LocalTime hour) {
         List<WorkshiftEntity> workshifts = this.dao.findByEndBefore(hour);
         if (workshifts.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts ending before " + hour.toString() + " found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("no workshifts ending before " + hour.toString() + " found.");
         } else {
             return new ResponseModel(ResponseCode.C, workshifts);
         }
@@ -121,7 +121,7 @@ public class WorkshiftService {
     public ResponseModel getByEndingAfter(LocalTime hour) {
         List<WorkshiftEntity> workshifts = this.dao.findByEndAfter(hour);
         if (workshifts.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts ending after " + hour.toString() + " found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("no workshifts ending after " + hour.toString() + " found.");
         } else {
             return new ResponseModel(ResponseCode.C, workshifts);
         }
@@ -129,7 +129,7 @@ public class WorkshiftService {
 
     public ResponseModel getByEndingBetween(LocalTime minHour, LocalTime maxHour) {
         if (minHour.equals(maxHour)) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("The start and the end of the time range cannot be the same.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("the start and the end of the time range cannot be the same.");
         } else {
             if (minHour.isAfter(maxHour)) {
                 LocalTime shift = maxHour;
@@ -139,7 +139,7 @@ public class WorkshiftService {
 
             List<WorkshiftEntity> workshifts = this.dao.findByEndBetween(minHour, maxHour);
             if (workshifts.isEmpty()) {
-                return new ResponseModel(ResponseCode.D).addMessageDetails("No workshifts ending betweeen " + minHour.toString() + " and " + maxHour.toString() + " found.");
+                return new ResponseModel(ResponseCode.D).addMessageDetails("no workshifts ending betweeen " + minHour.toString() + " and " + maxHour.toString() + " found.");
             } else {
                 return new ResponseModel(ResponseCode.C, workshifts);
             }
@@ -152,7 +152,7 @@ public class WorkshiftService {
         Optional<WorkshiftEntity> toUpdate = this.dao.findById(id);
 
         if (toUpdate.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("Workshift empty or not found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("workshift ID not found.");
         } else if (updated != null) {
             WorkshiftEntity update = this.mapper.toEntity(updated);
 
@@ -161,33 +161,40 @@ public class WorkshiftService {
             }
 
             if (updated.getStart() != null) {
-                toUpdate.get().setStart(update.getStart());
+                toUpdate.get().setEnd(update.getEnd());
             }
 
             if (updated.getEnd() != null) {
-                toUpdate.get().setEnd(update.getEnd());
+                toUpdate.get().setStart(update.getStart());
             }
 
             return new ResponseModel(ResponseCode.G, this.mapper.toDto(this.dao.saveAndFlush(toUpdate.get())));
         }
 
-        return new ResponseModel(ResponseCode.A).addMessageDetails("Update failed (null body).");
+        return new ResponseModel(ResponseCode.A).addMessageDetails("update failed (null body).");
     }
 
     // DELETE
 
     public ResponseModel deleteById(String id) {
         if (!this.dao.existsById(id)) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("Workshift not found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("workshift ID not found.");
         } else {
+            this.dao.findById(id).get().setRider(null);
             this.dao.deleteById(id);
-            return new ResponseModel(ResponseCode.H).addMessageDetails("Workshift deleted.");
+            return new ResponseModel(ResponseCode.H).addMessageDetails("workshift successfully deleted.");
         }
     }
 
     public ResponseModel deleteAll() {
+        List<WorkshiftEntity> workshifts = this.dao.findAll();
+
+        for (WorkshiftEntity workshift : workshifts) {
+            workshift.getRider().setWorkshifts(null);
+        }
+
         this.dao.deleteAll();
-        return new ResponseModel(ResponseCode.H).addMessageDetails("All workshifts have been deleted");
+        return new ResponseModel(ResponseCode.H).addMessageDetails("all workshifts have been successfully deleted.");
     }
 
 }

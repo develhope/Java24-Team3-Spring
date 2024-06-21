@@ -18,6 +18,7 @@ public class RestaurantDtoCreate {
     String description;
 
     boolean isDeliveryAvailable;
+
     boolean isTakeAwayAvailable;
 
     private List<OperatingHoursDto> operatingHoursDtos;
@@ -26,10 +27,26 @@ public class RestaurantDtoCreate {
 
     private List<ProductDto> productDtos = new ArrayList<>();
 
+    private List<OrderDto> orders;
+
+    private List<ReviewDto> reviews;
+
     public RestaurantDtoCreate() {
     }
 
-    public RestaurantDtoCreate(String id_owner, String restaurantName, String restaurantEmail, String restaurantPhoneNumber, AddressDto addressDto, String description, boolean isDeliveryAvailable, boolean isTakeAwayAvailable, List<OperatingHoursDto> operatingHoursDtos, List<RestaurantTypeDto> restaurantTypeDtos, List<ProductDto> productDtos) {
+    public RestaurantDtoCreate(String id_owner,
+                               String restaurantName,
+                               String restaurantEmail,
+                               String restaurantPhoneNumber,
+                               AddressDto addressDto,
+                               String description,
+                               boolean isDeliveryAvailable,
+                               boolean isTakeAwayAvailable,
+                               List<OperatingHoursDto> operatingHoursDtos,
+                               List<RestaurantTypeDto> restaurantTypeDtos,
+                               List<ProductDto> productDtos,
+                               List<OrderDto> orders,
+                               List<ReviewDto> reviews) {
         this.id_owner = id_owner;
         this.restaurantName = restaurantName;
         this.restaurantEmail = restaurantEmail;
@@ -41,6 +58,8 @@ public class RestaurantDtoCreate {
         this.operatingHoursDtos = operatingHoursDtos;
         this.restaurantTypeDtos = restaurantTypeDtos;
         this.productDtos = productDtos;
+        this.orders = orders;
+        this.reviews = reviews;
     }
 
     public String getId_owner() {
@@ -130,4 +149,21 @@ public class RestaurantDtoCreate {
     public void setOperatingHoursDtos(List<OperatingHoursDto> operatingHoursDtos) {
         this.operatingHoursDtos = operatingHoursDtos;
     }
+
+    public List<OrderDto> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderDto> orders) {
+        this.orders = orders;
+    }
+
+    public List<ReviewDto> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewDto> reviews) {
+        this.reviews = reviews;
+    }
+
 }

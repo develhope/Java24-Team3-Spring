@@ -1,6 +1,8 @@
 package com.develhope.spring.mappers;
 
+import com.develhope.spring.daos.OrderDao;
 import com.develhope.spring.daos.OwnerDao;
+import com.develhope.spring.daos.ReviewDao;
 import com.develhope.spring.models.dtos.ProductDto;
 import com.develhope.spring.models.dtos.RestaurantByLocationDto;
 import com.develhope.spring.models.dtos.RestaurantDto;
@@ -34,6 +36,12 @@ public class RestaurantMapper {
     @Autowired
     OwnerDao ownerDao;
 
+    @Autowired
+    OrderMapper orderMapper;
+
+    @Autowired
+    ReviewMapper reviewMapper;
+
     public RestaurantDto toDto(RestaurantEntity restaurantEntity) {
         if (restaurantEntity == null) {
             return null;
@@ -60,11 +68,12 @@ public class RestaurantMapper {
                 addressMapper.toDto(restaurantEntity.getAddressEntity()),
                 restaurantEntity.getDescription(),
                 restaurantEntity.getIsDeliveryAvailable(),
-                restaurantEntity.getIsTakeAwayAvaible(),
+                restaurantEntity.getIsTakeAwayAvailable(),
                 operatingHoursMapper.toDto(restaurantEntity.getOperatingHoursEntities()),
                 restaurantTypeMapper.toDto(restaurantEntity.getRestaurantTypeEntities()),
-                productDtos
-        );
+                productDtos,
+                orderMapper.toDtos(restaurantEntity.getOrders()),
+                reviewMapper.toDtos(restaurantEntity.getReviews()));
     }
 
     public RestaurantEntity toEntity(RestaurantDto resDto) {
@@ -83,47 +92,61 @@ public class RestaurantMapper {
             }
         }
 
+        /*
         boolean delivery = resDto.getIsDeliveryAvailable() == null ? false : resDto.getIsDeliveryAvailable() ? true : false;
         boolean takeAway = resDto.getIsTakeAwayAvailable() == null ? false : resDto.getIsTakeAwayAvailable() ? true : false;
+        */
 
-        new RestaurantEntity();
-        return new RestaurantEntity(
-                resDto.getId(),
-                ownerMapper.toEntity(resDto.getOwnerDto()),
-                resDto.getRestaurantName(),
-                resDto.getRestaurantEmail(),
-                resDto.getRestaurantPhoneNumber(),
-                addressMapper.toEntity(resDto.getAddressDto()),
-                resDto.getDescription(),
-                delivery,
-                takeAway,
-                operatingHoursMapper.toEntity(resDto.getOperatingHoursDtos()),
-                restaurantTypeMapper.toEntity(resDto.getRestaurantTypeDtos()),
-                productEntities
+        RestaurantEntity mappedRestaurant = new RestaurantEntity();
 
-        );
+        mappedRestaurant.setId(resDto.getId());
+        mappedRestaurant.setOwnerEntity(ownerMapper.toEntity(resDto.getOwnerDto()));
+        mappedRestaurant.setRestaurantName(resDto.getRestaurantName());
+        mappedRestaurant.setRestaurantEmail(resDto.getRestaurantEmail());
+        mappedRestaurant.setRestaurantPhoneNumber(resDto.getRestaurantPhoneNumber());
+        mappedRestaurant.setAddressEntity(addressMapper.toEntity(resDto.getAddressDto()));
+        mappedRestaurant.setDescription(resDto.getDescription());
+        mappedRestaurant.setIsDeliveryAvailable(resDto.getIsDeliveryAvailable());
+        mappedRestaurant.setIsTakeAwayAvailable(resDto.getIsTakeAwayAvailable());
+        mappedRestaurant.setOperatingHoursEntities(operatingHoursMapper.toEntity(resDto.getOperatingHoursDtos()));
+        mappedRestaurant.setRestaurantTypeEntities(restaurantTypeMapper.toEntity(resDto.getRestaurantTypeDtos()));
+        mappedRestaurant.setProductEntities(productEntities);
+        mappedRestaurant.setOrders(orderMapper.toEntities(resDto.getOrders()));
+        mappedRestaurant.setReviews(reviewMapper.toEntities(resDto.getReviews()));
+
+        if (resDto.getOrders() == null || resDto.getOrders().isEmpty()) {
+
+        }
+
+        return mappedRestaurant;
     }
 
     public RestaurantDto toDto(RestaurantDtoCreate resDtocreate) {
+
         if (resDtocreate == null) {
             return null;
         }
 
+        /*
         new RestaurantDto();
+        */
+
         return new RestaurantDto(
-            null,
-            ownerMapper.toDto(ownerDao.getById(resDtocreate.getId_owner())),
-            resDtocreate.getRestaurantName(),
-            resDtocreate.getRestaurantEmail(),
-            resDtocreate.getRestaurantPhoneNumber(),
-            resDtocreate.getAddressDto(),
-            resDtocreate.getDescription(),
-            resDtocreate.getIsDeliveryAvailable(),
-            resDtocreate.getIsTakeAwayAvailable(),
-            resDtocreate.getOperatingHoursDtos(),
-            resDtocreate.getRestaurantTypeDtos(),
-            resDtocreate.getProductDtos()
-        );
+                null,
+                ownerMapper.toDto(ownerDao.getById(resDtocreate.getId_owner())),
+                resDtocreate.getRestaurantName(),
+                resDtocreate.getRestaurantEmail(),
+                resDtocreate.getRestaurantPhoneNumber(),
+                resDtocreate.getAddressDto(),
+                resDtocreate.getDescription(),
+                resDtocreate.getIsDeliveryAvailable(),
+                resDtocreate.getIsTakeAwayAvailable(),
+                resDtocreate.getOperatingHoursDtos(),
+                resDtocreate.getRestaurantTypeDtos(),
+                resDtocreate.getProductDtos(),
+                resDtocreate.getOrders(),
+                resDtocreate.getReviews()
+                );
     }
 
     public RestaurantByLocationDto toRestaurantByLocationDto(RestaurantEntity restaurantEntity) {
@@ -141,7 +164,7 @@ public class RestaurantMapper {
                 null,
                 null,
                 restaurantEntity.getIsDeliveryAvailable(),
-                restaurantEntity.getIsTakeAwayAvaible(),
+                restaurantEntity.getIsTakeAwayAvailable(),
                 operatingHoursMapper.toDto(restaurantEntity.getOperatingHoursEntities())
         );
     }
