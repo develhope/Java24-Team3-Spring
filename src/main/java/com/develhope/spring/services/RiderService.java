@@ -70,7 +70,7 @@ public class RiderService {
         }
     }
 
-    public ResponseModel getByDeleted(Boolean isDeleted) {
+    public ResponseModel getByDeletedStatus(Boolean isDeleted) {
         List<RiderDto> riders = this.dao.findByIsDeleted(isDeleted).stream().map(mapper::toDto).toList();
         if (riders.isEmpty()) {
             String messageDetails;
@@ -86,7 +86,7 @@ public class RiderService {
         }
     }
 
-    public ResponseModel getByVerified(Boolean isVerified) {
+    public ResponseModel getByVerifiedStatus(Boolean isVerified) {
         List<RiderDto> riders = this.dao.findByIsVerified(isVerified).stream().map(mapper::toDto).toList();
         if (riders.isEmpty()) {
             String messageDetails;
@@ -102,11 +102,11 @@ public class RiderService {
         }
     }
 
-    public ResponseModel getByAvailable(Boolean isAvailable) {
-        List<RiderDto> riders = this.dao.findByAvailable(isAvailable).stream().map(mapper::toDto).toList();
+    public ResponseModel getByAvailableStatus(Boolean available) {
+        List<RiderDto> riders = this.dao.findByAvailable(available).stream().map(mapper::toDto).toList();
         if (riders.isEmpty()) {
             String messageDetails;
-            if (isAvailable) {
+            if (available) {
                 messageDetails = "no available riders found.";
             } else {
                 messageDetails = "no idle riders found.";

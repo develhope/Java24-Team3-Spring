@@ -1,6 +1,7 @@
 package com.develhope.spring.models;
 
 public enum Rating {
+
     ONE(1),
     TWO(2),
     THREE(3),
@@ -16,4 +17,5 @@ public enum Rating {
     public int getValue() {
         return value;
     }
+
 }

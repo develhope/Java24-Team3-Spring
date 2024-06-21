@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/Reviews")
+@RequestMapping("/api/v1/Reviews")
 public class ReviewController {
 
     private final ReviewService reviewService;
@@ -43,40 +43,40 @@ public class ReviewController {
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/rating/{restaurantId}")
-    public ResponseEntity<ResponseModel> getMeanRating(@PathVariable String restaurantId) {
-        ResponseModel response = reviewService.getMeanRating(restaurantId);
-        return ResponseEntity.ok().body(response);
+    @GetMapping("/Order/{id}")
+    public ResponseEntity<ResponseModel> getByOrderId(@PathVariable String orderId) {
+        ResponseModel order = this.reviewService.getByOrderId(orderId);
+        return ResponseEntity.ok(order);
     }
 
-    @GetMapping("/searchByCustomerId")
-    public ResponseEntity<ResponseModel> getByCustomerId(@RequestParam String customerId) {
+    @GetMapping("/Customer/{id}")
+    public ResponseEntity<ResponseModel> getByCustomerId(@PathVariable String customerId) {
         ResponseModel orders = this.reviewService.getByCustomerId(customerId);
         return ResponseEntity.ok(orders);
     }
 
-    @GetMapping("/searchByRestaurantId")
-    public ResponseEntity<ResponseModel> getByRestaurantId(@RequestParam String restaurantId) {
+    @GetMapping("/Restaurant/{restaurantId}")
+    public ResponseEntity<ResponseModel> getByRestaurantId(@PathVariable String restaurantId) {
         ResponseModel orders = this.reviewService.getByRestaurantId(restaurantId);
         return ResponseEntity.ok(orders);
     }
 
     @GetMapping("/createdAfter")
     public ResponseEntity<ResponseModel> getByCreatedAfter(@RequestParam LocalDateTime dateTime) {
-        ResponseModel orders = this.reviewService.getByCreationDateAfter(dateTime);
+        ResponseModel orders = this.reviewService.getCreatedAfter(dateTime);
         return ResponseEntity.ok(orders);
     }
 
     @GetMapping("/createdBefore")
     public ResponseEntity<ResponseModel> getByCreatedBefore(@RequestParam LocalDateTime dateTime) {
-        ResponseModel orders = this.reviewService.getByCreationDateBefore(dateTime);
+        ResponseModel orders = this.reviewService.getCreatedBefore(dateTime);
         return ResponseEntity.ok(orders);
     }
 
     @GetMapping("/createdBetween")
     public ResponseEntity<ResponseModel> getByCreatedBetween(@RequestParam LocalDateTime dateTime1,
                                                              @RequestParam LocalDateTime dateTime2) {
-        ResponseModel orders = this.reviewService.getByCreationDateBetween(dateTime1, dateTime2);
+        ResponseModel orders = this.reviewService.getCreatedBetween(dateTime1, dateTime2);
         return ResponseEntity.ok(orders);
     }
 
@@ -103,6 +103,12 @@ public class ReviewController {
                                                              @RequestParam Rating maxRating) {
         ResponseModel orders = this.reviewService.getByRatingBetween(minRating, maxRating);
         return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("/Ratings/{restaurantId}")
+    public ResponseEntity<ResponseModel> getRestaurantMeanRating(@PathVariable String restaurantId) {
+        ResponseModel response = reviewService.getMeanRating(restaurantId);
+        return ResponseEntity.ok().body(response);
     }
 
     // PUT

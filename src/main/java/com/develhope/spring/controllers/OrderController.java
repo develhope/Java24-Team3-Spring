@@ -103,9 +103,9 @@ public class OrderController {
         return ResponseEntity.ok(updatedOrder);
     }
 
-    @PatchMapping("/status/{id}")
-    public ResponseEntity<ResponseModel> update(@RequestParam OrderStatus status,
-                                                @PathVariable String id) {
+    @PatchMapping("/{id}/{status}")
+    public ResponseEntity<ResponseModel> update(@PathVariable String id,
+                                                @PathVariable OrderStatus status) {
         ResponseModel updatedOrder = this.orderService.updateStatus(id, status);
         return ResponseEntity.ok(updatedOrder);
     }

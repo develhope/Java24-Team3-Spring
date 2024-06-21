@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/riders")
+@RequestMapping("/api/v1/Riders")
 public class RiderController {
 
     private final RiderService riderService;
@@ -25,7 +25,7 @@ public class RiderController {
     @PostMapping
     public ResponseEntity<ResponseModel> create(@RequestBody RiderDto riderDto) {
         ResponseModel newRider = this.riderService.createRider(riderDto);
-        return ResponseEntity.created(URI.create("api/v1/riders")).body(newRider);
+        return ResponseEntity.created(URI.create("api/v1/Riders")).body(newRider);
     }
 
     // GET
@@ -42,27 +42,27 @@ public class RiderController {
         return ResponseEntity.ok(rider);
     }
 
-    @GetMapping("/emails")
-    public ResponseEntity<ResponseModel> getByEmail(@RequestParam String email) {
+    @GetMapping("/Email/{email}")
+    public ResponseEntity<ResponseModel> getByEmail(@PathVariable String email) {
         ResponseModel rider = this.riderService.getByEmail(email);
         return ResponseEntity.ok(rider);
     }
 
-    @GetMapping("/deleted")
-    public ResponseEntity<ResponseModel> getByDeleted(@RequestParam Boolean isDeleted) {
-        ResponseModel riders = this.riderService.getByDeleted(isDeleted);
+    @GetMapping("/Deleted={deleted}")
+    public ResponseEntity<ResponseModel> getByDeletedStatus(@PathVariable Boolean deleted) {
+        ResponseModel riders = this.riderService.getByDeletedStatus(deleted);
         return ResponseEntity.ok(riders);
     }
 
-    @GetMapping("/verified")
-    public ResponseEntity<ResponseModel> getByVerified(@RequestParam Boolean isVerified) {
-        ResponseModel riders = this.riderService.getByVerified(isVerified);
+    @GetMapping("/Verified={verified}")
+    public ResponseEntity<ResponseModel> getByVerifiedStatus(@PathVariable Boolean verified) {
+        ResponseModel riders = this.riderService.getByVerifiedStatus(verified);
         return ResponseEntity.ok(riders);
     }
 
-    @GetMapping("/available")
-    public ResponseEntity<ResponseModel> getByAvailable(@RequestParam Boolean available) {
-        ResponseModel riders = this.riderService.getByAvailable(available);
+    @GetMapping("/Available={available}")
+    public ResponseEntity<ResponseModel> getByAvailableStatus(@PathVariable Boolean available) {
+        ResponseModel riders = this.riderService.getByAvailableStatus(available);
         return ResponseEntity.ok(riders);
     }
 
