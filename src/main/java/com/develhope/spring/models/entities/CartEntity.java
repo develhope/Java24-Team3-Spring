@@ -13,7 +13,7 @@ public class CartEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    private Boolean isActive;
+    private Boolean isActive = true;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "cart_cartProducts")
