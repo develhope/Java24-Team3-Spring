@@ -13,6 +13,8 @@ public class CartEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    private Boolean isActive;
+
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "cart_cartProducts")
     private List<CartProductEntity> cartProducts;
@@ -25,7 +27,8 @@ public class CartEntity {
     public CartEntity() {
     }
 
-    public CartEntity(List<CartProductEntity> cartProducts, CustomerEntity customerEntity) {
+    public CartEntity(Boolean isActive, List<CartProductEntity> cartProducts, CustomerEntity customerEntity) {
+        this.isActive = isActive;
         this.cartProducts = cartProducts;
         this.customer = customerEntity;
     }
@@ -36,6 +39,14 @@ public class CartEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     public List<CartProductEntity> getCartProducts() {

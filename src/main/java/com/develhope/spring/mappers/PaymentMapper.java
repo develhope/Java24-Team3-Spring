@@ -26,7 +26,6 @@ public class PaymentMapper {
         paymentEntity.setId(paymentDto.getId());
         paymentEntity.setMethod(paymentDto.getMethod());
         paymentEntity.setStatus(paymentDto.getStatus());
-        paymentEntity.setTotalPrice(paymentDto.getTotalPrice());
         paymentEntity.setOrder(orderDao.findById(paymentDto.getOrderId()).get());
 
         return paymentEntity;
@@ -42,7 +41,6 @@ public class PaymentMapper {
         paymentDto.setId(paymentEntity.getId());
         paymentDto.setMethod(paymentEntity.getMethod());
         paymentDto.setStatus(paymentEntity.getStatus());
-        paymentDto.setTotalPrice(paymentEntity.getTotalPrice());
         paymentDto.setOrderId(paymentEntity.getOrder().getId());
 
         return paymentDto;

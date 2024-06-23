@@ -94,7 +94,8 @@ public class CartService {
         if (!this.cartDao.existsById(id)) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Cart not found with the selected ID");
         } else {
-            this.cartDao.deleteById(id);
+            Optional<CartEntity> cart = this.cartDao.findById(id);
+            cart.get().setIsActive(false);
             return new ResponseModel(ResponseCode.H).addMessageDetails("Cart successfully deleted");
         }
     }
@@ -104,7 +105,10 @@ public class CartService {
      */
     @Transactional
     public ResponseModel deleteAllCarts() {
-        this.cartDao.deleteAll();
+        List<CartEntity> allCarts = this.cartDao.findAll();
+        for(CartEntity cart : allCarts) {
+            cart.setIsActive(false);
+        }
         return new ResponseModel(ResponseCode.H).addMessageDetails("All carts have been deleted");
     }
 
