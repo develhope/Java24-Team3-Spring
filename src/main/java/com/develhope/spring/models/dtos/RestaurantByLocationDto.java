@@ -10,7 +10,7 @@ public class RestaurantByLocationDto {
 
     Byte[] restaurantImage;
 
-    String rating;
+    double meanRating;
 
     AddressDto addressDto;
 
@@ -24,11 +24,11 @@ public class RestaurantByLocationDto {
 
     List<OperatingHoursDto> operatingHoursDtos;
 
-    public RestaurantByLocationDto(String id_restaurant, String restaurantName, Byte[] restaurantImage, String rating, AddressDto addressDto, BigDecimal distance, BigDecimal deliveryTime, boolean isDeliveryAvaiable, boolean isTakeAwayAvaible, List<OperatingHoursDto> operatingHoursDtos) {
+    public RestaurantByLocationDto(String id_restaurant, String restaurantName, Byte[] restaurantImage, double rating, AddressDto addressDto, BigDecimal distance, BigDecimal deliveryTime, boolean isDeliveryAvaiable, boolean isTakeAwayAvaible, List<OperatingHoursDto> operatingHoursDtos) {
         this.id_restaurant = id_restaurant;
         this.restaurantName = restaurantName;
         this.restaurantImage = restaurantImage;
-        this.rating = rating;
+        this.meanRating = rating;
         this.addressDto = addressDto;
         this.distance = distance;
         this.deliveryTime = deliveryTime;
@@ -61,12 +61,12 @@ public class RestaurantByLocationDto {
         this.restaurantImage = restaurantImage;
     }
 
-    public String getRating() {
-        return rating;
+    public double getMeanRating() {
+        return meanRating;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
+    public void setMeanRating(double meanRating) {
+        this.meanRating = meanRating;
     }
 
     public AddressDto getAddressDto() {

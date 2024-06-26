@@ -9,6 +9,7 @@ import com.develhope.spring.models.dtos.RestaurantDto;
 import com.develhope.spring.models.dtos.RestaurantDtoCreate;
 import com.develhope.spring.models.entities.ProductEntity;
 import com.develhope.spring.models.entities.RestaurantEntity;
+import com.develhope.spring.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +42,9 @@ public class RestaurantMapper {
 
     @Autowired
     ReviewMapper reviewMapper;
+
+    @Autowired
+    ReviewService reviewService;
 
     public RestaurantDto toDto(RestaurantEntity restaurantEntity) {
         if (restaurantEntity == null) {
@@ -154,12 +158,14 @@ public class RestaurantMapper {
             return null;
         }
 
+        double meanRating = reviewService.getMeanRatingByRestaurantId(restaurantEntity.getId());
+
 
         return new RestaurantByLocationDto(
                 restaurantEntity.getId(),
                 restaurantEntity.getRestaurantName(),
                 null,
-                null,
+                meanRating,
                 addressMapper.toDto(restaurantEntity.getAddressEntity()),
                 null,
                 null,
