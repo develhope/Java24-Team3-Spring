@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,36 +32,43 @@ public class UserDetailsService {
 
     /**
      * @param userDetailsDto UserDetailsDto
-     * @return new UserDetails
+     * @return a new UserDetails
      */
     public ResponseModel addUserDetails(UserDetailsDto userDetailsDto) {
         try {
             userDetailsValidator.userDetailsValidator(userDetailsDto);
             UserDetailsEntity newUserDetails = this.userDetailsMapper.toEntity(userDetailsDto);
             this.userDetailsDao.saveAndFlush(newUserDetails);
-            return new ResponseModel(ResponseCode.B, this.userDetailsMapper.toDTO(newUserDetails));
+            return new ResponseModel(ResponseCode.B, this.userDetailsMapper.toDto(newUserDetails));
         } catch (InvalidUserDetailsException e) {
-            return new ResponseModel(ResponseCode.A).addMessageDetails( e.getMessage());
+            return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
     }
 
-//    public UserDetailsDto getUserDetailsById(Long id) {
-//        Optional<UserDetailsEntity> userDetailsFound = this.userDetailsDao.findById(id);
-//        if (userDetailsFound.isEmpty()) {
-//            return new UserDetailsDto();//DA CAMBIARE
-//        } else {
-//            return this.userDetailsMapper.toDTO(userDetailsFound.get());
-//        }
-//    }
+    /**
+     * @param id userDetails id
+     * @return the userDetails of a single user
+     */
+    public ResponseModel getUserDetailsById(String id) {
+        Optional<UserDetailsEntity> userDetailsFound = this.userDetailsDao.findById(id);
+        if (userDetailsFound.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("UserDetails not found with the selected ID");
+        } else {
+            return new ResponseModel(ResponseCode.C, this.userDetailsMapper.toDto(userDetailsFound.get()));
+        }
+    }
 
-//    public List<UserDetailsDto> getAllUsersUserDetails() {
-//        List<UserDetailsDto> userDetails = this.userDetailsDao.findAll().stream().map(userDetailsMapper::toDTO).toList();
-//        if (userDetails.isEmpty()) {
-//            return new ArrayList<>();
-//        } else {
-//            return userDetails;
-//        }
-//    }
+    /**
+     * @return all users' UserDetails
+     */
+    public ResponseModel getAllUsersUserDetails() {
+        List<UserDetailsDto> userDetails = this.userDetailsDao.findAll().stream().map(this.userDetailsMapper::toDto).toList();
+        if (userDetails.isEmpty()) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No UserDetails were found, the list may be empty");
+        } else {
+            return new ResponseModel(ResponseCode.E, userDetails);
+        }
+    }
 
     /**
      * @param phoneNumber String
@@ -82,9 +88,9 @@ public class UserDetailsService {
      * @return all userDetails of customers found
      */
     public ResponseModel getUserDetailsByCreationDate(LocalDate creationDate) {
-        List<UserDetailsDto> userDetailsFound = this.userDetailsDao.findUserDetailsByCreationDate(creationDate).stream().map(userDetailsMapper::toDTO).toList();
+        List<UserDetailsDto> userDetailsFound = this.userDetailsDao.findUserDetailsByCreationDate(creationDate).stream().map(userDetailsMapper::toDto).toList();
         if (userDetailsFound.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails( "No customers were found with the selected parameter");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("No customers were found with the selected parameter");
         } else {
             return new ResponseModel(ResponseCode.E, userDetailsFound);
         }
@@ -95,7 +101,7 @@ public class UserDetailsService {
      * @param userDetailsUpdates UserDetailsDto
      * @return userDetails updated
      */
-    public ResponseModel updateUserDetails(Long id, UserDetailsDto userDetailsUpdates) {
+    public ResponseModel updateUserDetails(String id, UserDetailsDto userDetailsUpdates) {
         Optional<UserDetailsEntity> userDetailsToUpdate = this.userDetailsDao.findById(id);
         if (userDetailsToUpdate.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
@@ -112,26 +118,31 @@ public class UserDetailsService {
             if (userDetailsUpdates.getPhoneNumber() != null) {
                 userDetailsToUpdate.get().setPhoneNumber(userDetailsUpdates.getPhoneNumber());
             }
-            if (userDetailsUpdates.getCreationDate() != null) {
-                userDetailsToUpdate.get().setCreationDate(userDetailsUpdates.getCreationDate());
-            }
             if (userDetailsUpdates.getUpdateDate() != null) {
-                userDetailsToUpdate.get().setUpdateDate(userDetailsUpdates.getUpdateDate());
+                userDetailsToUpdate.get().setUpdateDate(LocalDate.now());
             }
-            return new ResponseModel(ResponseCode.G, this.userDetailsMapper.toDTO(this.userDetailsDao.saveAndFlush(userDetailsToUpdate.get())));
+            return new ResponseModel(ResponseCode.G, this.userDetailsMapper.toDto(this.userDetailsDao.saveAndFlush(userDetailsToUpdate.get())));
         }
         return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
     }
 
-//    public void deleteUserDetailsById(Long id) {
-//       if(!this.userDetailsDao.existsById(id)) {
-//            throw exception;// DA CAMBIARE
-//        }
-//        this.userDetailsDao.deleteById(id);
-//    }
-//
-//    public void deleteAllUserDetails() {
-//        this.userDetailsDao.deleteAll();
-//    }
+    /**
+     * @param id userDetails id
+     */
+    public ResponseModel deleteUserDetailsById(String id) {
+        if (!this.userDetailsDao.existsById(id)) {
+            return new ResponseModel(ResponseCode.D).addMessageDetails("UserDetails not found with the selected ID");
+        }
+        this.userDetailsDao.deleteById(id);
+        return new ResponseModel(ResponseCode.H).addMessageDetails("UserDetails successfully deleted");
+    }
+
+    /**
+     * delete all users' UserDetails
+     */
+    public ResponseModel deleteAllUserDetails() {
+        this.userDetailsDao.deleteAll();
+        return new ResponseModel(ResponseCode.H).addMessageDetails("All users' UserDetails have been deleted");
+    }
 
 }

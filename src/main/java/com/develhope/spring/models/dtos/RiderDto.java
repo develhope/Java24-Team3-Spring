@@ -1,34 +1,66 @@
 package com.develhope.spring.models.dtos;
 
-import com.develhope.spring.models.entities.UserDetailsEntity;
-import java.math.BigDecimal;
+import java.util.List;
 
 public class RiderDto extends UserDto {
 
-    private BigDecimal[] startingPosition;
+    private double[] startingPosition = new double[2];
 
-    private BigDecimal[] currentPosition;
+    private double[] currentPosition = new double[2];
+
+    private boolean available = false;
+
+    private List<WorkshiftDto> workshifts;
 
     public RiderDto() {
     }
 
-    public RiderDto(String email, String password, Boolean isDeleted, Boolean isVerified, UserDetailsEntity userDetails) {
+    public RiderDto(UserDetailsDto userDetails,
+                    String email,
+                    String password,
+                    Boolean isDeleted,
+                    Boolean isVerified,
+                    double[] startingPosition,
+                    double[] currentPosition,
+                    boolean available,
+                    List<WorkshiftDto> workshifts) {
         super(email, password, isDeleted, isVerified, userDetails);
+        this.startingPosition = startingPosition;
+        this.currentPosition = currentPosition;
+        this.available = available;
+        this.workshifts = workshifts;
     }
 
-    public BigDecimal[] getStartingPosition() {
+    public double[] getStartingPosition() {
         return startingPosition;
     }
 
-    public void setStartingPosition(BigDecimal[] startingPosition) {
+    public void setStartingPosition(double[] startingPosition) {
         this.startingPosition = startingPosition;
     }
 
-    public BigDecimal[] getCurrentPosition() {
+    public double[] getCurrentPosition() {
         return currentPosition;
     }
 
-    public void setCurrentPosition(BigDecimal[] currentPosition) {
+    public void setCurrentPosition(double[] currentPosition) {
         this.currentPosition = currentPosition;
     }
+
+    public boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public List<WorkshiftDto> getWorkshifts() {
+        return workshifts;
+    }
+
+    public void setWorkshifts(List<WorkshiftDto> workshifts) {
+        this.workshifts = workshifts;
+    }
+
 }

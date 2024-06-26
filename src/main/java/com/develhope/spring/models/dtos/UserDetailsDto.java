@@ -1,23 +1,16 @@
 package com.develhope.spring.models.dtos;
 
-
 import java.time.LocalDate;
 
 public class UserDetailsDto {
 
-    private Long id;
-
+    private String id;
     private String name;
-
     private String surname;
-
     private LocalDate birthDate;
-
     private String phoneNumber;
-
-    private LocalDate creationDate;
-
-    private LocalDate updateDate;
+    private LocalDate creationDate = LocalDate.now();
+    private LocalDate updateDate = LocalDate.now();
 
     public UserDetailsDto() {
     }
@@ -31,11 +24,11 @@ public class UserDetailsDto {
         this.updateDate = updateDate;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

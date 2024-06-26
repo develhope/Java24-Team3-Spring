@@ -27,7 +27,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseModel> getCustomerById(@PathVariable Long id) {
+    public ResponseEntity<ResponseModel> getCustomerById(@PathVariable String id) {
         ResponseModel customerFound = this.customerService.getCustomerById(id);
         return ResponseEntity.ok(customerFound);
     }
@@ -57,19 +57,25 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseModel> updateCustomer(@PathVariable Long id, @RequestBody CustomerDto customerDto) {
+    public ResponseEntity<ResponseModel> updateCustomer(@PathVariable String id, @RequestBody CustomerDto customerDto) {
         ResponseModel updatedCustomer = this.customerService.updateCustomer(id, customerDto);
         return ResponseEntity.ok(updatedCustomer);
     }
 
     @PatchMapping("/password/{id}")
-    public ResponseEntity<ResponseModel> changePassword(@PathVariable Long id, @RequestBody CustomerDto customerToUpdate) {
+    public ResponseEntity<ResponseModel> changePassword(@PathVariable String id, @RequestBody CustomerDto customerToUpdate) {
         ResponseModel updatedCustomer = this.customerService.updatePassword(id, customerToUpdate);
         return ResponseEntity.ok(updatedCustomer);
     }
 
+    @PatchMapping("/isVerified/{id}")
+    public ResponseEntity<ResponseModel> setIsVerified(@PathVariable String id, @RequestParam Boolean isVerified) {
+        ResponseModel updateVerifiedStatus = this.customerService.setIsVerified(id, isVerified);
+        return ResponseEntity.ok(updateVerifiedStatus);
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseModel> deleteCustomerById(@PathVariable Long id) {
+    public ResponseEntity<ResponseModel> deleteCustomerById(@PathVariable String id) {
         ResponseModel deletedCustomer = this.customerService.deleteCustomer(id);
         return ResponseEntity.ok(deletedCustomer);
     }

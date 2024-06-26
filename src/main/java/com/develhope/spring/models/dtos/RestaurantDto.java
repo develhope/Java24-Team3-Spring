@@ -4,52 +4,98 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantDto {
-        private Long id_restaurant;
 
-        private String email;
+    private String id;
 
-        private String restaurantName;
+    private OwnerDto ownerDto;
 
-        private String restaurantPhoneNumber;
+    private String restaurantName;
 
-       private AddressDto addressDto ;
+    private String restaurantEmail;
 
-        String description;
+    private String restaurantPhoneNumber;
 
-        Boolean isDeliveryAvailable;
-        Boolean isTakeAwayAvailable;
+    private AddressDto addressDto;
 
-        private List<ProductDto> productDtos = new ArrayList<>();
+    String description;
 
-        private List<OperatingHoursDto> operatingHoursDto;
+    Boolean isDeliveryAvailable;
 
-    public RestaurantDto(Long id_user, String email, String restaurantName, String restaurantPhoneNumber, AddressDto addressDto, String description, Boolean isDeliveryAvaible, Boolean isTakeAwayAvaible, List<ProductDto> productDtos, List<OperatingHoursDto> operatingHoursDto) {
-        this.id_restaurant = id_user;
-        this.email = email;
+    Boolean isTakeAwayAvailable;
+
+    private List<OperatingHoursDto> operatingHoursDtos;
+
+    private List<RestaurantTypeDto> restaurantTypeDtos = new ArrayList<>();
+
+    private List<ProductDto> productDtos = new ArrayList<>();
+
+    private List<OrderDto> orders;
+
+    private List<ReviewDto> reviews;
+
+    public RestaurantDto() {
+    }
+
+    public RestaurantDto(String id,
+                         OwnerDto ownerDto,
+                         String restaurantName,
+                         String restaurantEmail,
+                         String restaurantPhoneNumber,
+                         AddressDto addressDto,
+                         String description,
+                         Boolean isDeliveryAvailable,
+                         Boolean isTakeAwayAvailable,
+                         List<OperatingHoursDto> operatingHoursDto,
+                         List<RestaurantTypeDto> restaurantTypeDtoList,
+                         List<ProductDto> productDtos,
+                         List<OrderDto> orders,
+                         List<ReviewDto> reviews) {
+        this.id = id;
+        this.ownerDto = ownerDto;
         this.restaurantName = restaurantName;
+        this.restaurantEmail = restaurantEmail;
         this.restaurantPhoneNumber = restaurantPhoneNumber;
         this.addressDto = addressDto;
         this.description = description;
-        this.isDeliveryAvailable = isDeliveryAvaible;
-        this.isTakeAwayAvailable = isTakeAwayAvaible;
+        this.isDeliveryAvailable = isDeliveryAvailable;
+        this.isTakeAwayAvailable = isTakeAwayAvailable;
+        this.operatingHoursDtos = operatingHoursDto;
+        this.restaurantTypeDtos = restaurantTypeDtoList;
         this.productDtos = productDtos;
-        this.operatingHoursDto = operatingHoursDto;
+        this.orders = orders;
+        this.reviews = reviews;
     }
 
-    public Long getId_restaurant() {
-        return id_restaurant;
+    public OwnerDto getOwnerDto() {
+        return ownerDto;
     }
 
-    public void setId_restaurant(Long id_restaurant) {
-        this.id_restaurant = id_restaurant;
+    public void setOwnerDto(OwnerDto ownerDto) {
+        this.ownerDto = ownerDto;
     }
 
-    public String getEmail() {
-        return email;
+    public List<RestaurantTypeDto> getRestaurantTypeDtos() {
+        return restaurantTypeDtos;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setRestaurantTypeDtos(List<RestaurantTypeDto> restaurantTypeDtos) {
+        this.restaurantTypeDtos = restaurantTypeDtos;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getRestaurantEmail() {
+        return restaurantEmail;
+    }
+
+    public void setRestaurantEmail(String restaurantEmail) {
+        this.restaurantEmail = restaurantEmail;
     }
 
     public String getRestaurantName() {
@@ -72,7 +118,7 @@ public class RestaurantDto {
         return addressDto;
     }
 
-    public void setAddressEntity(AddressDto addressDto) {
+    public void setAddressDto(AddressDto addressDto) {
         this.addressDto = addressDto;
     }
 
@@ -88,16 +134,16 @@ public class RestaurantDto {
         return isDeliveryAvailable;
     }
 
-    public void setIsDeliveryAvailable(boolean deliveryAvailable) {
-        isDeliveryAvailable = deliveryAvailable;
+    public void setIsDeliveryAvailable(Boolean isDeliveryAvailable) {
+        this.isDeliveryAvailable = isDeliveryAvailable;
     }
 
     public Boolean getIsTakeAwayAvailable() {
         return isTakeAwayAvailable;
     }
 
-    public void setIsTakeAwayAvailable(boolean takeAwayAvailable) {
-        isTakeAwayAvailable = takeAwayAvailable;
+    public void setIsTakeAwayAvailable(Boolean isTakeAwayAvailable) {
+        this.isTakeAwayAvailable = isTakeAwayAvailable;
     }
 
     public List<ProductDto> getProductDtos() {
@@ -108,11 +154,28 @@ public class RestaurantDto {
         this.productDtos = productDtos;
     }
 
-    public List<OperatingHoursDto> getOperatingHoursDto() {
-        return operatingHoursDto;
+    public List<OperatingHoursDto> getOperatingHoursDtos() {
+        return operatingHoursDtos;
     }
 
-    public void setOperatingHours(List<OperatingHoursDto> operatingHoursDto) {
-        this.operatingHoursDto = operatingHoursDto;
+    public void setOperatingHoursDtos(List<OperatingHoursDto> operatingHoursDtos) {
+        this.operatingHoursDtos = operatingHoursDtos;
     }
+
+    public List<OrderDto> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderDto> orders) {
+        this.orders = orders;
+    }
+
+    public List<ReviewDto> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewDto> reviews) {
+        this.reviews = reviews;
+    }
+
 }

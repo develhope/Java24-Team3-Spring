@@ -10,16 +10,12 @@ import java.util.Optional;
 @Repository
 public interface RiderDao extends JpaRepository<RiderEntity, String> {
 
-    List<RiderEntity> findByName(String name);
-
-    List<RiderEntity> findBySurname(String surname);
-
-    List<RiderEntity> findByPhoneNumber(String phoneNumber);
-
     Optional<RiderEntity> findByEmail(String email);
 
-    List<RiderEntity> findByDeletedStatus(Boolean isDeleted);
+    List<RiderEntity> findByIsDeleted(Boolean isDeleted);
 
-    List<RiderEntity> findByVerifiedStatus(Boolean isVerified);
+    List<RiderEntity> findByIsVerified(Boolean isVerified);
+
+    List<RiderEntity> findByAvailable(Boolean isAvailable);
 
 }
