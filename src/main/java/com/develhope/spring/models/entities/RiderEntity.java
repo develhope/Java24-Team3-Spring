@@ -24,6 +24,11 @@ public class RiderEntity extends UserEntity {
     public RiderEntity() {
     }
 
+    public RiderEntity(String email,
+                          String password) {
+        super(email, password);
+    }
+
     public RiderEntity(String email, String password, Boolean isDeleted, Boolean isVerified, UserDetailsEntity userDetails, List<WorkshiftEntity> workshifts) {
         super(email, password, isDeleted, isVerified, userDetails);
         this.startingPosition = new double[2];

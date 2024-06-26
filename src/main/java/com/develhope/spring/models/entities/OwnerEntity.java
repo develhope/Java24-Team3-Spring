@@ -6,4 +6,13 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "owner")
 public class OwnerEntity extends UserEntity{
+
+    public OwnerEntity(){
+
+    }
+
+    public OwnerEntity(String email,
+                          String password) {
+        super(email, password);
+    }
 }

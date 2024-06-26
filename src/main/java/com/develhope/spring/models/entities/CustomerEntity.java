@@ -15,6 +15,11 @@ public class CustomerEntity extends UserEntity {
     }
 
     public CustomerEntity(String email,
+                          String password) {
+        super(email, password);
+    }
+
+    public CustomerEntity(String email,
                           String password,
                           Boolean isDeleted,
                           Boolean isVerified,
