@@ -99,7 +99,7 @@ public class ReviewService {
     public ResponseModel getByRestaurantId(String restaurantId) {
         List<ReviewEntity> orders = this.reviewDao.findByRestaurantId(restaurantId);
         if (orders.isEmpty()) {
-            return new ResponseModel(ResponseCode.D).addMessageDetails("o reviews associated to this restaurant found.");
+            return new ResponseModel(ResponseCode.D).addMessageDetails("0 reviews associated to this restaurant found.");
         } else {
             return new ResponseModel(ResponseCode.E, orders);
         }
@@ -196,6 +196,20 @@ public class ReviewService {
         */
 
         return new ResponseModel(ResponseCode.B, meanRating);
+    }
+
+    public double getMeanRatingByRestaurantId(String restaurantId) {
+        List<ReviewEntity> restaurantReviews = reviewDao.findByRestaurantId(restaurantId);
+
+        double totalRating = 0;
+
+        for (ReviewEntity review : restaurantReviews) {
+            totalRating += review.getRating().getValue();
+        }
+
+        double meanRating = totalRating / restaurantReviews.size();
+
+        return meanRating;
     }
 
     // UPDATE
