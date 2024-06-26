@@ -1,6 +1,7 @@
 package com.develhope.spring.services;
 
 import com.develhope.spring.daos.CartDao;
+import com.develhope.spring.daos.OrderDao;
 import com.develhope.spring.exceptions.InvalidCustomerException;
 import com.develhope.spring.mappers.CustomerMapper;
 import com.develhope.spring.models.ResponseCode;
@@ -9,6 +10,7 @@ import com.develhope.spring.models.dtos.CustomerDto;
 import com.develhope.spring.models.entities.CartEntity;
 import com.develhope.spring.models.entities.CustomerEntity;
 import com.develhope.spring.daos.CustomerDao;
+import com.develhope.spring.models.entities.OrderEntity;
 import com.develhope.spring.validators.CustomerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,14 +25,14 @@ public class CustomerService {
     private final CustomerDao customerDao;
     private final CustomerMapper customerMapper;
     private final CustomerValidator customerValidator;
-    private final CartDao cartDao;
+    private final OrderDao orderDao;
 
     @Autowired
-    public CustomerService(CustomerDao customerDao, CustomerMapper customerMapper, CustomerValidator customerValidator, CartDao cartDao) {
+    public CustomerService(CustomerDao customerDao, CustomerMapper customerMapper, CustomerValidator customerValidator, OrderDao orderDao) {
         this.customerDao = customerDao;
         this.customerMapper = customerMapper;
         this.customerValidator = customerValidator;
-        this.cartDao = cartDao;
+        this.orderDao = orderDao;
     }
 
     /**
@@ -179,9 +181,13 @@ public class CustomerService {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
         } else {
             Optional<CustomerEntity> customerEntity = customerDao.findById(id);
+            List<OrderEntity> orderEntities = orderDao.findByCustomerId(id);
             CartEntity cart = customerEntity.get().getCart();
             if (cart != null) {
                 customerEntity.get().setCart(null);
+            }
+            for(OrderEntity order : orderEntities){
+                order.getCustomer().setIsDeleted(true);
             }
             customerEntity.get().setIsDeleted(true);
             this.customerDao.saveAndFlush(customerEntity.get());
@@ -191,9 +197,13 @@ public class CustomerService {
 
     public ResponseModel deleteAllCustomers() {
         List<CustomerEntity> allCustomers = this.customerDao.findAll();
+        List<OrderEntity> allOrders = this.orderDao.findAll();
         for(CustomerEntity customer : allCustomers) {
             customer.setCart(null);
             customer.setIsDeleted(true);
+        }
+        for(OrderEntity order : allOrders){
+            order.getCustomer().setIsDeleted(true);
         }
         this.customerDao.saveAll(allCustomers);
         return new ResponseModel(ResponseCode.H).addMessageDetails("All customers have been deleted");

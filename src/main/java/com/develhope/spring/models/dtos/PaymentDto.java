@@ -13,18 +13,15 @@ public class PaymentDto {
 
     private PaymentStatus status = PaymentStatus.PENDING;
 
-    private BigDecimal totalPrice;
-
     private String orderId;
 
     public PaymentDto() {
     }
 
-    public PaymentDto(String id, PaymentMethod method, PaymentStatus status, BigDecimal totalPrice, String orderId) {
+    public PaymentDto(String id, PaymentMethod method, PaymentStatus status, String orderId) {
         this.id = id;
         this.method = method;
         this.status = status;
-        this.totalPrice = totalPrice;
         this.orderId = orderId;
     }
 
@@ -50,14 +47,6 @@ public class PaymentDto {
 
     public void setStatus(PaymentStatus status) {
         this.status = status;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
     }
 
     public String getOrderId() {

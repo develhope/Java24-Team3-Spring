@@ -187,17 +187,22 @@ public class OrderService {
     // DELETE
 
     public ResponseModel deleteById(String id) {
+        Optional<OrderEntity> orderToCancel = this.dao.findById(id);
         if (!this.dao.existsById(id)) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("order ID not found.");
         } else {
-            this.dao.deleteById(id);
+            orderToCancel.get().setStatus(OrderStatus.CANCELLED);
+            this.dao.saveAndFlush(orderToCancel.get());
             return new ResponseModel(ResponseCode.H).addMessageDetails("order successfully deleted.");
         }
     }
 
     public ResponseModel deleteAll() {
-
-        this.dao.deleteAll();
+        List<OrderEntity> orderList = this.dao.findAll();
+        for (OrderEntity order : orderList) {
+            order.setStatus(OrderStatus.CANCELLED);
+        }
+        this.dao.saveAll(orderList);
         return new ResponseModel(ResponseCode.H).addMessageDetails("all orders have been successfully deleted.");
     }
 

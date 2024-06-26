@@ -1,18 +1,18 @@
 package com.develhope.spring.services;
 
+import com.develhope.spring.daos.CartDao;
 import com.develhope.spring.daos.PaymentDao;
 import com.develhope.spring.exceptions.InvalidPaymentException;
 import com.develhope.spring.mappers.PaymentMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.PaymentDto;
-import com.develhope.spring.models.entities.PaymentEntity;
-import com.develhope.spring.models.entities.PaymentMethod;
-import com.develhope.spring.models.entities.PaymentStatus;
+import com.develhope.spring.models.entities.*;
 import com.develhope.spring.validators.PaymentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +22,14 @@ public class PaymentService {
     private final PaymentDao paymentDao;
     private final PaymentValidator paymentValidator;
     private final PaymentMapper paymentMapper;
+    private final CartDao cartDao;
 
     @Autowired
-    public PaymentService(PaymentDao paymentDao, PaymentValidator paymentValidator, PaymentMapper paymentMapper) {
+    public PaymentService(PaymentDao paymentDao, PaymentValidator paymentValidator, PaymentMapper paymentMapper, CartDao cartDao) {
         this.paymentDao = paymentDao;
         this.paymentValidator = paymentValidator;
         this.paymentMapper = paymentMapper;
+        this.cartDao = cartDao;
     }
 
     // CREATE
@@ -40,6 +42,16 @@ public class PaymentService {
         try {
             paymentValidator.validatePayment(paymentDto);
             PaymentEntity newPayment = this.paymentMapper.toEntity(paymentDto);
+            CartEntity cart = newPayment.getOrder().getCart();
+            List<CartProductEntity> cartProducts = cart.getCartProducts();
+            BigDecimal total = BigDecimal.ZERO;
+
+            for (CartProductEntity cartProduct : cartProducts) {
+                BigDecimal productPrice = cartProduct.getProduct().getPrice().multiply(BigDecimal.valueOf(cartProduct.getQuantity()));
+                total = total.add(productPrice);
+            }
+
+            newPayment.setTotalPrice(total);
             this.paymentDao.save(newPayment);
             return new ResponseModel(ResponseCode.B, newPayment);
         } catch (InvalidPaymentException e) {
@@ -80,7 +92,7 @@ public class PaymentService {
      */
     public ResponseModel getByOrderId(String orderId) {
         Optional<PaymentEntity> paymentFound = this.paymentDao.findByOrderId(orderId);
-        if(paymentFound.isEmpty()) {
+        if (paymentFound.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No payments associated to this order ID");
         } else {
             return new ResponseModel(ResponseCode.C, this.paymentMapper.toDto(paymentFound.get()));
@@ -89,7 +101,7 @@ public class PaymentService {
 
     public ResponseModel getByStatus(PaymentStatus status) {
         List<PaymentEntity> payments = this.paymentDao.findByStatus(status);
-        if(payments.isEmpty()) {
+        if (payments.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No payments with " + status.toString() + " status found.");
         } else {
             return new ResponseModel(ResponseCode.E, payments);
@@ -98,7 +110,7 @@ public class PaymentService {
 
     public ResponseModel getByMethod(PaymentMethod method) {
         List<PaymentEntity> payments = this.paymentDao.findByMethod(method);
-        if(payments.isEmpty()) {
+        if (payments.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("No payments with " + method.toString() + " method found.");
         } else {
             return new ResponseModel(ResponseCode.E, payments);
@@ -149,8 +161,9 @@ public class PaymentService {
         if (!paymentDao.existsById(id)) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("payment not found.");
         } else {
-            this.paymentDao.findById(id).get().setOrder(null);
-            this.paymentDao.deleteById(id);
+            PaymentEntity paymentEntity = this.paymentDao.findById(id).get();
+            paymentEntity.setStatus(PaymentStatus.CANCELLED);
+            this.paymentDao.saveAndFlush(paymentEntity);
             return new ResponseModel(ResponseCode.H).addMessageDetails("payment successfully deleted.");
         }
     }
@@ -161,11 +174,10 @@ public class PaymentService {
     public ResponseModel deleteAll() {
         List<PaymentEntity> payments = this.paymentDao.findAll();
 
-        for(PaymentEntity payment : payments) {
-            payment.getOrder().setReview(null);
+        for (PaymentEntity payment : payments) {
+            payment.setStatus(PaymentStatus.CANCELLED);
         }
-
-        this.paymentDao.deleteAll();
+        this.paymentDao.saveAll(payments);
         return new ResponseModel(ResponseCode.H).addMessageDetails("all payments have been successfully deleted.");
     }
 

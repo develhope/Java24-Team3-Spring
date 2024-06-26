@@ -17,10 +17,6 @@ public class PaymentValidator {
             throw new InvalidPaymentException("Payment status can't be null");
         }
 
-        if (paymentDto.getTotalPrice() == null) {
-            throw new InvalidPaymentException("Total price can't be null");
-        }
-
     }
 
 }
