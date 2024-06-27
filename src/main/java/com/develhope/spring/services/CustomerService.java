@@ -1,8 +1,6 @@
 package com.develhope.spring.services;
 
-import com.develhope.spring.daos.CartDao;
 import com.develhope.spring.daos.OrderDao;
-import com.develhope.spring.exceptions.InvalidCustomerException;
 import com.develhope.spring.mappers.CustomerMapper;
 import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
@@ -11,7 +9,8 @@ import com.develhope.spring.models.entities.CartEntity;
 import com.develhope.spring.models.entities.CustomerEntity;
 import com.develhope.spring.daos.CustomerDao;
 import com.develhope.spring.models.entities.OrderEntity;
-import com.develhope.spring.validators.CustomerValidator;
+import com.develhope.spring.validators.ContactValidator;
+import com.develhope.spring.validators.IdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,18 +20,19 @@ import java.util.Optional;
 @Service
 public class CustomerService {
 
-
     private final CustomerDao customerDao;
     private final CustomerMapper customerMapper;
-    private final CustomerValidator customerValidator;
     private final OrderDao orderDao;
+    private final IdValidator idValidator;
+    private final ContactValidator contactValidator;
 
     @Autowired
-    public CustomerService(CustomerDao customerDao, CustomerMapper customerMapper, CustomerValidator customerValidator, OrderDao orderDao) {
+    public CustomerService(CustomerDao customerDao, CustomerMapper customerMapper, OrderDao orderDao, IdValidator idValidator, ContactValidator contactValidator) {
         this.customerDao = customerDao;
         this.customerMapper = customerMapper;
-        this.customerValidator = customerValidator;
         this.orderDao = orderDao;
+        this.idValidator = idValidator;
+        this.contactValidator = contactValidator;
     }
 
     /**
@@ -42,11 +42,17 @@ public class CustomerService {
     public ResponseModel addCustomer(CustomerDto customerDto) {
 
         try {
-            customerValidator.validateCustomer(customerDto);
+
+            idValidator.noId(customerDto.getId());
+            idValidator.noId(customerDto.getUserDetails().getId());
+            contactValidator.validateEmail(customerDto.getEmail());
+            contactValidator.validatePassword(customerDto.getPassword());
+            contactValidator.validatePhoneNumber(customerDto.getUserDetails().getPhoneNumber());
+
             CustomerEntity newCustomer = this.customerMapper.toEntity(customerDto);
             this.customerDao.saveAndFlush(newCustomer);
             return new ResponseModel(ResponseCode.B, this.customerMapper.toDTO(newCustomer));
-        } catch (InvalidCustomerException e) {
+        } catch (Exception e) {
             return new ResponseModel(ResponseCode.A).addMessageDetails(e.getMessage());
         }
 
@@ -126,19 +132,25 @@ public class CustomerService {
         if (customerToUpdate.isEmpty()) {
             return new ResponseModel(ResponseCode.D).addMessageDetails("Customer not found with the selected ID");
         } else if (customerUpdates != null) {
-            CustomerEntity customerEntityUpdates = this.customerMapper.toEntity(customerUpdates);
-            if (customerUpdates.getEmail() != null) {
-                customerToUpdate.get().setEmail(customerEntityUpdates.getEmail());
+            try {
+                idValidator.noId(customerUpdates.getId());
+                CustomerEntity customerEntityUpdates = this.customerMapper.toEntity(customerUpdates);
+                if (customerUpdates.getEmail() != null) {
+                    contactValidator.validateEmail(customerEntityUpdates.getEmail());
+                    customerToUpdate.get().setEmail(customerEntityUpdates.getEmail());
+                }
+                if (customerUpdates.getPassword() != null) {
+                    contactValidator.validatePassword(customerEntityUpdates.getPassword());
+                    customerToUpdate.get().setPassword(customerEntityUpdates.getPassword());
+                }
+                if (customerUpdates.getUserDetails() != null) {
+                    customerToUpdate.get().setUserDetails(customerEntityUpdates.getUserDetails());
+                }
+            } catch (Exception e) {
+                return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
             }
-            if (customerUpdates.getPassword() != null) {
-                customerToUpdate.get().setPassword(customerEntityUpdates.getPassword());
-            }
-            if (customerUpdates.getUserDetails() != null) {
-                customerToUpdate.get().setUserDetails(customerEntityUpdates.getUserDetails());
-            }
-            return new ResponseModel(ResponseCode.G, this.customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
         }
-        return new ResponseModel(ResponseCode.A).addMessageDetails("Impossible to update, the body should not be null");
+        return new ResponseModel(ResponseCode.G, this.customerMapper.toDTO(this.customerDao.saveAndFlush(customerToUpdate.get())));
     }
 
     /**
@@ -160,7 +172,7 @@ public class CustomerService {
     }
 
     /**
-     * @param id customer id
+     * @param id         customer id
      * @param isVerified the status of isVerified
      * @return isVerified status updated
      */
@@ -186,7 +198,7 @@ public class CustomerService {
             if (cart != null) {
                 customerEntity.get().setCart(null);
             }
-            for(OrderEntity order : orderEntities){
+            for (OrderEntity order : orderEntities) {
                 order.getCustomer().setIsDeleted(true);
             }
             customerEntity.get().setIsDeleted(true);
@@ -198,11 +210,11 @@ public class CustomerService {
     public ResponseModel deleteAllCustomers() {
         List<CustomerEntity> allCustomers = this.customerDao.findAll();
         List<OrderEntity> allOrders = this.orderDao.findAll();
-        for(CustomerEntity customer : allCustomers) {
+        for (CustomerEntity customer : allCustomers) {
             customer.setCart(null);
             customer.setIsDeleted(true);
         }
-        for(OrderEntity order : allOrders){
+        for (OrderEntity order : allOrders) {
             order.getCustomer().setIsDeleted(true);
         }
         this.customerDao.saveAll(allCustomers);

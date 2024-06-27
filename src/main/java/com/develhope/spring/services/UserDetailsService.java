@@ -7,7 +7,6 @@ import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.UserDetailsDto;
 import com.develhope.spring.models.entities.UserDetailsEntity;
-import com.develhope.spring.validators.CustomerValidator;
 import com.develhope.spring.validators.UserDetailsValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,7 @@ public class UserDetailsService {
     private final UserDetailsValidator userDetailsValidator;
 
     @Autowired
-    public UserDetailsService(UserDetailsDao userDetailsDao, UserDetailsMapper userDetailsMapper, CustomerValidator customerValidator, UserDetailsValidator userDetailsValidator) {
+    public UserDetailsService(UserDetailsDao userDetailsDao, UserDetailsMapper userDetailsMapper, UserDetailsValidator userDetailsValidator) {
         this.userDetailsDao = userDetailsDao;
         this.userDetailsMapper = userDetailsMapper;
         this.userDetailsValidator = userDetailsValidator;
