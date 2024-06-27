@@ -37,7 +37,7 @@ public class AuthValidator {
 
     public void isAdminOrTheOwnerByRetsaurant(RestaurantDtoCreate restaurantDtoCreate) throws AuthenticationException {
         UserEntity currentUser = userService.getLoggedUser();
-        if(!currentUser.getClass().equals("com.develhope.spring.models.entities.AdminEntity")){throw new AuthenticationException("Only admins have authorization to perform this operation.");};
+        if(!currentUser.getClass().equals("com.develhope.spring.models.entities.AdminEntity") && !currentUser.getId().equals(restaurantDtoCreate.getId_owner())){throw new AuthenticationException("Only admins and The Owner of the restaurants in question have authorization to perform this operation.");};
     }
 
 }

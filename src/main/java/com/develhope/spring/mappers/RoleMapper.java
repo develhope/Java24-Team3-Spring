@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 public class RoleMapper {
     public Role toRole(String roleString) throws Exception {
         return switch (roleString){
-            case "ADMIN" -> Role.ADMIN;
+            case "admin" -> Role.ADMIN;
             case "customer" -> Role.CUSTOMER;
-            case "OWNER" -> Role.OWNER;
-            case "DRIVER" -> Role.DRIVER;
+            case "owner" -> Role.OWNER;
+            case "rider" -> Role.RIDER;
             default -> throw new Exception("This role doasn't exist.");
         };
     }

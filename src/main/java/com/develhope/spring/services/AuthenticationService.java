@@ -41,7 +41,7 @@ public class AuthenticationService {
             case Role.ADMIN -> adminDao.save(new AdminEntity(registerUserDto.getEmail(), passwordEncoder.encode(registerUserDto.getPassword())));
             case Role.CUSTOMER -> customerDao.save(new CustomerEntity(registerUserDto.getEmail(), passwordEncoder.encode(registerUserDto.getPassword())));
             case Role.OWNER -> ownerDao.save(new OwnerEntity(registerUserDto.getEmail(), passwordEncoder.encode(registerUserDto.getPassword())));
-            case Role.DRIVER -> riderDao.save(new RiderEntity(registerUserDto.getEmail(), passwordEncoder.encode(registerUserDto.getPassword())));
+            case Role.RIDER -> riderDao.save(new RiderEntity(registerUserDto.getEmail(), passwordEncoder.encode(registerUserDto.getPassword())));
         };
     }
 
@@ -55,10 +55,10 @@ public class AuthenticationService {
         );
 
         return (UserEntity) switch (role){
-            case Role.ADMIN -> null;
+            case Role.ADMIN -> adminDao.findAdminByEmail(loginUserDto.getEmail()).get();
             case Role.CUSTOMER -> customerDao.findCustomerByEmail(loginUserDto.getEmail()).get();
-            case Role.OWNER -> null;
-            case Role.DRIVER -> null;
+            case Role.OWNER -> ownerDao.findOwnerByEmail(loginUserDto.getEmail()).get();
+            case Role.RIDER -> riderDao.findByEmail(loginUserDto.getEmail()).get();
         };
 
 //        Optional<UserEntity> userEntity = switch (role){

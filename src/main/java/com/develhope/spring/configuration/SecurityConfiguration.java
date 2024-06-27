@@ -2,8 +2,10 @@ package com.develhope.spring.configuration;
 
 
 import com.develhope.spring.filters.JwtAuthenticationFilter;
+import com.develhope.spring.models.costants.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -33,7 +35,7 @@ public class SecurityConfiguration {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**")
-                        .permitAll())
+                        .permitAll().requestMatchers(HttpMethod.GET,"api/v1/customers/**").hasAnyAuthority(Role.ADMIN.name()))
                 .authorizeHttpRequests((authorize) -> authorize
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

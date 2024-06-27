@@ -32,6 +32,10 @@ public class AuthenticationController {
     @PostMapping("/signup/{role}")
     public ResponseEntity<RegisterUserDto> register(@PathVariable("role") String roleString, @RequestBody RegisterUserDto registerUserDto) throws Exception {
         Role role = roleMapper.toRole(roleString);
+
+
+
+
         idValidator.noId(registerUserDto.getId());
         UserEntity registeredUser = authenticationService.signup(registerUserDto, role);
 

@@ -46,11 +46,11 @@ public class RestaurantController {
     @PostMapping
     public ResponseEntity<ResponseModel> createRestaurant(@RequestBody RestaurantDtoCreate resDto) {
 
-//        try{
-//            authValidator.isAdminOrTheOwnerByRestaurant(restaurantDtoCreate);
-//        } catch(AuthenticationException e){
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseModel(ResponseCode.M).addMessageDetails(e.getMessage()));
-//        }
+        try{
+            authValidator.isAdminOrTheOwnerByRetsaurant(resDto);
+        } catch(AuthenticationException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseModel(ResponseCode.M).addMessageDetails(e.getMessage()));
+        }
 
         ResponseModel response  = restaurantService.createRestaurant(resDto);
         return  ResponseEntity.ok().body(response);
@@ -58,9 +58,19 @@ public class RestaurantController {
 
     @GetMapping
     public ResponseEntity<ResponseModel> getAll() {
+
+        try{
+            authValidator.isAdmin();
+        } catch(AuthenticationException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseModel(ResponseCode.M).addMessageDetails(e.getMessage()));
+        }
+
         ResponseModel response  = restaurantService.getAll();
         return  ResponseEntity.ok().body(response);
     }
+
+    // get allRestaurantByOwnerId
+    // get all productByRestaurantId
 
     @ResponseBody
     @GetMapping("/{id}")
