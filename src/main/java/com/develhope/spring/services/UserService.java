@@ -1,7 +1,10 @@
 package com.develhope.spring.services;
 
 
+import com.develhope.spring.daos.AdminDao;
 import com.develhope.spring.daos.CustomerDao;
+import com.develhope.spring.daos.OwnerDao;
+import com.develhope.spring.daos.RiderDao;
 import com.develhope.spring.models.costants.Role;
 import com.develhope.spring.models.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +18,27 @@ public class UserService implements UserDetailsService {
     @Autowired
     private CustomerDao customerDao;
 
+    @Autowired
+    private OwnerDao ownerDao;
+
+    @Autowired
+    private RiderDao riderDao;
+
+    @Autowired
+    private AdminDao adminDao;
+
+
 
     @Override
     public UserEntity loadUserByUsername(String username) {
-        UserEntity userLogin = new UserEntity();
-
-        if(!customerDao.findCustomerByEmail(username).isEmpty()){
-            userLogin = customerDao.findCustomerByEmail(username).get();
-        };
-        return userLogin;
+        return !customerDao.findCustomerByEmail(username).isEmpty()
+                ?  customerDao.findCustomerByEmail(username).get()
+                : !adminDao.findAdminByEmail(username).isEmpty()
+                ?  adminDao.findAdminByEmail(username).get()
+                : !ownerDao.findOwnerByEmail(username).isEmpty()
+                ?  ownerDao.findOwnerByEmail(username).get()
+                : !riderDao.findByEmail(username).isEmpty()
+                ?  riderDao.findByEmail(username).get() : null;
     }
 
 
