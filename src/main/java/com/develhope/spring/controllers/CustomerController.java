@@ -1,12 +1,17 @@
 package com.develhope.spring.controllers;
 
+import com.develhope.spring.models.ResponseCode;
 import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.CustomerDto;
 import com.develhope.spring.services.CustomerService;
+import com.develhope.spring.validators.AuthValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.net.URI;
 
 @RestController
@@ -15,19 +20,37 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @Autowired
-    public CustomerController(CustomerService customerService) {
+    private final AuthValidator authValidator;
+
+    public CustomerController(CustomerService customerService, AuthValidator authValidator) {
         this.customerService = customerService;
+        this.authValidator = authValidator;
     }
+
+
 
     @PostMapping
     public ResponseEntity<ResponseModel> createCustomer(@RequestBody CustomerDto customerDto) {
+
+        try{
+            authValidator.isAdmin();
+        } catch(AuthenticationException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseModel(ResponseCode.M).addMessageDetails(e.getMessage()));
+        }
+
         ResponseModel newCustomer = this.customerService.addCustomer(customerDto);
         return ResponseEntity.created(URI.create("api/v1/customers")).body(newCustomer);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseModel> getCustomerById(@PathVariable String id) {
+
+        try{
+            authValidator.isItselfOrAdminById(id);
+        } catch(AuthenticationException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseModel(ResponseCode.M).addMessageDetails(e.getMessage()));
+        }
+
         ResponseModel customerFound = this.customerService.getCustomerById(id);
         return ResponseEntity.ok(customerFound);
     }

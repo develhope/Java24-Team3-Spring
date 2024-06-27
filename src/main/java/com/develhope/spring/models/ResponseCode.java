@@ -13,7 +13,8 @@ public enum ResponseCode {
     I(CodeType.SUCCESS, "Seeding completed successfully."),
     J(CodeType.SUCCESS, "Records in the database have been deleted."),
     K(CodeType.SUCCESS, "Record modification fail."),
-    L(CodeType.SUCCESS, "Database search fail.");
+    L(CodeType.SUCCESS, "Database search fail."),
+    M(CodeType.SUCCESS, "Authorization missing.");
 
     private CodeType codeType;
     private String codeMessage;

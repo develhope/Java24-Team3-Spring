@@ -8,8 +8,12 @@ import com.develhope.spring.daos.RiderDao;
 import com.develhope.spring.models.costants.Role;
 import com.develhope.spring.models.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -42,14 +46,22 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public UserEntity loadUserByUsernameAndRole(String username, Role role) {
-        return (UserEntity) switch (role){
-            case Role.ADMIN -> null;
-            case Role.CUSTOMER -> customerDao.findCustomerByEmail(username).get();
-            case Role.OWNER -> null;
-            case Role.DRIVER -> null;
-        };
+    public UserEntity getLoggedUser() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (UserEntity) authentication.getPrincipal();
     }
+
+
+
+//    public UserEntity getSubclassByUserEntity(UserEntity userEntity) {
+//        return (UserEntity) switch (role){
+//            case Role.ADMIN -> null;
+//            case Role.CUSTOMER -> customerDao.findCustomerByEmail(username).get();
+//            case Role.OWNER -> null;
+//            case Role.DRIVER -> null;
+//        };
+//    }
 
 
 

@@ -6,12 +6,14 @@ import com.develhope.spring.models.ResponseModel;
 import com.develhope.spring.models.dtos.*;
 import com.develhope.spring.models.entities.*;
 import com.develhope.spring.services.RestaurantService;
+import com.develhope.spring.validators.AuthValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -21,6 +23,9 @@ public class RestaurantController {
 
     @Autowired
     private RestaurantService restaurantService;
+
+    @Autowired
+    private AuthValidator authValidator;
 
 //    @ResponseBody
 //    @PostMapping
@@ -40,6 +45,13 @@ public class RestaurantController {
 
     @PostMapping
     public ResponseEntity<ResponseModel> createRestaurant(@RequestBody RestaurantDtoCreate resDto) {
+
+//        try{
+//            authValidator.isAdminOrTheOwnerByRestaurant(restaurantDtoCreate);
+//        } catch(AuthenticationException e){
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseModel(ResponseCode.M).addMessageDetails(e.getMessage()));
+//        }
+
         ResponseModel response  = restaurantService.createRestaurant(resDto);
         return  ResponseEntity.ok().body(response);
     }
