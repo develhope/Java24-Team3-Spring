@@ -59,11 +59,11 @@ public class RestaurantController {
     @GetMapping
     public ResponseEntity<ResponseModel> getAll() {
 
-        try{
-            authValidator.isAdmin();
-        } catch(AuthenticationException e){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseModel(ResponseCode.M).addMessageDetails(e.getMessage()));
-        }
+//        try{
+//            authValidator.isAdmin();
+//        } catch(AuthenticationException e){
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseModel(ResponseCode.M).addMessageDetails(e.getMessage()));
+//        }
 
         ResponseModel response  = restaurantService.getAll();
         return  ResponseEntity.ok().body(response);
@@ -113,12 +113,5 @@ public class RestaurantController {
         ResponseModel response  = restaurantService.deleteRestaurantById(id);
         return ResponseEntity.ok().body(response);
     }
-
-
-
-
-
-
-
 
 }
